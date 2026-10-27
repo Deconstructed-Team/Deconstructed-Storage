@@ -1,0 +1,59 @@
+{
+    "variants": {
+        "facing=up,flat_top=false": {
+            "model": "deconstructedstorage:barrel"
+        },
+        "facing=up,flat_top=true": {
+            "model": "deconstructedstorage:barrel"
+        },
+        "facing=down,flat_top=false": {
+            "model": "deconstructedstorage:barrel",
+            "x": 180
+        },
+        "facing=down,flat_top=true": {
+            "model": "deconstructedstorage:barrel",
+            "x": 180
+        },
+        "facing=north,flat_top=false": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90
+        },
+        "facing=north,flat_top=true": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90
+        },
+        "facing=south,flat_top=false": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90,
+            "y": 180
+        },
+        "facing=south,flat_top=true": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90,
+            "y": 180
+        },
+        "facing=west,flat_top=false": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90,
+            "y": 270
+        },
+        "facing=west,flat_top=true": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90,
+            "y": 270
+        },
+        "facing=east,flat_top=false": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90,
+            "y": 90
+        },
+        "facing=east,flat_top=true": {
+            "model": "deconstructedstorage:barrel",
+            "x": 90,
+            "y": 90
+        },
+        "inventory": {
+            "model": "deconstructedstorage:barrel"
+        }
+    }
+}
