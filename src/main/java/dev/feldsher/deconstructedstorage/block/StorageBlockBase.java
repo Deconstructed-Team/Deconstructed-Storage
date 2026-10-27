@@ -69,8 +69,9 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 		if (world.isRemote) {
 			return true;
 		}
-		if (getStorageBlockEntity(world, pos) != null && player instanceof EntityPlayerMP) {
-			GuiHandler.openStorage((EntityPlayerMP) player, pos);
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		if (be != null && player instanceof EntityPlayerMP) {
+			GuiHandler.openStorage((EntityPlayerMP) player, be.getMainBlockEntity().getPos());
 		}
 		return true;
 	}
@@ -136,6 +137,7 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		StorageBlockEntity be = getStorageBlockEntity(world, pos);
 		if (be != null) {
+			be.setRemovedState(state);
 			be.dropContents();
 			world.updateComparatorOutputLevel(pos, this);
 		}
@@ -150,7 +152,7 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 	@Override
 	public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
 		StorageBlockEntity be = getStorageBlockEntity(world, pos);
-		return be == null ? 0 : ItemHandlerHelper.calcRedstoneFromInventory(be.getStorageWrapper().getInventoryForInputOutput());
+		return be == null ? 0 : ItemHandlerHelper.calcRedstoneFromInventory(be.getMainStorageWrapper().getInventoryForInputOutput());
 	}
 
 	@Override

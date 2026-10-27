@@ -1,0 +1,40 @@
+{
+    "variants": {
+        "facing=north,type=single": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=north,type=left": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=north,type=right": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=south,type=single": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=south,type=left": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=south,type=right": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=west,type=single": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=west,type=left": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=west,type=right": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=east,type=single": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=east,type=left": {
+            "model": "deconstructedstorage:chest"
+        },
+        "facing=east,type=right": {
+            "model": "deconstructedstorage:chest"
+        }
+    }
+}

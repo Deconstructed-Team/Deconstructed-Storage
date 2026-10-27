@@ -6,6 +6,7 @@ import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageWrapper;
 import dev.feldsher.deconstructedstorage.client.render.BarrelBakedModel;
 import dev.feldsher.deconstructedstorage.client.render.BarrelParts;
+import dev.feldsher.deconstructedstorage.client.render.ChestItemRenderer;
 import dev.feldsher.deconstructedstorage.init.ModBlocks;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import net.minecraft.block.Block;
@@ -35,6 +36,8 @@ public class ClientEventHandler {
 		for (Block block : ModBlocks.getAllBlocks()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Objects.requireNonNull(block.getRegistryName()), "inventory"));
 		}
+		ChestItemRenderer chestItemRenderer = new ChestItemRenderer();
+		ModBlocks.getChests().forEach(chest -> Item.getItemFromBlock(chest).setTileEntityItemStackRenderer(chestItemRenderer));
 	}
 
 	@SubscribeEvent

@@ -2,6 +2,7 @@ package dev.feldsher.deconstructedstorage.init;
 
 import dev.feldsher.deconstructedstorage.DeconstructedStorage;
 import dev.feldsher.deconstructedstorage.block.BarrelBlock;
+import dev.feldsher.deconstructedstorage.block.ChestBlock;
 import dev.feldsher.deconstructedstorage.block.WoodType;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
@@ -40,6 +41,9 @@ public class ModItems {
 		List<Item> items = new ArrayList<>();
 		for (BarrelBlock barrel : ModBlocks.getBarrels()) {
 			items.add(itemBlock(new BarrelBlockItem(barrel)));
+		}
+		for (ChestBlock chest : ModBlocks.getChests()) {
+			items.add(itemBlock(new WoodStorageBlockItem(chest)));
 		}
 		items.addAll(STORAGE_UPGRADES);
 		return items;

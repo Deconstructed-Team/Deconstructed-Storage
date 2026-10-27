@@ -43,6 +43,19 @@ public class Config {
 		@net.minecraftforge.common.config.Config.Comment("Netherite Barrel Settings")
 		public final StorageConfig netheriteBarrel = new StorageConfig(132, 5);
 
+		@net.minecraftforge.common.config.Config.Comment("Wood Chest Settings")
+		public final StorageConfig woodChest = new StorageConfig(27, 1);
+		@net.minecraftforge.common.config.Config.Comment("Copper Chest Settings")
+		public final StorageConfig copperChest = new StorageConfig(45, 1);
+		@net.minecraftforge.common.config.Config.Comment("Iron Chest Settings")
+		public final StorageConfig ironChest = new StorageConfig(54, 2);
+		@net.minecraftforge.common.config.Config.Comment("Gold Chest Settings")
+		public final StorageConfig goldChest = new StorageConfig(81, 3);
+		@net.minecraftforge.common.config.Config.Comment("Diamond Chest Settings")
+		public final StorageConfig diamondChest = new StorageConfig(108, 4);
+		@net.minecraftforge.common.config.Config.Comment("Netherite Chest Settings")
+		public final StorageConfig netheriteChest = new StorageConfig(132, 5);
+
 		@net.minecraftforge.common.config.Config.Comment("Stack Upgrade Settings")
 		public final StackUpgradeSettings stackUpgrade = new StackUpgradeSettings();
 

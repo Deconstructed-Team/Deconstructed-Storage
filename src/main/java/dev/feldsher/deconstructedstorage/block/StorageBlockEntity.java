@@ -39,6 +39,8 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	@Nullable
 	private List<ITickableUpgrade> tickableUpgrades = null;
 	private boolean isDroppingContents = false;
+	@Nullable
+	private IBlockState removedState = null;
 
 	protected StorageBlockEntity() {
 		storageWrapper = new StorageWrapper(this::onWrapperChanged) {
@@ -75,7 +77,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 			@Override
 			public ItemStack getWrappedStorageStack() {
 				return getStorageBlock() instanceof StorageBlockBase && world != null
-						? ((StorageBlockBase) getStorageBlock()).getStorageStack(world, pos, world.getBlockState(pos)) : ItemStack.EMPTY;
+						? ((StorageBlockBase) getStorageBlock()).getStorageStack(world, pos, getBlockState()) : ItemStack.EMPTY;
 			}
 
 			@Override
@@ -92,8 +94,24 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 
 	@Nullable
 	private IStorageBlock getStorageBlock() {
-		Block block = world != null ? world.getBlockState(pos).getBlock() : getBlockType();
+		Block block = getBlockState().getBlock();
 		return block instanceof IStorageBlock ? (IStorageBlock) block : null;
+	}
+
+	/**
+	 * Its block's state; while it's being broken, the one it had, which the world no longer has: what's left to do then,
+	 * as dropping its items, still needs to know what it was.
+	 */
+	public IBlockState getBlockState() {
+		if (removedState != null) {
+			return removedState;
+		}
+		return world != null ? world.getBlockState(pos) : net.minecraft.init.Blocks.AIR.getDefaultState();
+	}
+
+	/** Called as its block is broken, before its items drop. */
+	public void setRemovedState(IBlockState removedState) {
+		this.removedState = removedState;
 	}
 
 	/** What it is, for the limits of how many upgrades of a kind it takes. */
@@ -110,6 +128,16 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 
 	public StorageWrapper getStorageWrapper() {
 		return storageWrapper;
+	}
+
+	/** The block entity whose storage this is part of: itself, but for the second half of a double chest. */
+	public StorageBlockEntity getMainBlockEntity() {
+		return this;
+	}
+
+	/** The storage this block is part of, that its container, pipes and comparators work on. */
+	public StorageWrapper getMainStorageWrapper() {
+		return getMainBlockEntity().getStorageWrapper();
 	}
 
 	/** Saved, and what clients see of it sent to them: colors and the like show at once. */
@@ -146,7 +174,11 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 
 	@Override
 	public void update() {
-		if (world == null || world.isRemote) {
+		if (world == null) {
+			return;
+		}
+		if (world.isRemote) {
+			clientTick();
 			return;
 		}
 		if (tickableUpgrades == null) {
@@ -157,6 +189,11 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		for (ITickableUpgrade upgrade : tickableUpgrades) {
 			upgrade.tick(null, world, pos);
 		}
+	}
+
+	/** What it animates, as a chest its lid. */
+	protected void clientTick() {
+		//noop by default
 	}
 
 	/** Upgrades went in or out through something that isn't this block's container, as another stack with these contents. */
@@ -297,7 +334,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(storageWrapper.getInventoryForInputOutput());
+			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getMainStorageWrapper().getInventoryForInputOutput());
 		}
 		return super.getCapability(capability, facing);
 	}
