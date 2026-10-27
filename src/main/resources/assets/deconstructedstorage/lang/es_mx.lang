@@ -24,8 +24,7 @@ item.deconstructedstorage.storage_tool.overlay.toggling_tier_display=Mostrando/O
 item.deconstructedstorage.storage_tool.overlay.toggling_upgrades_display=Mostrando/Ocultando mejoras
 item.deconstructedstorage.debug_tool.name=Herramienta de Debug
 item.deconstructedstorage.storage_link.name=Conector de Almacenes
-block.deconstructedstorage.storage_link.tooltip=Conecta varios bloques separados de almacenes al controlador
-Utiliza la herramienta de almacenes para conectar al controlador
+block.deconstructedstorage.storage_link.tooltip=Conecta varios bloques separados de almacenes al controlador\nUtiliza la herramienta de almacenes para conectar al controlador
 tile.deconstructedstorage.storage_link.name=Conector de Almacenes
 item.deconstructedstorage.controller.name=Controlador de Almacenamiento
 block.deconstructedstorage.controller.tooltip=Permite depositar y envíar ítems hacia y desde varios almacenes conectados
@@ -102,49 +101,39 @@ item.deconstructedstorage.upgrade_base.name=Base de Mejora
 item.deconstructedstorage.pickup_upgrade.name=Mejora de Recolección
 item.deconstructedstorage.pickup_upgrade.tooltip=Hace que el almacén recolecte ítems
 item.deconstructedstorage.advanced_pickup_upgrade.name=Mejora de Recolección Avanzada
-item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Hace que el almacén recolecte ítems
-Tiene más opciones de filtrado
+item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Hace que el almacén recolecte ítems\nTiene más opciones de filtrado
 item.deconstructedstorage.filter_upgrade.name=Mejora de Filtrado
 item.deconstructedstorage.filter_upgrade.tooltip=Filtra ítems entrantes y/o salientes del almacén
 item.deconstructedstorage.advanced_filter_upgrade.name=Mejora de Filtrado Avanzada
-item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtra ítems entrantes y/o salientes del almacén
-Tiene más opciones de filtrado
+item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtra ítems entrantes y/o salientes del almacén\nTiene más opciones de filtrado
 item.deconstructedstorage.magnet_upgrade.name=Mejora de Imán
 item.deconstructedstorage.magnet_upgrade.tooltip=Atrae ítems hacia el almacén a distancia
 item.deconstructedstorage.advanced_magnet_upgrade.name=Mejora de Imán Avanzada
-item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Atrae ítems hacia el almacén a una mayor distancia
-Tiene más opciones de filtrado
+item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Atrae ítems hacia el almacén a una mayor distancia\nTiene más opciones de filtrado
 item.deconstructedstorage.feeding_upgrade.name=Mejora de Alimentación
 item.deconstructedstorage.feeding_upgrade.tooltip=Alimenta al jugador con comida del inventario del almacén
 item.deconstructedstorage.advanced_feeding_upgrade.name=Mejora de Alimentación Avanzada
-item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Alimenta al jugador con comida del inventario del almacén
-Más opciones para cuando alimentar al jugador con comida
+item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Alimenta al jugador con comida del inventario del almacén\nMás opciones para cuando alimentar al jugador con comida
 item.deconstructedstorage.compacting_upgrade.name=Mejora de Compactado
-item.deconstructedstorage.compacting_upgrade.tooltip=Comprime ítems en su variante comprimida
-Solo recetas de 2x2
+item.deconstructedstorage.compacting_upgrade.tooltip=Comprime ítems en su variante comprimida\nSolo recetas de 2x2
 item.deconstructedstorage.advanced_compacting_upgrade.name=Mejora de Compactado Avanzada
-item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Compacta ítems en su variante comprimida
-Recetas de 2x2 y 3x3 con más opciones de filtrado
+item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Compacta ítems en su variante comprimida\nRecetas de 2x2 y 3x3 con más opciones de filtrado
 item.deconstructedstorage.void_upgrade.name=Mejora de Vacío
 item.deconstructedstorage.void_upgrade.tooltip=Descarta los ítems seleccionados en un filtro
 item.deconstructedstorage.advanced_void_upgrade.name=Mejora de Vacío Avanzada
-item.deconstructedstorage.advanced_void_upgrade.tooltip=Descarta los ítems seleccionados en un filtro
-Tiene más opciones de filtrado
+item.deconstructedstorage.advanced_void_upgrade.tooltip=Descarta los ítems seleccionados en un filtro\nTiene más opciones de filtrado
 item.deconstructedstorage.smelting_upgrade.name=Mejora de Horneado
 item.deconstructedstorage.smelting_upgrade.tooltip=Horneado en una pestaña de mejora
 item.deconstructedstorage.auto_smelting_upgrade.name=Mejora de Auto-horneado
-item.deconstructedstorage.auto_smelting_upgrade.tooltip=Horneado en una pestaña de mejora
-Automáticamente introduce/extrae ítems
+item.deconstructedstorage.auto_smelting_upgrade.tooltip=Horneado en una pestaña de mejora\nAutomáticamente introduce/extrae ítems
 item.deconstructedstorage.smoking_upgrade.name=Mejora de Ahumado
 item.deconstructedstorage.smoking_upgrade.tooltip=Ahumado de comida en una pestaña de mejora
 item.deconstructedstorage.auto_smoking_upgrade.name=Mejora de Auto-ahumado
-item.deconstructedstorage.auto_smoking_upgrade.tooltip=Ahumado de comida en una pestaña de mejora
-Automáticamente introduce/extrae ítems
+item.deconstructedstorage.auto_smoking_upgrade.tooltip=Ahumado de comida en una pestaña de mejora\nAutomáticamente introduce/extrae ítems
 item.deconstructedstorage.blasting_upgrade.name=Mejora de Fundido
 item.deconstructedstorage.blasting_upgrade.tooltip=Fundido de minerales y cosas de metal en una pestaña de mejora
 item.deconstructedstorage.auto_blasting_upgrade.name=Mejora de Auto-fundido
-item.deconstructedstorage.auto_blasting_upgrade.tooltip=Fundido de minerales y cosas de metal en una pestaña de mejora
-Automáticamente introduce/extrae ítems
+item.deconstructedstorage.auto_blasting_upgrade.tooltip=Fundido de minerales y cosas de metal en una pestaña de mejora\nAutomáticamente introduce/extrae ítems
 item.deconstructedstorage.crafting_upgrade.name=Mejora de fabricación
 item.deconstructedstorage.crafting_upgrade.tooltip=Mesa de trabajo en una pestaña de mejora
 item.deconstructedstorage.stonecutter_upgrade.name=Mejora de Cortapiedras
@@ -166,16 +155,13 @@ item.deconstructedstorage.pump_upgrade.tooltip=Bombea fluidos entre la Mejora de
 item.deconstructedstorage.xp_pump_upgrade.name=Mejora de Bomba de Experiencia
 item.deconstructedstorage.xp_pump_upgrade.tooltip=Bombea experiencia entre la Mejora de tanque y el jugador
 item.deconstructedstorage.advanced_pump_upgrade.name=Mejora de Bomba Avanzada
-item.deconstructedstorage.advanced_pump_upgrade.tooltip=Bombea fluidos entre la Mejora de tanque y bloques adyacentes
-Funciona con contenedores de fluidos en la mano y bloques de fluidos en el mundo
-Permite filtrar qué fluidos se bombean
+item.deconstructedstorage.advanced_pump_upgrade.tooltip=Bombea fluidos entre la Mejora de tanque y bloques adyacentes\nFunciona con contenedores de fluidos en la mano y bloques de fluidos en el mundo\nPermite filtrar qué fluidos se bombean
 item.deconstructedstorage.compression_upgrade.name=Mejora de Compresión
 item.deconstructedstorage.compression_upgrade.tooltip=Automáticamente comprime/descomprime ítems
 item.deconstructedstorage.hopper_upgrade.name=Mejora de Tolva
 item.deconstructedstorage.hopper_upgrade.tooltip=Introduce ítems del bloque de arriba y/o los extrae hacia el bloque de abajo
 item.deconstructedstorage.advanced_hopper_upgrade.name=Mejora de Tolva Avanzada
-item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Introduce ítems del bloque de arriba y/o los extrae hacia el bloque de abajo
-Más rápida y con opciones de entrada / salida
+item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Introduce ítems del bloque de arriba y/o los extrae hacia el bloque de abajo\nMás rápida y con opciones de entrada / salida
 item.deconstructedstorage.chipped.botanist_workbench_upgrade=Mejora Chipped: Botanist's Workbench
 item.deconstructedstorage.chipped.botanist_workbench_upgrade.tooltip=Chipped Botanist's Workbench es una mejora
 item.deconstructedstorage.chipped.glassblower_upgrade=Mejora Chipped: Glassblower
@@ -204,10 +190,8 @@ gui.deconstructedstorage.back_to_storage.tooltip=Volver al almacén
 gui.deconstructedstorage.upgrades.buttons.allow=Permitir
 gui.deconstructedstorage.upgrades.buttons.block=Bloquear
 gui.deconstructedstorage.upgrades.buttons.match_storage_contents=Coincidir con el contenido del almacén
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Clic Mayús para enviar a
-almacén
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Clic Mayús para enviar a
-inventario del jugador
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Clic Mayús para enviar a\nalmacén
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Clic Mayús para enviar a\ninventario del jugador
 gui.deconstructedstorage.upgrades.buttons.io_mode_push=Extraer
 gui.deconstructedstorage.upgrades.buttons.io_mode_pull=Introducir
 gui.deconstructedstorage.upgrades.buttons.io_mode_push_pull=Introducir y extraer
@@ -233,5 +217,4 @@ gui.deconstructedstorage.settings.buttons.context_storage.tooltip=Opciones de es
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=Heredado del jugador o anulado para este almacén
 keybind.deconstructedstorage.category=Sophisticated Storage
 keybind.deconstructedstorage.sort=Ordenar almacén
-gui.deconstructedstorage.status.too_many_item_entity_drops=No se puede romper el %s ya que causaría la caída de demasiadas entidades de ítem (%s)
-Considera usar %s o romperlo mientras estás agachado para omitir esta verificación
+gui.deconstructedstorage.status.too_many_item_entity_drops=No se puede romper el %s ya que causaría la caída de demasiadas entidades de ítem (%s)\nConsidera usar %s o romperlo mientras estás agachado para omitir esta verificación

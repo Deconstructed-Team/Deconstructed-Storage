@@ -30,15 +30,13 @@ item.deconstructedstorage.storage_io.name=Depo G/Ç
 block.deconstructedstorage.storage_io.tooltip=Depoya yerleştirildiğinde çoklu blok, eşyaların ona ve ondan borulanmasına izin verir
 tile.deconstructedstorage.storage_io.name=Depo G/Ç
 item.deconstructedstorage.storage_input.name=Depo Girdisi
-block.deconstructedstorage.storage_input.tooltip=Depoya yerleştirildiğinde çoklu blok, içine eşyaların borulanmasına izin verir
-Düşük tps etkisi için optimize edilmiştir
+block.deconstructedstorage.storage_input.tooltip=Depoya yerleştirildiğinde çoklu blok, içine eşyaların borulanmasına izin verir\nDüşük tps etkisi için optimize edilmiştir
 tile.deconstructedstorage.storage_input.name=Depo Girdisi
 item.deconstructedstorage.storage_output.name=Depo Çıktısı
 block.deconstructedstorage.storage_output.tooltip=Çoklu blok depoya yerleştirildiğinde eşyaların buradan dışarı aktarılmasını sağlar
 tile.deconstructedstorage.storage_output.name=Depo Çıktısı
 item.deconstructedstorage.storage_link.name=Depo Bağlantısı
-block.deconstructedstorage.storage_link.tooltip=Ayrı çoklu blok depolarını denetleyiciye bağlar
-Denetleyiciye bağlanmak için Depo Aleti kullan
+block.deconstructedstorage.storage_link.tooltip=Ayrı çoklu blok depolarını denetleyiciye bağlar\nDenetleyiciye bağlanmak için Depo Aleti kullan
 tile.deconstructedstorage.storage_link.name=Depo Bağlantısı
 item.deconstructedstorage.controller.name=Depo Denetleyicisi
 block.deconstructedstorage.controller.tooltip=Bağlı bir çoklu blok deposuna eşya aktarmaya ve bu depolardan eşya çekmeye izin verir
@@ -115,49 +113,39 @@ item.deconstructedstorage.upgrade_base.name=Yükseltme Temeli
 item.deconstructedstorage.pickup_upgrade.name=Alma Yükseltmesi
 item.deconstructedstorage.pickup_upgrade.tooltip=Deponun eşyaları almasını sağlar
 item.deconstructedstorage.advanced_pickup_upgrade.name=Gelişmiş Alma Yükseltmesi
-item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Deponun eşyaları almasını sağlar
-Daha fazla filtreleme seçeneği var
+item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Deponun eşyaları almasını sağlar\nDaha fazla filtreleme seçeneği var
 item.deconstructedstorage.filter_upgrade.name=Filtre Yükseltmesi
 item.deconstructedstorage.filter_upgrade.tooltip=Depoya giren ve/veya çıkan maddeleri filtreler
 item.deconstructedstorage.advanced_filter_upgrade.name=Gelişmiş Filtre Yükseltmesi
-item.deconstructedstorage.advanced_filter_upgrade.tooltip=Depoya giren ve/veya çıkan maddeleri filtreler
-Daha fazla filtreleme seçeneği var
+item.deconstructedstorage.advanced_filter_upgrade.tooltip=Depoya giren ve/veya çıkan maddeleri filtreler\nDaha fazla filtreleme seçeneği var
 item.deconstructedstorage.magnet_upgrade.name=Mıknatıs Yükseltmesi
 item.deconstructedstorage.magnet_upgrade.tooltip=Menzildeki eşyaları depoya çeker
 item.deconstructedstorage.advanced_magnet_upgrade.name=Gelişmiş Mıknatıs Yükseltmesi
-item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Eşyaları daha geniş bir mesafeden depoya çeker
-Daha fazla filtreleme seçeneği var
+item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Eşyaları daha geniş bir mesafeden depoya çeker\nDaha fazla filtreleme seçeneği var
 item.deconstructedstorage.feeding_upgrade.name=Besleme Yükseltmesi
 item.deconstructedstorage.feeding_upgrade.tooltip=Oyuncuyu depo envanterindeki yiyecekle besler
 item.deconstructedstorage.advanced_feeding_upgrade.name=Gelişmiş Besleme Yükseltmesi
-item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Oyuncuyu depo envanterindeki yiyecekle besler
-Yiyeceklerin oyuncuya ne zaman verileceği hakkında daha fazla seçenek
+item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Oyuncuyu depo envanterindeki yiyecekle besler\nYiyeceklerin oyuncuya ne zaman verileceği hakkında daha fazla seçenek
 item.deconstructedstorage.compacting_upgrade.name=Sıkıştırma Yükseltmesi
-item.deconstructedstorage.compacting_upgrade.tooltip=Eşyaları sıkıştırılmış varyantlarına dönüştürür
-Sadece 2x2 tarifler
+item.deconstructedstorage.compacting_upgrade.tooltip=Eşyaları sıkıştırılmış varyantlarına dönüştürür\nSadece 2x2 tarifler
 item.deconstructedstorage.advanced_compacting_upgrade.name=Gelişmiş Sıkıştırma Yükseltmesi
-item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Eşyaları sıkıştırılmış varyantlarına dönüştürür
-Daha fazla filtreleme seçeneği ile hem 2x2 hem de 3x3 tarifler
+item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Eşyaları sıkıştırılmış varyantlarına dönüştürür\nDaha fazla filtreleme seçeneği ile hem 2x2 hem de 3x3 tarifler
 item.deconstructedstorage.void_upgrade.name=Geçersiz Kılma Yükseltmesi
 item.deconstructedstorage.void_upgrade.tooltip=Filtrede seçilen eşyaları yok eder
 item.deconstructedstorage.advanced_void_upgrade.name=Gelişmiş Geçersiz Kılma Yükseltmesi
-item.deconstructedstorage.advanced_void_upgrade.tooltip=Filtrede seçilen eşyaları yok eder
-Daha fazla filtreleme seçeneği var
+item.deconstructedstorage.advanced_void_upgrade.tooltip=Filtrede seçilen eşyaları yok eder\nDaha fazla filtreleme seçeneği var
 item.deconstructedstorage.smelting_upgrade.name=Eritme Yükseltmesi
 item.deconstructedstorage.smelting_upgrade.tooltip=Yükseltme sekmesinde eritme
 item.deconstructedstorage.auto_smelting_upgrade.name=Oto-eritme Yükseltmesi
-item.deconstructedstorage.auto_smelting_upgrade.tooltip=Yükseltme sekmesinde eritme
-Eşyaları otomatik olarak çeker/iter
+item.deconstructedstorage.auto_smelting_upgrade.tooltip=Yükseltme sekmesinde eritme\nEşyaları otomatik olarak çeker/iter
 item.deconstructedstorage.smoking_upgrade.name=Tütsüleme Yükseltmesi
 item.deconstructedstorage.smoking_upgrade.tooltip=Yükseltme sekmesinde yemek tütsüleme
 item.deconstructedstorage.auto_smoking_upgrade.name=Oto-tütsüleme Yükseltmesi
-item.deconstructedstorage.auto_smoking_upgrade.tooltip=Yükseltme sekmesinde yemek tütsüleme
-Eşyaları otomatik olarak çeker/iter
+item.deconstructedstorage.auto_smoking_upgrade.tooltip=Yükseltme sekmesinde yemek tütsüleme\nEşyaları otomatik olarak çeker/iter
 item.deconstructedstorage.blasting_upgrade.name=Maden Ateşleme Yükseltmesi
 item.deconstructedstorage.blasting_upgrade.tooltip=Yükseltme sekmesinde cevherleri ve metal şeyleri eritme
 item.deconstructedstorage.auto_blasting_upgrade.name=Oto-maden ateşleme Yükseltmesi
-item.deconstructedstorage.auto_blasting_upgrade.tooltip=Yükseltme sekmesinde cevherleri ve metal şeyleri eritme
-Eşyaları otomatik olarak çeker/iter
+item.deconstructedstorage.auto_blasting_upgrade.tooltip=Yükseltme sekmesinde cevherleri ve metal şeyleri eritme\nEşyaları otomatik olarak çeker/iter
 item.deconstructedstorage.crafting_upgrade.name=Üretim Yükseltmesi
 item.deconstructedstorage.crafting_upgrade.tooltip=Yükseltme sekmesinde Çalışma Masası
 item.deconstructedstorage.stonecutter_upgrade.name=Taş Yontma Makinesi Yükseltmesi
@@ -181,16 +169,13 @@ item.deconstructedstorage.pump_upgrade.tooltip=Tank yükseltme ve bitişik blokl
 item.deconstructedstorage.xp_pump_upgrade.name=Tecrübe Pompası Yükseltmesi
 item.deconstructedstorage.xp_pump_upgrade.tooltip=Tank yükseltmesi ve oyuncu arasında tecrübe pompalar
 item.deconstructedstorage.advanced_pump_upgrade.name=Gelişmiş Pompa Yükseltmesi
-item.deconstructedstorage.advanced_pump_upgrade.tooltip=Tank yükseltme ve bitişik bloklar arasında Sıvı pompalar
-Eldeki sıvı kapları ve dünyadaki sıvı blokları ile çalışır
-Hangi sıvıların pompalandığını filtrelemeye izin verir
+item.deconstructedstorage.advanced_pump_upgrade.tooltip=Tank yükseltme ve bitişik bloklar arasında Sıvı pompalar\nEldeki sıvı kapları ve dünyadaki sıvı blokları ile çalışır\nHangi sıvıların pompalandığını filtrelemeye izin verir
 item.deconstructedstorage.compression_upgrade.name=Kompresyon Yükseltmesi
 item.deconstructedstorage.compression_upgrade.tooltip=Eşyaları otomatik olarak sıkıştırır/sıkıştırılmışlığı giderir
 item.deconstructedstorage.hopper_upgrade.name=Huni Yükseltmesi
 item.deconstructedstorage.hopper_upgrade.tooltip=Eşyaları üstteki bloktan çeker ve/veya alttaki bloğa iter
 item.deconstructedstorage.advanced_hopper_upgrade.name=Gelişmiş Huni Yükseltmesi
-item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Eşyaları üstteki bloktan çeker ve/veya alttaki bloğa iter
-Daha hızlı ve giriş/çıkış seçenekleri var
+item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Eşyaları üstteki bloktan çeker ve/veya alttaki bloğa iter\nDaha hızlı ve giriş/çıkış seçenekleri var
 item.deconstructedstorage.chipped.botanist_workbench_upgrade=Chipped: Botanikçinin Çalışma Tezgahı Yükseltmesi
 item.deconstructedstorage.chipped.botanist_workbench_upgrade.tooltip=Yükseltme sekmesinde Chipped Botanikçinin Çalışma Tezgahı
 item.deconstructedstorage.chipped.glassblower_upgrade=Chipped: Cam Üfleyici Yükseltmesi
@@ -221,10 +206,8 @@ gui.deconstructedstorage.back_to_storage.tooltip=Depoya Dön
 gui.deconstructedstorage.upgrades.buttons.allow=İzin Ver
 gui.deconstructedstorage.upgrades.buttons.block=Engelle
 gui.deconstructedstorage.upgrades.buttons.match_storage_contents=Depo İçeriğini Eşleştir
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift Tıklama Sonucu
-Depo
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift Tıklama Sonucu
-Oyuncu'nun Envanteri
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift Tıklama Sonucu\nDepo
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift Tıklama Sonucu\nOyuncu'nun Envanteri
 gui.deconstructedstorage.upgrades.buttons.io_mode_push=İt
 gui.deconstructedstorage.upgrades.buttons.io_mode_pull=Çek
 gui.deconstructedstorage.upgrades.buttons.io_mode_push_pull=İt & Çek
@@ -250,7 +233,6 @@ gui.deconstructedstorage.settings.buttons.context_storage.tooltip=Bu Depo'nun ay
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=Bu depolama alanı için oyuncudan devralınır veya geçersiz kılınır
 keybind.deconstructedstorage.category=Sophisticated Storage
 keybind.deconstructedstorage.sort=Depoyu Sırala
-gui.deconstructedstorage.status.too_many_item_entity_drops=%s kıramazsın çünkü çok fazla (%s) eşya varlığının düşmesine neden olur
-Bu kontrolü atlamak için %s kullanmayı veya eğilirken kırmayı deneyin
+gui.deconstructedstorage.status.too_many_item_entity_drops=%s kıramazsın çünkü çok fazla (%s) eşya varlığının düşmesine neden olur\nBu kontrolü atlamak için %s kullanmayı veya eğilirken kırmayı deneyin
 gui.deconstructedstorage.status.too_low_tier_upgrade_count=Yükseltme %s %ss gerektirir
 gui.deconstructedstorage.status.packing_tape_disabled=Paketleme bandına gerek kalmadan tüm depoları paketlenmiş olarak bırakmak için yapılandırma ayarı

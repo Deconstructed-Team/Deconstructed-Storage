@@ -29,6 +29,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.IntSupplier;
 
 /**
@@ -315,6 +318,25 @@ public class ChestBlock extends WoodStorageBlockBase {
 				((ChestBlockEntity) other).setContentsMovedToItem();
 			}
 		}
+	}
+
+	@Override
+	public EnumFacing getFacing(IBlockState state) {
+		return state.getValue(FACING);
+	}
+
+	@Override
+	public List<BlockPos> getNeighborPos(IBlockState state, BlockPos origin, EnumFacing facing) {
+		if (state.getValue(TYPE) == ChestType.SINGLE) {
+			return Collections.singletonList(origin.offset(facing));
+		}
+		EnumFacing connectedDirection = getConnectedDirection(state);
+		if (connectedDirection == facing) {
+			return Collections.singletonList(origin.offset(facing, 2));
+		} else if (connectedDirection.getOpposite() == facing) {
+			return Collections.singletonList(origin.offset(facing));
+		}
+		return Arrays.asList(origin.offset(facing), origin.offset(connectedDirection).offset(facing));
 	}
 
 	@Override

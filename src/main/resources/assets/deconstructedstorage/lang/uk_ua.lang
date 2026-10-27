@@ -26,8 +26,7 @@ item.deconstructedstorage.storage_tool.overlay.toggling_upgrades_display=Пок�
 item.deconstructedstorage.storage_tool.overlay.toggling_fill_level_display=Показати/сховати рівень заповнености
 item.deconstructedstorage.debug_tool.name=Інструмент налагоджування
 item.deconstructedstorage.storage_link.name=Зв'язок сховищ
-block.deconstructedstorage.storage_link.tooltip=Передає предмети з прив'язоного контролера сховищ до прилеглих сховищ
-Сховища зв'язуються інструментом сховищ
+block.deconstructedstorage.storage_link.tooltip=Передає предмети з прив'язоного контролера сховищ до прилеглих сховищ\nСховища зв'язуються інструментом сховищ
 tile.deconstructedstorage.storage_link.name=Зв'язок сховищ
 item.deconstructedstorage.controller.name=Контролер сховищ
 block.deconstructedstorage.controller.tooltip=Передає предмети до прилеглих сховищ.
@@ -108,44 +107,35 @@ item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Поліпшувач, 
 item.deconstructedstorage.filter_upgrade.name=Фільтрувальник
 item.deconstructedstorage.filter_upgrade.tooltip=Поліпшувач, що фільтрує предмети, які можуть потрапити/вийти зі сховку
 item.deconstructedstorage.advanced_filter_upgrade.name=Просунутий фільтрувальник
-item.deconstructedstorage.advanced_filter_upgrade.tooltip=Поліпшувач, що фільтрує предмети, які можуть потрапити/вийти зі сховку
-Має більше фільтрів
+item.deconstructedstorage.advanced_filter_upgrade.tooltip=Поліпшувач, що фільтрує предмети, які можуть потрапити/вийти зі сховку\nМає більше фільтрів
 item.deconstructedstorage.magnet_upgrade.name=Притягувач
 item.deconstructedstorage.magnet_upgrade.tooltip=Поліпшувач, що притягує до сховища предмети навколо
 item.deconstructedstorage.advanced_magnet_upgrade.name=Просунутий притягувач
-item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Поліпшувач, що притягує до сховища предмети навколо
-Має більше фільтрів
+item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Поліпшувач, що притягує до сховища предмети навколо\nМає більше фільтрів
 item.deconstructedstorage.feeding_upgrade.name=Годувальник
 item.deconstructedstorage.feeding_upgrade.tooltip=Поліпшувач, що годує гравця їжею зі сховища
 item.deconstructedstorage.advanced_feeding_upgrade.name=Просунутий годувальник
-item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Поліпшувач, що годує гравця їжею зі сховища
-Має фільтри для годування
+item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Поліпшувач, що годує гравця їжею зі сховища\nМає фільтри для годування
 item.deconstructedstorage.compacting_upgrade.name=Ущільнювач
-item.deconstructedstorage.compacting_upgrade.tooltip=Поліпшувач, що ущільнює предмети
-Лише за рецептами 2х2
+item.deconstructedstorage.compacting_upgrade.tooltip=Поліпшувач, що ущільнює предмети\nЛише за рецептами 2х2
 item.deconstructedstorage.advanced_compacting_upgrade.name=Просунутий ущільнювач
-item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Поліпшувач, що ущільнює предмети
-За рецептами 2х2 та 3х3, з додатковими фільтрами
+item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Поліпшувач, що ущільнює предмети\nЗа рецептами 2х2 та 3х3, з додатковими фільтрами
 item.deconstructedstorage.void_upgrade.name=Знищувач
 item.deconstructedstorage.void_upgrade.tooltip=Поліпшувач, що знищує предмети, які потрапляють до нього
 item.deconstructedstorage.advanced_void_upgrade.name=Просунутий знищувач
-item.deconstructedstorage.advanced_void_upgrade.tooltip=Поліпшувач, що знищує предмети, які потрапляють до нього
-Має більше фільтрів
+item.deconstructedstorage.advanced_void_upgrade.tooltip=Поліпшувач, що знищує предмети, які потрапляють до нього\nМає більше фільтрів
 item.deconstructedstorage.smelting_upgrade.name=Піч
 item.deconstructedstorage.smelting_upgrade.tooltip=Поліпшувач, що дозволяє виплавляти предмети в сховищі
 item.deconstructedstorage.auto_smelting_upgrade.name=Авто-піч
-item.deconstructedstorage.auto_smelting_upgrade.tooltip=Поліпшувач, що дозволяє виплавляти предмети в сховищі
-Самостійно бере/видає предмети зі сховища
+item.deconstructedstorage.auto_smelting_upgrade.tooltip=Поліпшувач, що дозволяє виплавляти предмети в сховищі\nСамостійно бере/видає предмети зі сховища
 item.deconstructedstorage.smoking_upgrade.name=Коптильня
 item.deconstructedstorage.smoking_upgrade.tooltip=Поліпшувач, що дозволяє смажити їжу в сховищі
 item.deconstructedstorage.auto_smoking_upgrade.name=Авто-коптильня
-item.deconstructedstorage.auto_smoking_upgrade.tooltip=Поліпшувач, що дозволяє смажити їжу в сховищі
-Самостійно бере/видає предмети зі сховища
+item.deconstructedstorage.auto_smoking_upgrade.tooltip=Поліпшувач, що дозволяє смажити їжу в сховищі\nСамостійно бере/видає предмети зі сховища
 item.deconstructedstorage.blasting_upgrade.name=Плавильня
 item.deconstructedstorage.blasting_upgrade.tooltip=Поліпшувач, що дозволяє плавити руди в сховищі
 item.deconstructedstorage.auto_blasting_upgrade.name=Авто-плавильня
-item.deconstructedstorage.auto_blasting_upgrade.tooltip=Поліпшувач, що дозволяє плавити руди в сховищі
-Самостійно бере/видає предмети зі сховища
+item.deconstructedstorage.auto_blasting_upgrade.tooltip=Поліпшувач, що дозволяє плавити руди в сховищі\nСамостійно бере/видає предмети зі сховища
 item.deconstructedstorage.crafting_upgrade.name=Створювач
 item.deconstructedstorage.crafting_upgrade.tooltip=Поліпшувач, що дозволяє створювати предмети в сховищі
 item.deconstructedstorage.stonecutter_upgrade.name=Різьбар
@@ -167,17 +157,13 @@ item.deconstructedstorage.pump_upgrade.tooltip=Поліпшувач, що доз
 item.deconstructedstorage.xp_pump_upgrade.name=Помпа досвіду
 item.deconstructedstorage.xp_pump_upgrade.tooltip=Поліпшувач, що дозволяє сховищу зберігати досвід
 item.deconstructedstorage.advanced_pump_upgrade.name=Просунута помпа
-item.deconstructedstorage.advanced_pump_upgrade.tooltip=Поліпшувач, що дозволяє сховищу зберігати рідини
-Працює з рідинними контейнерами в руках і рідинними блоками в світі
-Має фільтри допустимих рідин
+item.deconstructedstorage.advanced_pump_upgrade.tooltip=Поліпшувач, що дозволяє сховищу зберігати рідини\nПрацює з рідинними контейнерами в руках і рідинними блоками в світі\nМає фільтри допустимих рідин
 item.deconstructedstorage.compression_upgrade.name=Стискувач
-item.deconstructedstorage.compression_upgrade.tooltip=Додає пов'язані між собою комірки, які зберігають предмети в різних ступенях ущільнення одночасно
-Лише один предмет на один поліпшувач
+item.deconstructedstorage.compression_upgrade.tooltip=Додає пов'язані між собою комірки, які зберігають предмети в різних ступенях ущільнення одночасно\nЛише один предмет на один поліпшувач
 item.deconstructedstorage.hopper_upgrade.name=Лійка
 item.deconstructedstorage.hopper_upgrade.tooltip=Змушує сховище працювати так само, як і лійка
 item.deconstructedstorage.advanced_hopper_upgrade.name=Просунута лійка
-item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Змушує сховище працювати так само, як і лійка
-Працює швидше та має фільтри входу/виходу
+item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Змушує сховище працювати так само, як і лійка\nПрацює швидше та має фільтри входу/виходу
 item.deconstructedstorage.chipped.botanist_workbench_upgrade=Ботанік (Chipped)
 item.deconstructedstorage.chipped.botanist_workbench_upgrade.tooltip=Поліпшувач, що додає функціонал верстата ботаніка з моду Chipped
 item.deconstructedstorage.chipped.glassblower_upgrade=Склодув (Chipped)
@@ -196,8 +182,7 @@ gui.deconstructedstorage.upgrades.hopper=Лійка
 gui.deconstructedstorage.upgrades.hopper.tooltip=Параметри лійки
 gui.deconstructedstorage.upgrades.advanced_hopper=Прос. лійка
 gui.deconstructedstorage.upgrades.advanced_hopper.tooltip=Прос. параметри лійкі
-gui.deconstructedstorage.error.add.compression_incompatible_items=Стиснення неможливе.
-Предмети з цих комірок не є стиснутими версіями наступних предметів.
+gui.deconstructedstorage.error.add.compression_incompatible_items=Стиснення неможливе.\nПредмети з цих комірок не є стиснутими версіями наступних предметів.
 gui.deconstructedstorage.error.add.compression_no_space=Недостатньо комірок, якими може керувати цей поліпшувач стиснення.
 gui.deconstructedstorage.settings.tooltip=Параметри
 gui.deconstructedstorage.settings.title=Параметри
@@ -207,10 +192,8 @@ gui.deconstructedstorage.back_to_storage.tooltip=Повернутися
 gui.deconstructedstorage.upgrades.buttons.allow=Дозволяти
 gui.deconstructedstorage.upgrades.buttons.block=Блокувати
 gui.deconstructedstorage.upgrades.buttons.match_storage_contents=Відповідати вмісту сховища
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift+клац переносить до
-Сховища
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift+клац переносить до
-Інвентарю гравця
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift+клац переносить до\nСховища
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift+клац переносить до\nІнвентарю гравця
 gui.deconstructedstorage.upgrades.buttons.io_mode_push=Приймати
 gui.deconstructedstorage.upgrades.buttons.io_mode_pull=Віддавати
 gui.deconstructedstorage.upgrades.buttons.io_mode_push_pull=Віддавати/приймати
@@ -236,6 +219,5 @@ gui.deconstructedstorage.settings.buttons.context_storage.tooltip=Парамет
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=Отримаються від гравця або окремо перепризначаються
 keybind.deconstructedstorage.category=Вишукані сховища
 keybind.deconstructedstorage.sort=Сортувати сховище
-gui.deconstructedstorage.status.too_many_item_entity_drops=Не можна зламати це сховище, оскільки випаде забагато предметів (%s)
-Краще скористайтеся _пакувальною стрічкою_, або зламайте його, утримуючи Shift, щоби пропустити цю перевірку
+gui.deconstructedstorage.status.too_many_item_entity_drops=Не можна зламати це сховище, оскільки випаде забагато предметів (%s)\nКраще скористайтеся _пакувальною стрічкою_, або зламайте його, утримуючи Shift, щоби пропустити цю перевірку
 gui.deconstructedstorage.status.too_low_tier_upgrade_count=Поліпшення вимагає %s %ss

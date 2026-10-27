@@ -131,6 +131,7 @@ public class BarrelBlock extends WoodStorageBlockBase {
 		return BarrelParts.getParticleSprite(Minecraft.getMinecraft().getTextureMapBlocks(), woodType);
 	}
 
+	@Override
 	public EnumFacing getFacing(IBlockState state) {
 		return state.getValue(FACING);
 	}

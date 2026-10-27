@@ -309,6 +309,29 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 		return addParticles(world, pos, (sprite, color) -> StorageParticles.addRunningEffects(world, pos, state, entity, sprite, color));
 	}
 
+	/** The way its front looks. */
+	public abstract EnumFacing getFacing(IBlockState state);
+
+	public VerticalFacing getVerticalFacing(IBlockState state) {
+		return VerticalFacing.fromDirection(getFacing(state));
+	}
+
+	/** Which way it's turned: for one facing up or down, what its top looks to. */
+	public EnumFacing getHorizontalDirection(IBlockState state) {
+		EnumFacing facing = getFacing(state);
+		if (facing == EnumFacing.UP) {
+			return EnumFacing.NORTH;
+		} else if (facing == EnumFacing.DOWN) {
+			return EnumFacing.SOUTH;
+		}
+		return facing;
+	}
+
+	/** The blocks next to the whole storage on that side: a double chest has two of them on its long sides. */
+	public List<BlockPos> getNeighborPos(IBlockState state, BlockPos origin, EnumFacing facing) {
+		return java.util.Collections.singletonList(origin.offset(facing));
+	}
+
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
 		TileEntity te = world.getTileEntity(pos);

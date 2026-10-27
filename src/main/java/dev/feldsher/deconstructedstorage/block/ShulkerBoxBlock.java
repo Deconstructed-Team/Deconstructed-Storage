@@ -203,6 +203,11 @@ public class ShulkerBoxBlock extends StorageBlockBase {
 	}
 
 	@Override
+	public EnumFacing getFacing(IBlockState state) {
+		return state.getValue(FACING);
+	}
+
+	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rotation) {
 		return state.withProperty(FACING, rotation.rotate(state.getValue(FACING)));
 	}

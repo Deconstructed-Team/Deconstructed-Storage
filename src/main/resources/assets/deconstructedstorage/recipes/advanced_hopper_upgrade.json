@@ -1,0 +1,41 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:advanced_hopper_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:hopper_upgrade"
+    }
+  ],
+  "type": "deconstructedcore:upgrade_next_tier",
+  "pattern": [
+    " D ",
+    "GHG",
+    "ROR"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "H": {
+      "item": "deconstructedstorage:hopper_upgrade"
+    },
+    "O": {
+      "item": "minecraft:dropper"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:advanced_hopper_upgrade"
+  }
+}

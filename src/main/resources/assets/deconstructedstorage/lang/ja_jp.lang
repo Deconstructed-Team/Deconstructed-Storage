@@ -38,8 +38,7 @@ item.deconstructedstorage.storage_output.name=ストレージ搬出装置
 block.deconstructedstorage.storage_output.tooltip=パイプなどでアイテムを取り出すことができます
 tile.deconstructedstorage.storage_output.name=ストレージ搬出装置
 item.deconstructedstorage.storage_link.name=ストレージ連結装置
-block.deconstructedstorage.storage_link.tooltip=隣接していないストレージを連結します。
-ストレージツールを使ってコントローラとリンクさせます。
+block.deconstructedstorage.storage_link.tooltip=隣接していないストレージを連結します。\nストレージツールを使ってコントローラとリンクさせます。
 tile.deconstructedstorage.storage_link.name=ストレージ連結装置
 item.deconstructedstorage.controller.name=ストレージコントローラ
 block.deconstructedstorage.controller.tooltip=ストレージを連結させ、アイテムを出し入れできるようになります。
@@ -116,33 +115,27 @@ item.deconstructedstorage.upgrade_base.name=チェストの強化素材
 item.deconstructedstorage.pickup_upgrade.name=アイテム直入れ機能
 item.deconstructedstorage.pickup_upgrade.tooltip=拾ったアイテムが直接チェストに入ります。
 item.deconstructedstorage.advanced_pickup_upgrade.name=アイテム直入れ機能・改
-item.deconstructedstorage.advanced_pickup_upgrade.tooltip=拾ったアイテムが直接チェストに入ります。
-アイテムフィルタの数が増えます。
+item.deconstructedstorage.advanced_pickup_upgrade.tooltip=拾ったアイテムが直接チェストに入ります。\nアイテムフィルタの数が増えます。
 item.deconstructedstorage.filter_upgrade.name=仕分けフィルタ機能
 item.deconstructedstorage.filter_upgrade.tooltip=出し入れするアイテムにフィルタをかけます。
 item.deconstructedstorage.advanced_filter_upgrade.name=仕分けフィルタ機能・改
-item.deconstructedstorage.advanced_filter_upgrade.tooltip=出し入れするアイテムにフィルタをかけます。
-アイテムフィルタの数が増えます。
+item.deconstructedstorage.advanced_filter_upgrade.tooltip=出し入れするアイテムにフィルタをかけます。\nアイテムフィルタの数が増えます。
 item.deconstructedstorage.magnet_upgrade.name=アイテム引き寄せ機能
 item.deconstructedstorage.magnet_upgrade.tooltip=周囲のアイテムを引き寄せてチェストに入れます。
 item.deconstructedstorage.advanced_magnet_upgrade.name=アイテム引き寄せ機能・改
-item.deconstructedstorage.advanced_magnet_upgrade.tooltip=より拾い範囲のアイテムを引き寄せてチェストに入れます。
-アイテムフィルタの数が増えます。
+item.deconstructedstorage.advanced_magnet_upgrade.tooltip=より拾い範囲のアイテムを引き寄せてチェストに入れます。\nアイテムフィルタの数が増えます。
 item.deconstructedstorage.feeding_upgrade.name=ごはん機能
 item.deconstructedstorage.feeding_upgrade.tooltip=チェスト内の食料を自動で食べます。
 item.deconstructedstorage.advanced_feeding_upgrade.name=ごはん機能・改
-item.deconstructedstorage.advanced_feeding_upgrade.tooltip=チェスト内の食料を自動で食べます。
-食事のタイミングを指定可能。
+item.deconstructedstorage.advanced_feeding_upgrade.tooltip=チェスト内の食料を自動で食べます。\n食事のタイミングを指定可能。
 item.deconstructedstorage.compacting_upgrade.name=アイテム圧縮機能
 item.deconstructedstorage.compacting_upgrade.tooltip=2x2で圧縮できるアイテムを自動で圧縮します。
 item.deconstructedstorage.advanced_compacting_upgrade.name=アイテム圧縮機能・改
-item.deconstructedstorage.advanced_compacting_upgrade.tooltip=圧縮できるアイテムを自動で圧縮します。
-3x3で圧縮するアイテムにも対応。
+item.deconstructedstorage.advanced_compacting_upgrade.tooltip=圧縮できるアイテムを自動で圧縮します。\n3x3で圧縮するアイテムにも対応。
 item.deconstructedstorage.void_upgrade.name=ごみ箱機能
 item.deconstructedstorage.void_upgrade.tooltip=フィルタで指定したアイテムを消滅させます。
 item.deconstructedstorage.advanced_void_upgrade.name=ごみ箱機能・改
-item.deconstructedstorage.advanced_void_upgrade.tooltip=指定したアイテムを消滅させます。
-指定できるアイテム数が増えます。
+item.deconstructedstorage.advanced_void_upgrade.tooltip=指定したアイテムを消滅させます。\n指定できるアイテム数が増えます。
 item.deconstructedstorage.smelting_upgrade.name=かまど機能
 item.deconstructedstorage.smelting_upgrade.tooltip=チェスト内で食料や鉱石を手動で焼けるようになります。
 item.deconstructedstorage.auto_smelting_upgrade.name=かまど機能・改
@@ -176,17 +169,13 @@ item.deconstructedstorage.pump_upgrade.tooltip=タンク機能と併用し、液
 item.deconstructedstorage.xp_pump_upgrade.name=経験値ポンプ機能
 item.deconstructedstorage.xp_pump_upgrade.tooltip=タンク機能と併用し、プレイヤの経験値を液体経験値に変換します。
 item.deconstructedstorage.advanced_pump_upgrade.name=ポンプ機能・改
-item.deconstructedstorage.advanced_pump_upgrade.tooltip=タンク機能に置いたストレージに液体を出し入れします。
-周囲の液体を回収できます。
-回収する液体を指定することができます。
+item.deconstructedstorage.advanced_pump_upgrade.tooltip=タンク機能に置いたストレージに液体を出し入れします。\n周囲の液体を回収できます。\n回収する液体を指定することができます。
 item.deconstructedstorage.compression_upgrade.name=結合分解機能
-item.deconstructedstorage.compression_upgrade.tooltip=特定のスロットに置いたアイテムを結合状態や
-分解状態で取り出すことができます。
+item.deconstructedstorage.compression_upgrade.tooltip=特定のスロットに置いたアイテムを結合状態や\n分解状態で取り出すことができます。
 item.deconstructedstorage.hopper_upgrade.name=ホッパー機能
 item.deconstructedstorage.hopper_upgrade.tooltip=ホッパーを使わずに直接アイテムを出し入れします。
 item.deconstructedstorage.advanced_hopper_upgrade.name=ホッパー機能・改
-item.deconstructedstorage.advanced_hopper_upgrade.tooltip=ホッパーを使わずに直接アイテムを高速に出し入れします。
-側面も使用でき、各面で「出す」「入れる」を設定できます。
+item.deconstructedstorage.advanced_hopper_upgrade.tooltip=ホッパーを使わずに直接アイテムを高速に出し入れします。\n側面も使用でき、各面で「出す」「入れる」を設定できます。
 item.deconstructedstorage.chipped.botanist_workbench_upgrade=Chipped: Botanist's Workbench Upgrade
 item.deconstructedstorage.chipped.botanist_workbench_upgrade.tooltip=Chipped Botanist's Workbench in an upgrade tab
 item.deconstructedstorage.chipped.glassblower_upgrade=Chipped: Glassblower Upgrade
@@ -242,7 +231,6 @@ gui.deconstructedstorage.settings.buttons.context_storage.tooltip=チェスト�
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=プレイヤ単位の設定を引き継ぐか、個別に設定したものが適用されます。
 keybind.deconstructedstorage.category=Sophisticated Storage
 keybind.deconstructedstorage.sort=並び替え
-gui.deconstructedstorage.status.too_many_item_entity_drops=その %s を壊すと%s個のアイテムをドロップするため壊せません。
-%sを使用するか、SHIFTを押しながら壊してください。
+gui.deconstructedstorage.status.too_many_item_entity_drops=その %s を壊すと%s個のアイテムをドロップするため壊せません。\n%sを使用するか、SHIFTを押しながら壊してください。
 gui.deconstructedstorage.status.too_low_tier_upgrade_count=アップグレードには%s個の %s が必要です。
 _eol=for excel flag

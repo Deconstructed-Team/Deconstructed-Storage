@@ -10,6 +10,7 @@ import dev.feldsher.deconstructedcore.upgrades.filter.FilterUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.infinity.InfinityUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.jukebox.JukeboxUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.magnet.MagnetUpgradeItem;
+import dev.feldsher.deconstructedstorage.upgrades.hopper.HopperUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.pickup.PickupUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.pump.PumpUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.stack.StackUpgradeItem;
@@ -137,6 +138,12 @@ public class ModItems {
 	public static final InfinityUpgradeItem INFINITY_UPGRADE = item(new InfinityUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig, true), "infinity_upgrade");
 	public static final InfinityUpgradeItem SURVIVAL_INFINITY_UPGRADE = item(new InfinityUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig, false), "survival_infinity_upgrade");
 
+	public static final HopperUpgradeItem HOPPER_UPGRADE = item(new HopperUpgradeItem(() -> Config.SERVER.hopperUpgrade.inputFilterSlots,
+			() -> Config.SERVER.hopperUpgrade.outputFilterSlots, () -> Config.SERVER.hopperUpgrade.transferSpeedTicks,
+			() -> Config.SERVER.hopperUpgrade.maxTransferStackSize, Config.SERVER.maxUpgradesPerStorageConfig), "hopper_upgrade");
+	public static final HopperUpgradeItem ADVANCED_HOPPER_UPGRADE = item(new HopperUpgradeItem(() -> Config.SERVER.advancedHopperUpgrade.inputFilterSlots,
+			() -> Config.SERVER.advancedHopperUpgrade.outputFilterSlots, () -> Config.SERVER.advancedHopperUpgrade.transferSpeedTicks,
+			() -> Config.SERVER.advancedHopperUpgrade.maxTransferStackSize, Config.SERVER.maxUpgradesPerStorageConfig), "advanced_hopper_upgrade");
 	public static final StackUpgradeItem STACK_UPGRADE_TIER_1 = item(new StackUpgradeItem(2, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_1");
 	public static final StackUpgradeItem STACK_UPGRADE_TIER_1_PLUS = item(new StackUpgradeItem(3, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_1_plus");
 	public static final StackUpgradeItem STACK_UPGRADE_TIER_2 = item(new StackUpgradeItem(4, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_2");
@@ -155,7 +162,7 @@ public class ModItems {
 			SMOKING_UPGRADE, AUTO_SMOKING_UPGRADE, BLASTING_UPGRADE, AUTO_BLASTING_UPGRADE, CRAFTING_UPGRADE, STONECUTTER_UPGRADE,
 			JUKEBOX_UPGRADE, ADVANCED_JUKEBOX_UPGRADE, PUMP_UPGRADE, ADVANCED_PUMP_UPGRADE, XP_PUMP_UPGRADE, INFINITY_UPGRADE, SURVIVAL_INFINITY_UPGRADE,
 			STACK_UPGRADE_TIER_1, STACK_UPGRADE_TIER_1_PLUS, STACK_UPGRADE_TIER_2, STACK_UPGRADE_TIER_3, STACK_UPGRADE_TIER_4, STACK_UPGRADE_TIER_5,
-			STACK_DOWNGRADE_TIER_1, STACK_DOWNGRADE_TIER_2, STACK_DOWNGRADE_TIER_3, STACK_UPGRADE_OMEGA_TIER));
+			STACK_DOWNGRADE_TIER_1, STACK_DOWNGRADE_TIER_2, STACK_DOWNGRADE_TIER_3, STACK_UPGRADE_OMEGA_TIER, HOPPER_UPGRADE, ADVANCED_HOPPER_UPGRADE));
 
 	public static boolean isStorageUpgrade(Item item) {
 		return STORAGE_UPGRADES.contains(item);

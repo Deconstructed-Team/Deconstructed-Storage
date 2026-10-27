@@ -11,6 +11,7 @@ import dev.feldsher.deconstructedcore.client.gui.utils.Dimension;
 import dev.feldsher.deconstructedcore.client.gui.utils.Position;
 import dev.feldsher.deconstructedcore.client.gui.utils.UV;
 import dev.feldsher.deconstructedcore.upgrades.ContentsFilterType;
+import dev.feldsher.deconstructedstorage.upgrades.IOMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,18 @@ public class StorageButtonDefinitions {
 					getButtonStateData(new UV(32, 48), Dimension.SQUARE_16, new Position(1, 1), lines("shift_click_into_storage")),
 					getButtonStateData(new UV(48, 48), Dimension.SQUARE_16, new Position(1, 1), lines("shift_click_into_inventory"))
 			));
+
+	public static final ButtonDefinition.Toggle<IOMode> IO_MODE;
+
+	static {
+		Map<IOMode, ToggleButton.StateData> ioModes = new HashMap<>();
+		ioModes.put(IOMode.PUSH, getButtonStateData(new UV(208, 48), Dimension.SQUARE_16, new Position(1, 1), lines("io_mode_push")));
+		ioModes.put(IOMode.PULL, getButtonStateData(new UV(192, 48), Dimension.SQUARE_16, new Position(1, 1), lines("io_mode_pull")));
+		ioModes.put(IOMode.PUSH_PULL, getButtonStateData(new UV(176, 48), Dimension.SQUARE_16, new Position(1, 1), lines("io_mode_push_pull")));
+		ioModes.put(IOMode.OFF, getButtonStateData(new UV(160, 48), Dimension.SQUARE_16, new Position(1, 1), lines("io_mode_off")));
+		ioModes.put(IOMode.DISABLED, getButtonStateData(new UV(224, 48), Dimension.SQUARE_16, new Position(1, 1), lines("io_mode_disabled")));
+		IO_MODE = ButtonDefinitions.createToggleButtonDefinition(ioModes);
+	}
 
 	static {
 		Map<ContentsFilterType, ToggleButton.StateData> states = new HashMap<>();

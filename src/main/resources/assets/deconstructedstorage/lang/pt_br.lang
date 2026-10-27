@@ -128,49 +128,39 @@ item.deconstructedstorage.upgrade_base.name=Base de acessório
 item.deconstructedstorage.pickup_upgrade.name=Coletor de itens
 item.deconstructedstorage.pickup_upgrade.tooltip=Coleta os itens que entram em contato com o armazenamento
 item.deconstructedstorage.advanced_pickup_upgrade.name=Coletor de itens avançado
-item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Coleta os itens que entram em contato com o armazenamento
-Possui mais opções de filtragem
+item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Coleta os itens que entram em contato com o armazenamento\nPossui mais opções de filtragem
 item.deconstructedstorage.filter_upgrade.name=Filtro de itens
 item.deconstructedstorage.filter_upgrade.tooltip=Filtra os itens que entram e saem do armazenamento
 item.deconstructedstorage.advanced_filter_upgrade.name=Filtro de itens avançado
-item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtra os itens que entram e saem do armazenamento
-Possui mais opções de filtragem
+item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtra os itens que entram e saem do armazenamento\nPossui mais opções de filtragem
 item.deconstructedstorage.magnet_upgrade.name=Imã
 item.deconstructedstorage.magnet_upgrade.tooltip=Puxa os itens no alcance para dentro do armazenamento
 item.deconstructedstorage.advanced_magnet_upgrade.name=Imã avançado
-item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Puxa os itens numa distancia maior
-Possui mais opções de filtragem
+item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Puxa os itens numa distancia maior\nPossui mais opções de filtragem
 item.deconstructedstorage.feeding_upgrade.name=Alimentador
 item.deconstructedstorage.feeding_upgrade.tooltip=Alimenta o jogador com a comida que está dentro do armazenamento
 item.deconstructedstorage.advanced_feeding_upgrade.name=Alimentador avançado
-item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Alimenta o jogador com a comida que está dentro do armazenamento
-Mais opções para quando a comida é fornecida ao jogador
+item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Alimenta o jogador com a comida que está dentro do armazenamento\nMais opções para quando a comida é fornecida ao jogador
 item.deconstructedstorage.compacting_upgrade.name=Compactador de itens
-item.deconstructedstorage.compacting_upgrade.tooltip=Compacta itens em suas variantes comprimidas
-Apenas para receitas 2x2
+item.deconstructedstorage.compacting_upgrade.tooltip=Compacta itens em suas variantes comprimidas\nApenas para receitas 2x2
 item.deconstructedstorage.advanced_compacting_upgrade.name=Compactador de itens avançado
-item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Compacta itens em suas variantes comprimidas
-Para receitas 2x2 e 3x3 e mais opções de filtragem
+item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Compacta itens em suas variantes comprimidas\nPara receitas 2x2 e 3x3 e mais opções de filtragem
 item.deconstructedstorage.void_upgrade.name=Portal do vazio
 item.deconstructedstorage.void_upgrade.tooltip=Manda os itens filtrados para o vazio
 item.deconstructedstorage.advanced_void_upgrade.name=Portal do vazio avançado
-item.deconstructedstorage.advanced_void_upgrade.tooltip=Manda os itens filtrados para o vazio
-Possui mais opções de filtragem
+item.deconstructedstorage.advanced_void_upgrade.tooltip=Manda os itens filtrados para o vazio\nPossui mais opções de filtragem
 item.deconstructedstorage.smelting_upgrade.name=Fornalha
 item.deconstructedstorage.smelting_upgrade.tooltip=Faz o cozimento de itens na aba de acessórios
 item.deconstructedstorage.auto_smelting_upgrade.name=Fornalha automática
-item.deconstructedstorage.auto_smelting_upgrade.tooltip=Faz o cozimento de itens na aba de acessórios
-Coloca/tira itens automaticamente
+item.deconstructedstorage.auto_smelting_upgrade.tooltip=Faz o cozimento de itens na aba de acessórios\nColoca/tira itens automaticamente
 item.deconstructedstorage.smoking_upgrade.name=Defumador
 item.deconstructedstorage.smoking_upgrade.tooltip=Defuma alimentos na aba de acessórios
 item.deconstructedstorage.auto_smoking_upgrade.name=Defumador automático
-item.deconstructedstorage.auto_smoking_upgrade.tooltip=Defuma alimentos na aba de acessórios
-Coloca/tira itens automaticamente
+item.deconstructedstorage.auto_smoking_upgrade.tooltip=Defuma alimentos na aba de acessórios\nColoca/tira itens automaticamente
 item.deconstructedstorage.blasting_upgrade.name=Auto-forno
 item.deconstructedstorage.blasting_upgrade.tooltip=Funde minérios e itens de metal na aba de acessórios
 item.deconstructedstorage.auto_blasting_upgrade.name=Auto-forno automático
-item.deconstructedstorage.auto_blasting_upgrade.tooltip=Funde minérios e itens de metal na aba de acessórios
-Coloca/tira itens automaticamente
+item.deconstructedstorage.auto_blasting_upgrade.tooltip=Funde minérios e itens de metal na aba de acessórios\nColoca/tira itens automaticamente
 item.deconstructedstorage.crafting_upgrade.name=Bancada de trabalho
 item.deconstructedstorage.crafting_upgrade.tooltip=Bancada de trabalho na aba de acessórios
 item.deconstructedstorage.stonecutter_upgrade.name=Cortador de pedras
@@ -190,9 +180,7 @@ item.deconstructedstorage.pump_upgrade.tooltip=Bombeia os fluidos entre o tanque
 item.deconstructedstorage.xp_pump_upgrade.name=Bomba de experiência
 item.deconstructedstorage.xp_pump_upgrade.tooltip=Bombeia experiência entre o tanque e o jogador
 item.deconstructedstorage.advanced_pump_upgrade.name=Bomba de fluidos avançada
-item.deconstructedstorage.advanced_pump_upgrade.tooltip=Bombeia os fluidos entre o tanque e os blocos adjacentes
-Funciona com armazenamento de fluidos na mão e blocos no mundo
-Permite filtrar quais fluidos serão bombeados
+item.deconstructedstorage.advanced_pump_upgrade.tooltip=Bombeia os fluidos entre o tanque e os blocos adjacentes\nFunciona com armazenamento de fluidos na mão e blocos no mundo\nPermite filtrar quais fluidos serão bombeados
 gui.deconstructedstorage.settings.tooltip=Configurações
 gui.deconstructedstorage.settings.title=Configurações
 gui.deconstructedstorage.settings.storage=Armazenamento
@@ -201,10 +189,8 @@ gui.deconstructedstorage.back_to_storage.tooltip=Voltar ao armazenamento
 gui.deconstructedstorage.upgrades.buttons.allow=Permitir
 gui.deconstructedstorage.upgrades.buttons.block=Negar
 gui.deconstructedstorage.upgrades.buttons.match_storage_contents=Igualar ao conteúdo do armazenamento
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Clique do mouse + shift envia para o
-armazenamento
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Clique do mouse + shift envia para o
-inventário do jogador
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Clique do mouse + shift envia para o\narmazenamento
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Clique do mouse + shift envia para o\ninventário do jogador
 gui.deconstructedstorage.buttons.upgrade_switch_enabled=LIG
 gui.deconstructedstorage.buttons.upgrade_switch_disabled=DES
 gui.deconstructedstorage.settings.buttons.context_storage=Armazenamento
@@ -212,5 +198,4 @@ gui.deconstructedstorage.settings.buttons.context_storage.tooltip=Configuraçõe
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=Aplica estas configurações somente a este armazenamento
 keybind.deconstructedstorage.category=Armazenamento Sofisticado
 keybind.deconstructedstorage.sort=Organizar armazenamento
-gui.deconstructedstorage.status.too_many_item_entity_drops=Não é possível quebrar %s pois isso faria com que muitas (%s) entidades de itens caissem dele.
-Considere usar %s ou quebrá-lo enquanto mantem Shift pressionado para pular esta verificação
+gui.deconstructedstorage.status.too_many_item_entity_drops=Não é possível quebrar %s pois isso faria com que muitas (%s) entidades de itens caissem dele.\nConsidere usar %s ou quebrá-lo enquanto mantem Shift pressionado para pular esta verificação

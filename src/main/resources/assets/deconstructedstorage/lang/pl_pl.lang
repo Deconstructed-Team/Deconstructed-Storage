@@ -30,15 +30,13 @@ item.deconstructedstorage.storage_io.name=Wejście/Wyjście Magazynu
 block.deconstructedstorage.storage_io.tooltip=Po umieszczeniu w wieloblokowym magazynie, umożliwia przesyłanie przedmiotów do i z niego
 tile.deconstructedstorage.storage_io.name=Wejście/Wyjście Magazynu
 item.deconstructedstorage.storage_input.name=Wejście magazynu
-block.deconstructedstorage.storage_input.tooltip=Po umieszczeniu w wieloblokowym magazynie, umożliwia przesyłanie przedmiotów do niego
-Optymalizowany pod kątem niskiego wpływu na TPS
+block.deconstructedstorage.storage_input.tooltip=Po umieszczeniu w wieloblokowym magazynie, umożliwia przesyłanie przedmiotów do niego\nOptymalizowany pod kątem niskiego wpływu na TPS
 tile.deconstructedstorage.storage_input.name=Wejście magazynu
 item.deconstructedstorage.storage_output.name=Wyjście magazynu
 block.deconstructedstorage.storage_output.tooltip=Po umieszczeniu w wieloblokowym magazynie, umożliwia wyciąganie przedmiotów z niej
 tile.deconstructedstorage.storage_output.name=Wyjście magazynu
 item.deconstructedstorage.storage_link.name=Łącze magazynowe
-block.deconstructedstorage.storage_link.tooltip=Łączy oddzielne wieloblokowe magazyny z kontrolerem
-Użyj Narzędzia Magazynowego, aby połączyć z kontrolerem
+block.deconstructedstorage.storage_link.tooltip=Łączy oddzielne wieloblokowe magazyny z kontrolerem\nUżyj Narzędzia Magazynowego, aby połączyć z kontrolerem
 tile.deconstructedstorage.storage_link.name=Łącze magazynowe
 item.deconstructedstorage.controller.name=Kontroler magazynu
 block.deconstructedstorage.controller.tooltip=Pozwala na deponowanie, przesyłanie i wyciąganie przedmiotów z połączonych wieloblokowych magazynów
@@ -115,49 +113,39 @@ item.deconstructedstorage.upgrade_base.name=Moduł ulepszenia
 item.deconstructedstorage.pickup_upgrade.name=Ulepszenie podnoszenia
 item.deconstructedstorage.pickup_upgrade.tooltip=Sprawia że magazyn podnosi przedmioty
 item.deconstructedstorage.advanced_pickup_upgrade.name=Zaawansowane ulepszenie podnoszenia
-item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Sprawia że magazyn podnosi przedmioty
-Posiada więcej opcji filtracji
+item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Sprawia że magazyn podnosi przedmioty\nPosiada więcej opcji filtracji
 item.deconstructedstorage.filter_upgrade.name=Ulepszenie filtra
 item.deconstructedstorage.filter_upgrade.tooltip=Filtruje deponowane i wyciągane przedmioty
 item.deconstructedstorage.advanced_filter_upgrade.name=Zaawansowane ulepszenie filtra
-item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtruje deponowane i wyciągane przedmioty
-Posiada więcej opcji filtracji
+item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtruje deponowane i wyciągane przedmioty\nPosiada więcej opcji filtracji
 item.deconstructedstorage.magnet_upgrade.name=Ulepszenie magnesu
 item.deconstructedstorage.magnet_upgrade.tooltip=Przyciąga przedmioty w najbliższym zasięgu
 item.deconstructedstorage.advanced_magnet_upgrade.name=Zaawansowane ulepszenie magnesu
-item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Przyciąga przedmioty w średnim zasięgu
-Posiada więcej opcji filtracji
+item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Przyciąga przedmioty w średnim zasięgu\nPosiada więcej opcji filtracji
 item.deconstructedstorage.feeding_upgrade.name=Ulepszenie karmienia
 item.deconstructedstorage.feeding_upgrade.tooltip=Karmi gracza jedzeniem z magazynu
 item.deconstructedstorage.advanced_feeding_upgrade.name=Zaawansowane ulepszenie magazynu
-item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Karmi gracza jedzeniem z magazynu
-Rozszerzone opcje podawania jedzenia graczowi
+item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Karmi gracza jedzeniem z magazynu\nRozszerzone opcje podawania jedzenia graczowi
 item.deconstructedstorage.compacting_upgrade.name=Ulepszenie kompaktujące
-item.deconstructedstorage.compacting_upgrade.tooltip=Kompaktuje przedmioty
-Tylko crafting 2x2
+item.deconstructedstorage.compacting_upgrade.tooltip=Kompaktuje przedmioty\nTylko crafting 2x2
 item.deconstructedstorage.advanced_compacting_upgrade.name=Zaawansowane ulepszenie kompaktujące
-item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Kompaktuje przedmioty
-zarówno crafting 2x2 jak i 3x3 z większą ilością opcji filtrujących
+item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Kompaktuje przedmioty\nzarówno crafting 2x2 jak i 3x3 z większą ilością opcji filtrujących
 item.deconstructedstorage.void_upgrade.name=Ulepszenie pustki
 item.deconstructedstorage.void_upgrade.tooltip=Wyrzuca wybrane w filtrze przedmioty do pustki
 item.deconstructedstorage.advanced_void_upgrade.name=Zaawansowane ulepszenie pustki
-item.deconstructedstorage.advanced_void_upgrade.tooltip=Wyrzuca wybrane w filtrze przedmioty do pustki
-Posiada więcej opcji filtracji
+item.deconstructedstorage.advanced_void_upgrade.tooltip=Wyrzuca wybrane w filtrze przedmioty do pustki\nPosiada więcej opcji filtracji
 item.deconstructedstorage.smelting_upgrade.name=Ulepszenie przetapiania
 item.deconstructedstorage.smelting_upgrade.tooltip=Przetapianie w rubryce ulepszenia
 item.deconstructedstorage.auto_smelting_upgrade.name=Ulepszenie auto-przetapiania
-item.deconstructedstorage.auto_smelting_upgrade.tooltip=Przetapianie w rubryce ulepszenia
-Automatycznie, wkłada i wyciąga przedmioty
+item.deconstructedstorage.auto_smelting_upgrade.tooltip=Przetapianie w rubryce ulepszenia\nAutomatycznie, wkłada i wyciąga przedmioty
 item.deconstructedstorage.smoking_upgrade.name=Ulepszenie wędzenia
 item.deconstructedstorage.smoking_upgrade.tooltip=Wędzi jedzenie w rubryce ulepszenia
 item.deconstructedstorage.auto_smoking_upgrade.name=Ulepszenie auto-wędzenia
-item.deconstructedstorage.auto_smoking_upgrade.tooltip=Wędzi jedzenie w rubryce ulepszenia
-Automatycznie, wkłada i wyciąga przedmioty
+item.deconstructedstorage.auto_smoking_upgrade.tooltip=Wędzi jedzenie w rubryce ulepszenia\nAutomatycznie, wkłada i wyciąga przedmioty
 item.deconstructedstorage.blasting_upgrade.name=Ulepszenie hutnicze
 item.deconstructedstorage.blasting_upgrade.tooltip=Przetapianie rud i metali w rubryce ulepszenia
 item.deconstructedstorage.auto_blasting_upgrade.name=Ulepszenie auto-hutnicze
-item.deconstructedstorage.auto_blasting_upgrade.tooltip=Przetapianie rud i metali w rubryce ulepszenia
-Automatycznie, wkłada i wyciąga przedmioty
+item.deconstructedstorage.auto_blasting_upgrade.tooltip=Przetapianie rud i metali w rubryce ulepszenia\nAutomatycznie, wkłada i wyciąga przedmioty
 item.deconstructedstorage.crafting_upgrade.name=Ulepszenie wytwarzania
 item.deconstructedstorage.crafting_upgrade.tooltip=Stół rzemieślniczy w rubryce ulepszenia
 item.deconstructedstorage.stonecutter_upgrade.name=Ulepszenie przecinarki
@@ -181,15 +169,13 @@ item.deconstructedstorage.pump_upgrade.tooltip=Pompuje płyny między ulepszenie
 item.deconstructedstorage.xp_pump_upgrade.name=Ulepszenie pompy doświadczenia
 item.deconstructedstorage.xp_pump_upgrade.tooltip=Pompowanie doświadczenia pomiędzy ulepszeniem zbiornika a graczem
 item.deconstructedstorage.advanced_pump_upgrade.name=Zaawansowane ulepszenie pompy
-item.deconstructedstorage.advanced_pump_upgrade.tooltip=Pompuje płyny między ulepszeniem zbiornika a pobliskimi blokami
-działa z pojemnikami na płyn trzymanymi w ręce i blokami płynów w świecie, Pozwala na wybranie które płyny są pompowane
+item.deconstructedstorage.advanced_pump_upgrade.tooltip=Pompuje płyny między ulepszeniem zbiornika a pobliskimi blokami\ndziała z pojemnikami na płyn trzymanymi w ręce i blokami płynów w świecie, Pozwala na wybranie które płyny są pompowane
 item.deconstructedstorage.compression_upgrade.name=Ulepszenie kompresowania
 item.deconstructedstorage.compression_upgrade.tooltip=Automatycznie kompresuje i dekompresuje przedmioty
 item.deconstructedstorage.hopper_upgrade.name=Ulepszenie leja
 item.deconstructedstorage.hopper_upgrade.tooltip=Wyciąga przedmioty z blocku powyżej i przenosi je do bloku poniżej
 item.deconstructedstorage.advanced_hopper_upgrade.name=Zaawansowane ulepszenie leja
-item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Wyciąga przedmioty z blocku powyżej i przenosi je do bloku poniżej
-Szybsze, z opcjami wejśćia i wyjścia
+item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Wyciąga przedmioty z blocku powyżej i przenosi je do bloku poniżej\nSzybsze, z opcjami wejśćia i wyjścia
 item.deconstructedstorage.chipped.botanist_workbench_upgrade=Chipped: Botanist's Workbench Upgrade
 item.deconstructedstorage.chipped.botanist_workbench_upgrade.tooltip=Chipped Botanist's Workbench in an upgrade tab
 item.deconstructedstorage.chipped.glassblower_upgrade=Chipped: Glassblower Upgrade
@@ -220,10 +206,8 @@ gui.deconstructedstorage.back_to_storage.tooltip=Wróć do magazynu
 gui.deconstructedstorage.upgrades.buttons.allow=Pozwól
 gui.deconstructedstorage.upgrades.buttons.block=Blokuj
 gui.deconstructedstorage.upgrades.buttons.match_storage_contents=Dopasuj zawartość
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift Click trafia do
-Magazyn
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift Click trafia do
-Inwentarza gracza
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift Click trafia do\nMagazyn
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift Click trafia do\nInwentarza gracza
 gui.deconstructedstorage.upgrades.buttons.io_mode_push=Deponuj
 gui.deconstructedstorage.upgrades.buttons.io_mode_pull=Wyciągaj
 gui.deconstructedstorage.upgrades.buttons.io_mode_push_pull=Deponuj i Wyciagaj
@@ -249,7 +233,6 @@ gui.deconstructedstorage.settings.buttons.context_storage.tooltip=Ustawienia teg
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=Odziedziczone od gracza lub nadpisane dla tego magazynu
 keybind.deconstructedstorage.category=Sophisticated Storage
 keybind.deconstructedstorage.sort=Sortuj
-gui.deconstructedstorage.status.too_many_item_entity_drops=Nie można zniszczyć%s, ponieważ spowodowałoby to wypadnięcie zbyt wiele (%s).
-Rozważ użycie %s lub zniszczenie tego podczas skradania się, aby to pominąć.
+gui.deconstructedstorage.status.too_many_item_entity_drops=Nie można zniszczyć%s, ponieważ spowodowałoby to wypadnięcie zbyt wiele (%s).\nRozważ użycie %s lub zniszczenie tego podczas skradania się, aby to pominąć.
 gui.deconstructedstorage.status.too_low_tier_upgrade_count=Ulepszenie wymaga %s %ss
 gui.deconstructedstorage.status.packing_tape_disabled=Konfiguracja ustawiona na upuszczanie wszystkich magazynów jako zapakowane bez konieczności użycia taśmy pakującej.

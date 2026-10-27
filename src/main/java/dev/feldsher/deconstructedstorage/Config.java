@@ -117,6 +117,11 @@ public class Config {
 		@net.minecraftforge.common.config.Config.Comment("Advanced Void Upgrade Settings")
 		public final VoidUpgradeConfig advancedVoidUpgrade = new VoidUpgradeConfig(16, 4);
 
+		@net.minecraftforge.common.config.Config.Comment("Hopper Upgrade Settings")
+		public final HopperUpgradeConfig hopperUpgrade = new HopperUpgradeConfig(2, 2, 2, 2, 8, 1);
+		@net.minecraftforge.common.config.Config.Comment("Advanced Hopper Upgrade Settings")
+		public final HopperUpgradeConfig advancedHopperUpgrade = new HopperUpgradeConfig(4, 4, 4, 4, 2, 4);
+
 		@net.minecraftforge.common.config.Config.Comment("Smelting Upgrade Settings")
 		public final CookingUpgradeConfig smeltingUpgrade = new CookingUpgradeConfig();
 		@net.minecraftforge.common.config.Config.Comment("Smoking Upgrade Settings")
@@ -239,6 +244,37 @@ public class Config {
 			filterSlots = defaultFilterSlots;
 			slotsInRow = defaultSlotsInRow;
 			magnetRange = defaultMagnetRange;
+		}
+	}
+
+	public static class HopperUpgradeConfig {
+		@net.minecraftforge.common.config.Config.Comment("Number of input filter slots")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 8)
+		public int inputFilterSlots;
+		@net.minecraftforge.common.config.Config.Comment("Number of input filter slots displayed in a row")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 4)
+		public int inputFilterSlotsInRow;
+		@net.minecraftforge.common.config.Config.Comment("Number of output filter slots")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 8)
+		public int outputFilterSlots;
+		@net.minecraftforge.common.config.Config.Comment("Number of output filter slots displayed in a row")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 4)
+		public int outputFilterSlotsInRow;
+		@net.minecraftforge.common.config.Config.Comment("Number of ticks between each transfer")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 100)
+		public int transferSpeedTicks;
+		@net.minecraftforge.common.config.Config.Comment("Maximum stack size that can be transferred in one transfer")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 64)
+		public int maxTransferStackSize;
+
+		HopperUpgradeConfig(int defaultInputFilterSlots, int defaultInputFilterSlotsInRow, int defaultOutputFilterSlots, int defaultOutputFilterSlotsInRow,
+				int defaultTransferSpeedTicks, int defaultMaxTransferStackSize) {
+			inputFilterSlots = defaultInputFilterSlots;
+			inputFilterSlotsInRow = defaultInputFilterSlotsInRow;
+			outputFilterSlots = defaultOutputFilterSlots;
+			outputFilterSlotsInRow = defaultOutputFilterSlotsInRow;
+			transferSpeedTicks = defaultTransferSpeedTicks;
+			maxTransferStackSize = defaultMaxTransferStackSize;
 		}
 	}
 

@@ -24,6 +24,8 @@ import dev.feldsher.deconstructedcore.upgrades.ContentsFilteredUpgradeContainer;
 import dev.feldsher.deconstructedcore.upgrades.filter.FilterUpgradeContainer;
 import dev.feldsher.deconstructedcore.upgrades.magnet.MagnetUpgradeContainer;
 import dev.feldsher.deconstructedcore.upgrades.magnet.MagnetUpgradeWrapper;
+import dev.feldsher.deconstructedstorage.upgrades.hopper.HopperUpgradeContainer;
+import dev.feldsher.deconstructedstorage.upgrades.hopper.HopperUpgradeWrapper;
 import dev.feldsher.deconstructedcore.upgrades.pickup.PickupUpgradeWrapper;
 import dev.feldsher.deconstructedcore.upgrades.voiding.VoidUpgradeContainer;
 import dev.feldsher.deconstructedcore.upgrades.voiding.VoidUpgradeWrapper;
@@ -57,6 +59,8 @@ public class ModUpgradeContainers {
 	public static final UpgradeContainerType<PumpUpgradeWrapper, PumpUpgradeContainer> ADVANCED_PUMP_TYPE = new UpgradeContainerType<>(PumpUpgradeContainer::new);
 	public static final UpgradeContainerType<XpPumpUpgradeWrapper, XpPumpUpgradeContainer> XP_PUMP_TYPE = new UpgradeContainerType<>(XpPumpUpgradeContainer::new);
 
+	public static final UpgradeContainerType<HopperUpgradeWrapper, HopperUpgradeContainer> HOPPER_BASIC_TYPE = new UpgradeContainerType<>(HopperUpgradeContainer::new);
+	public static final UpgradeContainerType<HopperUpgradeWrapper, HopperUpgradeContainer> HOPPER_ADVANCED_TYPE = new UpgradeContainerType<>(HopperUpgradeContainer::new);
 	public static final UpgradeContainerType<MagnetUpgradeWrapper, MagnetUpgradeContainer> MAGNET_BASIC_TYPE = new UpgradeContainerType<>(MagnetUpgradeContainer::new);
 	public static final UpgradeContainerType<MagnetUpgradeWrapper, MagnetUpgradeContainer> MAGNET_ADVANCED_TYPE = new UpgradeContainerType<>(MagnetUpgradeContainer::new);
 	public static final UpgradeContainerType<VoidUpgradeWrapper, VoidUpgradeContainer> VOID_BASIC_TYPE = new UpgradeContainerType<>(VoidUpgradeContainer::new);
@@ -84,6 +88,8 @@ public class ModUpgradeContainers {
 		register(ModItems.PUMP_UPGRADE, PUMP_TYPE);
 		register(ModItems.ADVANCED_PUMP_UPGRADE, ADVANCED_PUMP_TYPE);
 		register(ModItems.XP_PUMP_UPGRADE, XP_PUMP_TYPE);
+		register(ModItems.HOPPER_UPGRADE, HOPPER_BASIC_TYPE);
+		register(ModItems.ADVANCED_HOPPER_UPGRADE, HOPPER_ADVANCED_TYPE);
 		register(ModItems.MAGNET_UPGRADE, MAGNET_BASIC_TYPE);
 		register(ModItems.ADVANCED_MAGNET_UPGRADE, MAGNET_ADVANCED_TYPE);
 		register(ModItems.VOID_UPGRADE, VOID_BASIC_TYPE);

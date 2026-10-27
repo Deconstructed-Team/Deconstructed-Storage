@@ -1,0 +1,37 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:hopper_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:upgrade_base"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " H ",
+    "IBI",
+    "RRR"
+  ],
+  "key": {
+    "B": {
+      "item": "deconstructedstorage:upgrade_base"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:hopper_upgrade"
+  }
+}

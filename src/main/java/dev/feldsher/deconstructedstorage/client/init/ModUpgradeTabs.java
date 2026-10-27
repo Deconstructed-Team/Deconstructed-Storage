@@ -16,6 +16,7 @@ import dev.feldsher.deconstructedcore.client.gui.UpgradeGuiManager;
 import dev.feldsher.deconstructedcore.upgrades.filter.FilterUpgradeContainer;
 import dev.feldsher.deconstructedcore.upgrades.filter.FilterUpgradeTab;
 import dev.feldsher.deconstructedcore.upgrades.magnet.MagnetUpgradeTab;
+import dev.feldsher.deconstructedstorage.upgrades.hopper.HopperUpgradeTab;
 import dev.feldsher.deconstructedcore.upgrades.pickup.PickupUpgradeTab;
 import dev.feldsher.deconstructedcore.upgrades.voiding.VoidUpgradeTab;
 
@@ -56,6 +57,8 @@ public class ModUpgradeTabs {
 		UpgradeGuiManager.registerTab(ModUpgradeContainers.PUMP_TYPE, PumpUpgradeTab.Basic::new);
 		UpgradeGuiManager.registerTab(ModUpgradeContainers.ADVANCED_PUMP_TYPE, PumpUpgradeTab.Advanced::new);
 		UpgradeGuiManager.registerTab(ModUpgradeContainers.XP_PUMP_TYPE, (uc, p, s) -> new XpPumpUpgradeTab(uc, p, s, Config.SERVER.xpPumpUpgrade.mendingOn));
+		UpgradeGuiManager.registerTab(ModUpgradeContainers.HOPPER_BASIC_TYPE, HopperUpgradeTab.Basic::new);
+		UpgradeGuiManager.registerTab(ModUpgradeContainers.HOPPER_ADVANCED_TYPE, HopperUpgradeTab.Advanced::new);
 		UpgradeGuiManager.registerTab(ModUpgradeContainers.MAGNET_BASIC_TYPE, (uc, p, s) ->
 				new MagnetUpgradeTab.Basic(uc, p, s, Config.SERVER.magnetUpgrade.slotsInRow, StorageButtonDefinitions.STORAGE_CONTENTS_FILTER_TYPE));
 		UpgradeGuiManager.registerTab(ModUpgradeContainers.MAGNET_ADVANCED_TYPE, (uc, p, s) ->

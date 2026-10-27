@@ -27,6 +27,8 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import dev.feldsher.deconstructedstorage.upgrades.hopper.HopperUpgradeContainer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -80,6 +82,8 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public static void onTextureStitch(TextureStitchEvent.Pre event) {
 		BarrelParts.registerSprites(event.getMap());
+		event.getMap().registerSprite(new ResourceLocation(HopperUpgradeContainer.EMPTY_INPUT_FILTER_SLOT_BACKGROUND));
+		event.getMap().registerSprite(new ResourceLocation(HopperUpgradeContainer.EMPTY_OUTPUT_FILTER_SLOT_BACKGROUND));
 	}
 
 	/** Barrels get put together from their parts, placed by their render data, as items by their stacks. */

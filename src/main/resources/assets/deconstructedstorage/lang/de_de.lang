@@ -22,8 +22,7 @@ item.deconstructedstorage.storage_tool.overlay.toggling_upgrades_display=Upgrade
 item.deconstructedstorage.storage_tool.overlay.toggling_fill_level_display=Füllstand Anzeigen/Verstecken
 item.deconstructedstorage.debug_tool.name=Debug Tool
 item.deconstructedstorage.storage_link.name=Lagerverbindung
-block.deconstructedstorage.storage_link.tooltip=Verbindet verschiedene Lagerbereiche mit dem Lagerkern
-Benutze das Lagerwerkzeug um die Verbindung zum Kern herzustellen
+block.deconstructedstorage.storage_link.tooltip=Verbindet verschiedene Lagerbereiche mit dem Lagerkern\nBenutze das Lagerwerkzeug um die Verbindung zum Kern herzustellen
 tile.deconstructedstorage.storage_link.name=Lagerverbindung
 item.deconstructedstorage.controller.name=Lagerkern
 block.deconstructedstorage.controller.tooltip=Erlaubt das ein- und auslagern von Items für alle angebunden Lagerteile
@@ -87,49 +86,39 @@ item.deconstructedstorage.upgrade_base.name=Upgrade Basis
 item.deconstructedstorage.pickup_upgrade.name=Pickup-Upgrade
 item.deconstructedstorage.pickup_upgrade.tooltip=Legt Items im Lager ab
 item.deconstructedstorage.advanced_pickup_upgrade.name=Erweitertes Pickup-Upgrade
-item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Legt Items im Lager ab
-Hat mehr Filteroptionen
+item.deconstructedstorage.advanced_pickup_upgrade.tooltip=Legt Items im Lager ab\nHat mehr Filteroptionen
 item.deconstructedstorage.filter_upgrade.name=Filter-Upgrade
 item.deconstructedstorage.filter_upgrade.tooltip=Filtert Gegenstände, die in und/oder aus dem Lager geleitet werden
 item.deconstructedstorage.advanced_filter_upgrade.name=Erweitertes Filter-Upgrade
-item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtert Gegenstände, die in und/oder aus dem Rucksack geleitet werden
-Has more filtering options
+item.deconstructedstorage.advanced_filter_upgrade.tooltip=Filtert Gegenstände, die in und/oder aus dem Rucksack geleitet werden\nHas more filtering options
 item.deconstructedstorage.magnet_upgrade.name=Magnet-Upgrade
 item.deconstructedstorage.magnet_upgrade.tooltip=Zieht Gegenstände in Reichweite in das Lager
 item.deconstructedstorage.advanced_magnet_upgrade.name=Erweitertes Magnet-Upgrade
-item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Zieht Gegenstände in größerer Reichweite in das Lager
-Hat mehr Filteroptionen
+item.deconstructedstorage.advanced_magnet_upgrade.tooltip=Zieht Gegenstände in größerer Reichweite in das Lager\nHat mehr Filteroptionen
 item.deconstructedstorage.feeding_upgrade.name=Futter-Upgrade
 item.deconstructedstorage.feeding_upgrade.tooltip=Füttert den Spieler mit Essen aus dem Inventar des Lagers
 item.deconstructedstorage.advanced_feeding_upgrade.name=Erweitertes Futter-Upgrade
-item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Füttert den Spieler mit Essen aus dem Inventar des Lagers
-Weitere Optionen, wann der Spieler mit Essen gefüttert wird
+item.deconstructedstorage.advanced_feeding_upgrade.tooltip=Füttert den Spieler mit Essen aus dem Inventar des Lagers\nWeitere Optionen, wann der Spieler mit Essen gefüttert wird
 item.deconstructedstorage.compacting_upgrade.name=Presse-Upgrade
-item.deconstructedstorage.compacting_upgrade.tooltip=Presst Gegenstände in ihre komprimierten Varianten
-Nur 2x2 Rezepte
+item.deconstructedstorage.compacting_upgrade.tooltip=Presst Gegenstände in ihre komprimierten Varianten\nNur 2x2 Rezepte
 item.deconstructedstorage.advanced_compacting_upgrade.name=Erweitertes Presse-Upgrade
-item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Presst Gegenstände in ihre komprimierten Varianten
-Sowohl 2x2- als auch 3x3-Rezepte mit mehr Filteroptionen
+item.deconstructedstorage.advanced_compacting_upgrade.tooltip=Presst Gegenstände in ihre komprimierten Varianten\nSowohl 2x2- als auch 3x3-Rezepte mit mehr Filteroptionen
 item.deconstructedstorage.void_upgrade.name=Leere-Upgrade
 item.deconstructedstorage.void_upgrade.tooltip=Im Filter ausgewählte Gegenstände in die Leere schicken
 item.deconstructedstorage.advanced_void_upgrade.name=Erweitertes Leere-Upgrade
-item.deconstructedstorage.advanced_void_upgrade.tooltip=Im Filter ausgewählte Gegenstände in die Leere schicken
-Hat mehr Filteroptionen
+item.deconstructedstorage.advanced_void_upgrade.tooltip=Im Filter ausgewählte Gegenstände in die Leere schicken\nHat mehr Filteroptionen
 item.deconstructedstorage.smelting_upgrade.name=Ofen-Upgrade
 item.deconstructedstorage.smelting_upgrade.tooltip=Ofen in einem Upgrade-Tab
 item.deconstructedstorage.auto_smelting_upgrade.name=Auto-Ofen-Upgrade
-item.deconstructedstorage.auto_smelting_upgrade.tooltip=Ofen in einem Upgrade-Tab
-Zieht/schiebt automatisch Gegenstände
+item.deconstructedstorage.auto_smelting_upgrade.tooltip=Ofen in einem Upgrade-Tab\nZieht/schiebt automatisch Gegenstände
 item.deconstructedstorage.smoking_upgrade.name=Räucherofen-Upgrade
 item.deconstructedstorage.smoking_upgrade.tooltip=Räucherofen in einem Upgrade-Tab
 item.deconstructedstorage.auto_smoking_upgrade.name=Auto-Räucherofen-Upgrade
-item.deconstructedstorage.auto_smoking_upgrade.tooltip=Räucherofen in einem Upgrade-Tab
-Zieht/schiebt automatisch Gegenstände
+item.deconstructedstorage.auto_smoking_upgrade.tooltip=Räucherofen in einem Upgrade-Tab\nZieht/schiebt automatisch Gegenstände
 item.deconstructedstorage.blasting_upgrade.name=Schmelzofen-Upgrade
 item.deconstructedstorage.blasting_upgrade.tooltip=Schmelzofen in einem Upgrade-Tab
 item.deconstructedstorage.auto_blasting_upgrade.name=Auto-Schmelzofen-Upgrade
-item.deconstructedstorage.auto_blasting_upgrade.tooltip=Schmelzofen in einem Upgrade-Tab
-Zieht/schiebt automatisch Gegenstände
+item.deconstructedstorage.auto_blasting_upgrade.tooltip=Schmelzofen in einem Upgrade-Tab\nZieht/schiebt automatisch Gegenstände
 item.deconstructedstorage.crafting_upgrade.name=Werkbank-Upgrade
 item.deconstructedstorage.crafting_upgrade.tooltip=Werkbank in einem Upgrade-Tab
 item.deconstructedstorage.stonecutter_upgrade.name=Steinsäge-Upgrade
@@ -149,17 +138,13 @@ item.deconstructedstorage.pump_upgrade.tooltip=Pumpt Flüssigkeiten zwischen Tan
 item.deconstructedstorage.xp_pump_upgrade.name=XP-Pumpen-Upgrade
 item.deconstructedstorage.xp_pump_upgrade.tooltip=XP zwischen Tank-Upgrade und Spieler wechseln
 item.deconstructedstorage.advanced_pump_upgrade.name=Erweitertes-Pumpen-Upgrade
-item.deconstructedstorage.advanced_pump_upgrade.tooltip=Pumpt Flüssigkeiten zwischen Tank-Upgrade und angrenzenden Blöcken
-Funktioniert mit Flüssigkeitsbehältern in der Hand und Flüssigkeitsblöcken in der Welt
-Ermöglicht zu filtern, welche Flüssigkeiten gepumpt werden
+item.deconstructedstorage.advanced_pump_upgrade.tooltip=Pumpt Flüssigkeiten zwischen Tank-Upgrade und angrenzenden Blöcken\nFunktioniert mit Flüssigkeitsbehältern in der Hand und Flüssigkeitsblöcken in der Welt\nErmöglicht zu filtern, welche Flüssigkeiten gepumpt werden
 item.deconstructedstorage.compression_upgrade.name=Kompression-Upgrade
 item.deconstructedstorage.compression_upgrade.tooltip=Gegenstände automatisch komprimieren oder dekomprimieren
 item.deconstructedstorage.hopper_upgrade.name=Trichter-Upgrade
-item.deconstructedstorage.hopper_upgrade.tooltip=Zieht Gegenstände aus dem darüberliegenden Block und/oder
-legt sie im Block darunter ab
+item.deconstructedstorage.hopper_upgrade.tooltip=Zieht Gegenstände aus dem darüberliegenden Block und/oder\nlegt sie im Block darunter ab
 item.deconstructedstorage.advanced_hopper_upgrade.name=Erweitertes Trichter-Upgrade
-item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Zieht Items aus angrenzenden Blöcken und/oder legt sie dort ab
-Schneller und mit Ein- und Ausgabe Optionen
+item.deconstructedstorage.advanced_hopper_upgrade.tooltip=Zieht Items aus angrenzenden Blöcken und/oder legt sie dort ab\nSchneller und mit Ein- und Ausgabe Optionen
 item.deconstructedstorage.chipped.botanist_workbench_upgrade=Chipped: Gärtner-Werkbank-Upgrade
 item.deconstructedstorage.chipped.botanist_workbench_upgrade.tooltip=Chipped Gärtner-Werkbank in einem Upgrade-Tab
 item.deconstructedstorage.chipped.glassblower_workbench_upgrade=Chipped: Glaser-Werkbank-Upgrade
@@ -188,10 +173,8 @@ gui.deconstructedstorage.back_to_storage.tooltip=Zurück zum Lager
 gui.deconstructedstorage.upgrades.buttons.allow=Zulassen
 gui.deconstructedstorage.upgrades.buttons.block=Blockieren
 gui.deconstructedstorage.upgrades.buttons.match_storage_contents=Lagerinhalt abgleichen
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift-Klickergebnis ins
-Lager
-gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift-Klickergebnis ins
-Spieler Inventar
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_storage=Shift-Klickergebnis ins\nLager
+gui.deconstructedstorage.upgrades.buttons.shift_click_into_inventory=Shift-Klickergebnis ins\nSpieler Inventar
 gui.deconstructedstorage.upgrades.buttons.io_mode_push=Drücken
 gui.deconstructedstorage.upgrades.buttons.io_mode_pull=Ziehen
 gui.deconstructedstorage.upgrades.buttons.io_mode_push_pull=Ziehen und Drücken
@@ -217,5 +200,4 @@ gui.deconstructedstorage.settings.buttons.context_storage.tooltip=Lager-Einstell
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=Vom Spieler geerbt oder für dieses Lager überschrieben
 keybind.deconstructedstorage.category=Sophisticated Storage
 keybind.deconstructedstorage.sort=Lager sortieren
-gui.deconstructedstorage.status.too_many_item_entity_drops=%s kann nicht abgebaut werden, da sonst zuviele (%s) Gegenstände erzeugt würden.
-Benutze %s oder baue es ab während du schleichst um diese Prüfung zu umgehen.
+gui.deconstructedstorage.status.too_many_item_entity_drops=%s kann nicht abgebaut werden, da sonst zuviele (%s) Gegenstände erzeugt würden.\nBenutze %s oder baue es ab während du schleichst um diese Prüfung zu umgehen.
