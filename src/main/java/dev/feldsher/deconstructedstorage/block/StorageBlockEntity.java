@@ -118,8 +118,14 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		notifyBlockUpdate();
 	}
 
+	/** The server sends clients the change; a client, which changed its own copy, as a block it placed, draws it again. */
 	protected void notifyBlockUpdate() {
-		if (world != null && !world.isRemote) {
+		if (world == null) {
+			return;
+		}
+		if (world.isRemote) {
+			world.markBlockRangeForRenderUpdate(pos, pos);
+		} else {
 			IBlockState state = world.getBlockState(pos);
 			world.notifyBlockUpdate(pos, state, state, 3);
 		}

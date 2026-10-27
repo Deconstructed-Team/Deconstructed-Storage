@@ -91,11 +91,12 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 		}
 	}
 
+	/**
+	 * On both sides: the client places the block before the server tells it about it, and would draw it plain till
+	 * then. How it looks comes from the stack alone, and makes no contents.
+	 */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if (world.isRemote) {
-			return;
-		}
 		StorageBlockEntity be = getStorageBlockEntity(world, pos);
 		if (be != null) {
 			if (stack.hasDisplayName()) {
