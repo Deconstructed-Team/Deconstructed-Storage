@@ -1,0 +1,22 @@
+{
+    "variants": {
+        "facing=down": {
+            "model": "deconstructedstorage:shulker_box"
+        },
+        "facing=up": {
+            "model": "deconstructedstorage:shulker_box"
+        },
+        "facing=north": {
+            "model": "deconstructedstorage:shulker_box"
+        },
+        "facing=south": {
+            "model": "deconstructedstorage:shulker_box"
+        },
+        "facing=west": {
+            "model": "deconstructedstorage:shulker_box"
+        },
+        "facing=east": {
+            "model": "deconstructedstorage:shulker_box"
+        }
+    }
+}

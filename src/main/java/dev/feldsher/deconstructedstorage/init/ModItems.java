@@ -3,8 +3,10 @@ package dev.feldsher.deconstructedstorage.init;
 import dev.feldsher.deconstructedstorage.DeconstructedStorage;
 import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.ChestBlock;
+import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlock;
 import dev.feldsher.deconstructedstorage.block.WoodType;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
+import dev.feldsher.deconstructedstorage.item.ShulkerBoxItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -26,7 +28,9 @@ public class ModItems {
 	public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(DeconstructedStorage.MOD_ID) {
 		@Override
 		public ItemStack createIcon() {
-			return WoodStorageBlockItem.setWoodType(new ItemStack(ModBlocks.GOLD_BARREL), WoodType.SPRUCE);
+			List<net.minecraft.block.Block> blocks = ModBlocks.getAllBlocks();
+			// the gold barrel, or with barrels off whatever's left
+			return WoodStorageBlockItem.setWoodType(new ItemStack(blocks.contains(ModBlocks.GOLD_BARREL) || blocks.isEmpty() ? ModBlocks.GOLD_BARREL : blocks.get(0)), WoodType.SPRUCE);
 		}
 	};
 
@@ -44,6 +48,9 @@ public class ModItems {
 		}
 		for (ChestBlock chest : ModBlocks.getChests()) {
 			items.add(itemBlock(new WoodStorageBlockItem(chest)));
+		}
+		for (ShulkerBoxBlock shulkerBox : ModBlocks.getShulkerBoxes()) {
+			items.add(itemBlock(new ShulkerBoxItem(shulkerBox)));
 		}
 		items.addAll(STORAGE_UPGRADES);
 		return items;

@@ -39,6 +39,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	@Nullable
 	private List<ITickableUpgrade> tickableUpgrades = null;
 	private boolean isDroppingContents = false;
+	private boolean contentsMovedToItem = false;
 	@Nullable
 	private IBlockState removedState = null;
 
@@ -177,6 +178,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		if (world == null) {
 			return;
 		}
+		animationTick();
 		if (world.isRemote) {
 			clientTick();
 			return;
@@ -189,6 +191,11 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		for (ITickableUpgrade upgrade : tickableUpgrades) {
 			upgrade.tick(null, world, pos);
 		}
+	}
+
+	/** What moves on both sides, as a shulker box's lid, which pushes entities out of its way. */
+	protected void animationTick() {
+		//noop by default
 	}
 
 	/** What it animates, as a chest its lid. */
@@ -309,9 +316,14 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		return oldState.getBlock() != newState.getBlock();
 	}
 
+	/** Its contents went into the stack it dropped as, as a shulker box's: they're not to be dropped, nor removed. */
+	public void setContentsMovedToItem() {
+		contentsMovedToItem = true;
+	}
+
 	/** Its items, and its upgrades, onto the ground; the contents themselves then go, with nothing left to hold. */
 	public void dropContents() {
-		if (world == null || world.isRemote || !storageWrapper.getContentsUuid().isPresent()) {
+		if (world == null || world.isRemote || contentsMovedToItem || !storageWrapper.getContentsUuid().isPresent()) {
 			return;
 		}
 		isDroppingContents = true;

@@ -38,6 +38,7 @@ public class ClientEventHandler {
 		}
 		ChestItemRenderer chestItemRenderer = new ChestItemRenderer();
 		ModBlocks.getChests().forEach(chest -> Item.getItemFromBlock(chest).setTileEntityItemStackRenderer(chestItemRenderer));
+		ModBlocks.getShulkerBoxes().forEach(box -> Item.getItemFromBlock(box).setTileEntityItemStackRenderer(chestItemRenderer));
 	}
 
 	@SubscribeEvent

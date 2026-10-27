@@ -125,6 +125,14 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		save();
 	}
 
+	/** The contents a stack carried, of that size, as a shulker box's when it's placed. */
+	public void setContents(UUID contentsUuid, int numberOfInventorySlots, int numberOfUpgradeSlots) {
+		this.contentsUuid = contentsUuid;
+		this.numberOfInventorySlots = numberOfInventorySlots;
+		this.numberOfUpgradeSlots = numberOfUpgradeSlots;
+		save();
+	}
+
 	/** Its contents are gone, the block broken: the UUID goes with them, so nothing finds them again. */
 	public void removeContents() {
 		if (contentsUuid != null) {
@@ -206,7 +214,7 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		return numberOfInventorySlots;
 	}
 
-	private int getNumberOfUpgradeSlots() {
+	public int getNumberOfUpgradeSlots() {
 		if (numberOfUpgradeSlots > -1) {
 			return numberOfUpgradeSlots;
 		}

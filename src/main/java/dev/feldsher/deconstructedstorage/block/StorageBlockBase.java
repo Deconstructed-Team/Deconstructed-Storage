@@ -1,6 +1,12 @@
 package dev.feldsher.deconstructedstorage.block;
 
+import dev.feldsher.deconstructedstorage.client.render.StorageParticles;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -20,6 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.util.function.BiConsumer;
 import java.util.function.IntSupplier;
 
 /**
@@ -153,6 +160,54 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 	public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
 		StorageBlockEntity be = getStorageBlockEntity(world, pos);
 		return be == null ? 0 : ItemHandlerHelper.calcRedstoneFromInventory(be.getMainStorageWrapper().getInventoryForInputOutput());
+	}
+
+	/** What its bits look like when broken, hit or run over; null leaves them to the model's particle texture. */
+	@SideOnly(Side.CLIENT)
+	@Nullable
+	protected TextureAtlasSprite getParticleSprite(StorageBlockEntity be) {
+		return null;
+	}
+
+	/** The tint of its bits, or -1 for none. */
+	protected int getParticleColor(StorageBlockEntity be) {
+		return -1;
+	}
+
+	@SideOnly(Side.CLIENT)
+	private boolean addParticles(IBlockAccess world, BlockPos pos, BiConsumer<TextureAtlasSprite, Integer> add) {
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		TextureAtlasSprite sprite = be == null ? null : getParticleSprite(be);
+		if (sprite == null) {
+			return false;
+		}
+		add.accept(sprite, getParticleColor(be));
+		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+		IBlockState state = world.getBlockState(pos);
+		return addParticles(world, pos, (sprite, color) -> StorageParticles.addDestroyEffects(world, pos, state, sprite, color, manager));
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager manager) {
+		BlockPos pos = target.getBlockPos();
+		return addParticles(world, pos, (sprite, color) -> StorageParticles.addHitEffects(world, pos, target.sideHit, state, sprite, color, manager));
+	}
+
+	/** The server has nothing to show; the client throws bits of what the storage is made of. */
+	@Override
+	public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
+		return world.isRemote && addRunningParticles(state, world, pos, entity);
+	}
+
+	@SideOnly(Side.CLIENT)
+	private boolean addRunningParticles(IBlockState state, World world, BlockPos pos, Entity entity) {
+		return addParticles(world, pos, (sprite, color) -> StorageParticles.addRunningEffects(world, pos, state, entity, sprite, color));
 	}
 
 	@Override
