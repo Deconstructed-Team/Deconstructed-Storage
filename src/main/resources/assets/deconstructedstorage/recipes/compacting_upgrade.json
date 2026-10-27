@@ -1,0 +1,37 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:compacting_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:upgrade_base"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IPI",
+    "PBP",
+    "RPR"
+  ],
+  "key": {
+    "B": {
+      "item": "deconstructedstorage:upgrade_base"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:compacting_upgrade"
+  }
+}

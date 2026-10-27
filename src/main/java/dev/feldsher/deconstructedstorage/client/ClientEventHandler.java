@@ -46,6 +46,10 @@ public class ClientEventHandler {
 		}
 		ModelLoader.setCustomModelResourceLocation(ModItems.STORAGE_TOOL, 0, new ModelResourceLocation(Objects.requireNonNull(ModItems.STORAGE_TOOL.getRegistryName()), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ModItems.PACKING_TAPE, 0, new ModelResourceLocation(Objects.requireNonNull(ModItems.PACKING_TAPE.getRegistryName()), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ModItems.UPGRADE_BASE, 0, new ModelResourceLocation(Objects.requireNonNull(ModItems.UPGRADE_BASE.getRegistryName()), "inventory"));
+		for (Item item : ModItems.STORAGE_UPGRADES) {
+			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"));
+		}
 		for (Item item : ModItems.getTierUpgrades()) {
 			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"));
 		}

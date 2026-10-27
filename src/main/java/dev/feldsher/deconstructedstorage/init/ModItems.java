@@ -1,5 +1,22 @@
 package dev.feldsher.deconstructedstorage.init;
 
+import dev.feldsher.deconstructedcore.upgrades.compacting.CompactingUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.cooking.AutoCookingUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.cooking.CookingType;
+import dev.feldsher.deconstructedcore.upgrades.cooking.CookingUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.crafting.CraftingUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.feeding.FeedingUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.filter.FilterUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.infinity.InfinityUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.jukebox.JukeboxUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.magnet.MagnetUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.pickup.PickupUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.pump.PumpUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.stack.StackUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.stonecutter.StonecutterUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.voiding.VoidUpgradeItem;
+import dev.feldsher.deconstructedcore.upgrades.xppump.XpPumpUpgradeItem;
+import dev.feldsher.deconstructedstorage.Config;
 import dev.feldsher.deconstructedstorage.DeconstructedStorage;
 import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.ChestBlock;
@@ -76,8 +93,69 @@ public class ModItems {
 		return ret;
 	}
 
+	public static final Item UPGRADE_BASE = item(new Item(), "upgrade_base");
+
+	public static final PickupUpgradeItem PICKUP_UPGRADE = item(new PickupUpgradeItem(() -> Config.SERVER.pickupUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "pickup_upgrade");
+	public static final PickupUpgradeItem ADVANCED_PICKUP_UPGRADE = item(new PickupUpgradeItem(() -> Config.SERVER.advancedPickupUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "advanced_pickup_upgrade");
+	public static final FilterUpgradeItem FILTER_UPGRADE = item(new FilterUpgradeItem(() -> Config.SERVER.filterUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "filter_upgrade");
+	public static final FilterUpgradeItem ADVANCED_FILTER_UPGRADE = item(new FilterUpgradeItem(() -> Config.SERVER.advancedFilterUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "advanced_filter_upgrade");
+	public static final MagnetUpgradeItem MAGNET_UPGRADE = item(new MagnetUpgradeItem(() -> Config.SERVER.magnetUpgrade.magnetRange,
+			() -> Config.SERVER.magnetUpgrade.filterSlots, Config.SERVER.maxUpgradesPerStorageConfig), "magnet_upgrade");
+	public static final MagnetUpgradeItem ADVANCED_MAGNET_UPGRADE = item(new MagnetUpgradeItem(() -> Config.SERVER.advancedMagnetUpgrade.magnetRange,
+			() -> Config.SERVER.advancedMagnetUpgrade.filterSlots, Config.SERVER.maxUpgradesPerStorageConfig), "advanced_magnet_upgrade");
+	public static final FeedingUpgradeItem FEEDING_UPGRADE = item(new FeedingUpgradeItem(() -> Config.SERVER.feedingUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "feeding_upgrade");
+	public static final FeedingUpgradeItem ADVANCED_FEEDING_UPGRADE = item(new FeedingUpgradeItem(() -> Config.SERVER.advancedFeedingUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "advanced_feeding_upgrade");
+	public static final CompactingUpgradeItem COMPACTING_UPGRADE = item(new CompactingUpgradeItem(false, () -> Config.SERVER.compactingUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "compacting_upgrade");
+	public static final CompactingUpgradeItem ADVANCED_COMPACTING_UPGRADE = item(new CompactingUpgradeItem(true, () -> Config.SERVER.advancedCompactingUpgrade.filterSlots,
+			Config.SERVER.maxUpgradesPerStorageConfig), "advanced_compacting_upgrade");
+	public static final VoidUpgradeItem VOID_UPGRADE = item(new VoidUpgradeItem(() -> Config.SERVER.voidUpgrade.filterSlots,
+			() -> Config.SERVER.voidUpgrade.voidAnythingEnabled, Config.SERVER.maxUpgradesPerStorageConfig), "void_upgrade");
+	public static final VoidUpgradeItem ADVANCED_VOID_UPGRADE = item(new VoidUpgradeItem(() -> Config.SERVER.advancedVoidUpgrade.filterSlots,
+			() -> Config.SERVER.advancedVoidUpgrade.voidAnythingEnabled, Config.SERVER.maxUpgradesPerStorageConfig), "advanced_void_upgrade");
+	public static final CookingUpgradeItem SMELTING_UPGRADE = item(new CookingUpgradeItem(CookingType.SMELTING, Config.SERVER.smeltingUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "smelting_upgrade");
+	public static final AutoCookingUpgradeItem AUTO_SMELTING_UPGRADE = item(new AutoCookingUpgradeItem(CookingType.SMELTING, Config.SERVER.autoSmeltingUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "auto_smelting_upgrade");
+	public static final CookingUpgradeItem SMOKING_UPGRADE = item(new CookingUpgradeItem(CookingType.SMOKING, Config.SERVER.smokingUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "smoking_upgrade");
+	public static final AutoCookingUpgradeItem AUTO_SMOKING_UPGRADE = item(new AutoCookingUpgradeItem(CookingType.SMOKING, Config.SERVER.autoSmokingUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "auto_smoking_upgrade");
+	public static final CookingUpgradeItem BLASTING_UPGRADE = item(new CookingUpgradeItem(CookingType.BLASTING, Config.SERVER.blastingUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "blasting_upgrade");
+	public static final AutoCookingUpgradeItem AUTO_BLASTING_UPGRADE = item(new AutoCookingUpgradeItem(CookingType.BLASTING, Config.SERVER.autoBlastingUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "auto_blasting_upgrade");
+	public static final CraftingUpgradeItem CRAFTING_UPGRADE = item(new CraftingUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig), "crafting_upgrade");
+	public static final StonecutterUpgradeItem STONECUTTER_UPGRADE = item(new StonecutterUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig), "stonecutter_upgrade");
+	public static final JukeboxUpgradeItem JUKEBOX_UPGRADE = item(new JukeboxUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig, () -> 1, () -> 1), "jukebox_upgrade");
+	public static final JukeboxUpgradeItem ADVANCED_JUKEBOX_UPGRADE = item(new JukeboxUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig,
+			() -> Config.SERVER.advancedJukeboxUpgrade.numberOfSlots, () -> Config.SERVER.advancedJukeboxUpgrade.slotsInRow), "advanced_jukebox_upgrade");
+	// as 1.21's storage pumps: the basic one works with the world only, a placed storage has no hands in reach
+	public static final PumpUpgradeItem PUMP_UPGRADE = item(new PumpUpgradeItem(false, false, Config.SERVER.pumpUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "pump_upgrade");
+	public static final PumpUpgradeItem ADVANCED_PUMP_UPGRADE = item(new PumpUpgradeItem(true, true, Config.SERVER.pumpUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "advanced_pump_upgrade");
+	public static final XpPumpUpgradeItem XP_PUMP_UPGRADE = item(new XpPumpUpgradeItem(Config.SERVER.xpPumpUpgrade, Config.SERVER.maxUpgradesPerStorageConfig), "xp_pump_upgrade");
+	public static final InfinityUpgradeItem INFINITY_UPGRADE = item(new InfinityUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig, true), "infinity_upgrade");
+	public static final InfinityUpgradeItem SURVIVAL_INFINITY_UPGRADE = item(new InfinityUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig, false), "survival_infinity_upgrade");
+
+	public static final StackUpgradeItem STACK_UPGRADE_TIER_1 = item(new StackUpgradeItem(2, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_1");
+	public static final StackUpgradeItem STACK_UPGRADE_TIER_1_PLUS = item(new StackUpgradeItem(3, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_1_plus");
+	public static final StackUpgradeItem STACK_UPGRADE_TIER_2 = item(new StackUpgradeItem(4, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_2");
+	public static final StackUpgradeItem STACK_UPGRADE_TIER_3 = item(new StackUpgradeItem(8, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_3");
+	public static final StackUpgradeItem STACK_UPGRADE_TIER_4 = item(new StackUpgradeItem(16, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_4");
+	public static final StackUpgradeItem STACK_UPGRADE_TIER_5 = item(new StackUpgradeItem(32, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_tier_5");
+	public static final StackUpgradeItem STACK_DOWNGRADE_TIER_1 = item(new StackUpgradeItem(0.125, Config.SERVER.maxUpgradesPerStorageConfig), "stack_downgrade_tier_1");
+	public static final StackUpgradeItem STACK_DOWNGRADE_TIER_2 = item(new StackUpgradeItem(0.0625, Config.SERVER.maxUpgradesPerStorageConfig), "stack_downgrade_tier_2");
+	public static final StackUpgradeItem STACK_DOWNGRADE_TIER_3 = item(new StackUpgradeItem(0.03125, Config.SERVER.maxUpgradesPerStorageConfig), "stack_downgrade_tier_3");
+	public static final StackUpgradeItem STACK_UPGRADE_OMEGA_TIER = item(new StackUpgradeItem(Integer.MAX_VALUE, Config.SERVER.maxUpgradesPerStorageConfig), "stack_upgrade_omega_tier");
+
 	/** What 1.21 tags as storage upgrades: the only items a storage's upgrade slots take. */
-	public static final List<Item> STORAGE_UPGRADES = Collections.emptyList();
+	public static final List<Item> STORAGE_UPGRADES = Collections.unmodifiableList(Arrays.asList(PICKUP_UPGRADE, ADVANCED_PICKUP_UPGRADE,
+			FILTER_UPGRADE, ADVANCED_FILTER_UPGRADE, MAGNET_UPGRADE, ADVANCED_MAGNET_UPGRADE, FEEDING_UPGRADE, ADVANCED_FEEDING_UPGRADE,
+			COMPACTING_UPGRADE, ADVANCED_COMPACTING_UPGRADE, VOID_UPGRADE, ADVANCED_VOID_UPGRADE, SMELTING_UPGRADE, AUTO_SMELTING_UPGRADE,
+			SMOKING_UPGRADE, AUTO_SMOKING_UPGRADE, BLASTING_UPGRADE, AUTO_BLASTING_UPGRADE, CRAFTING_UPGRADE, STONECUTTER_UPGRADE,
+			JUKEBOX_UPGRADE, ADVANCED_JUKEBOX_UPGRADE, PUMP_UPGRADE, ADVANCED_PUMP_UPGRADE, XP_PUMP_UPGRADE, INFINITY_UPGRADE, SURVIVAL_INFINITY_UPGRADE,
+			STACK_UPGRADE_TIER_1, STACK_UPGRADE_TIER_1_PLUS, STACK_UPGRADE_TIER_2, STACK_UPGRADE_TIER_3, STACK_UPGRADE_TIER_4, STACK_UPGRADE_TIER_5,
+			STACK_DOWNGRADE_TIER_1, STACK_DOWNGRADE_TIER_2, STACK_DOWNGRADE_TIER_3, STACK_UPGRADE_OMEGA_TIER));
 
 	public static boolean isStorageUpgrade(Item item) {
 		return STORAGE_UPGRADES.contains(item);
@@ -95,6 +173,7 @@ public class ModItems {
 			items.add(itemBlock(new ShulkerBoxItem(shulkerBox)));
 		}
 		items.addAll(getTierUpgrades());
+		items.add(UPGRADE_BASE);
 		items.add(PACKING_TAPE);
 		items.add(STORAGE_TOOL);
 		items.addAll(STORAGE_UPGRADES);

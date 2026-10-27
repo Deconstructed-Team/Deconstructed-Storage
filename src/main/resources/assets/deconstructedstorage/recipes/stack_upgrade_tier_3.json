@@ -1,0 +1,34 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:stack_upgrade_tier_3"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:stack_upgrade_tier_2"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GSG",
+    "BGB"
+  ],
+  "key": {
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockGold"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "S": {
+      "item": "deconstructedstorage:stack_upgrade_tier_2"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:stack_upgrade_tier_3"
+  }
+}

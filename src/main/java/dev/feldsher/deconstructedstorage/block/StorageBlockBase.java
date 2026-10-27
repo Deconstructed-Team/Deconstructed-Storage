@@ -4,7 +4,10 @@ import dev.feldsher.deconstructedstorage.client.render.StorageParticles;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageToolItem;
+import dev.feldsher.deconstructedcore.upgrades.IPickupResponseUpgrade;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.math.AxisAlignedBB;
+import java.util.List;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -201,6 +204,50 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 			world.updateComparatorOutputLevel(pos, this);
 		}
 		super.breakBlock(world, pos, state);
+	}
+
+	/**
+	 * Items get a hair smaller box to land on, as 1.21 gives them, so that one lying on the storage is inside its
+	 * block: the pickup upgrades take it in then.
+	 */
+	@SuppressWarnings("deprecation")
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes,
+			@Nullable Entity entity, boolean isActualState) {
+		if (!(entity instanceof EntityItem)) {
+			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
+			return;
+		}
+		AxisAlignedBB box = state.getCollisionBoundingBox(world, pos);
+		if (box != null && box != NULL_AABB) {
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, box.shrink(0.05 / 16));
+		}
+	}
+
+	@Override
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (world.isRemote || !(entity instanceof EntityItem) || entity.isDead) {
+			return;
+		}
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		if (be == null || !be.getMainStorageWrapper().getContentsUuid().isPresent()) {
+			return;
+		}
+		EntityItem itemEntity = (EntityItem) entity;
+		ItemStack remaining = itemEntity.getItem().copy();
+		for (IPickupResponseUpgrade upgrade : be.getMainStorageWrapper().getUpgradeHandler().getWrappersThatImplement(IPickupResponseUpgrade.class)) {
+			remaining = upgrade.pickup(world, remaining, false);
+			if (remaining.isEmpty()) {
+				break;
+			}
+		}
+		if (remaining.getCount() < itemEntity.getItem().getCount()) {
+			if (remaining.isEmpty()) {
+				itemEntity.setDead();
+			} else {
+				itemEntity.setItem(remaining);
+			}
+		}
 	}
 
 	@Override

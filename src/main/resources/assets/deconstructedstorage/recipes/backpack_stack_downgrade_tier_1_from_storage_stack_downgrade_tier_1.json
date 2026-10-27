@@ -1,0 +1,42 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "deconstructedbackpacks"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "sophisticatedbackpacks:stack_downgrade_tier_1"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedbackpacks:stack_downgrade_tier_1"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:stack_downgrade_tier_1"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TUT",
+    " L ",
+    "T T"
+  ],
+  "key": {
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "leather"
+    },
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    },
+    "U": {
+      "item": "deconstructedstorage:stack_downgrade_tier_1"
+    }
+  },
+  "result": {
+    "item": "deconstructedbackpacks:stack_downgrade_tier_1"
+  }
+}

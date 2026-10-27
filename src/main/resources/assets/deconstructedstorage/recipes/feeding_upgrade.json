@@ -1,0 +1,40 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:feeding_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:upgrade_base"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "ABM",
+    " E "
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:golden_apple",
+      "data": 0
+    },
+    "B": {
+      "item": "deconstructedstorage:upgrade_base"
+    },
+    "C": {
+      "item": "minecraft:golden_carrot"
+    },
+    "E": {
+      "type": "forge:ore_dict",
+      "ore": "enderpearl"
+    },
+    "M": {
+      "item": "minecraft:speckled_melon"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:feeding_upgrade"
+  }
+}

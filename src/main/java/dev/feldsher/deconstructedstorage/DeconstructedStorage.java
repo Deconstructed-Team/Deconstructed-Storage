@@ -3,6 +3,7 @@ package dev.feldsher.deconstructedstorage;
 import dev.feldsher.deconstructedcore.compat.bogosorter.BogoSorterCompat;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
 import dev.feldsher.deconstructedstorage.crafting.OreDependentRecipes;
+import dev.feldsher.deconstructedstorage.init.ModUpgradeContainers;
 import dev.feldsher.deconstructedstorage.common.gui.StorageContainerMenu;
 import dev.feldsher.deconstructedstorage.network.PacketHandler;
 import net.minecraft.util.ResourceLocation;
@@ -37,6 +38,7 @@ public class DeconstructedStorage {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+		ModUpgradeContainers.register();
 		BogoSorterCompat.registerStorageContainers(StorageContainerMenu.class);
 		proxy.init();
 	}

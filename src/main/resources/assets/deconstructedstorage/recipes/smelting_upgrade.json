@@ -1,0 +1,37 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:smelting_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:upgrade_base"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RIR",
+    "IBI",
+    "RFR"
+  ],
+  "key": {
+    "B": {
+      "item": "deconstructedstorage:upgrade_base"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:smelting_upgrade"
+  }
+}

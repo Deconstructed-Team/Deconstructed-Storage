@@ -1,0 +1,35 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "deconstructedbackpacks"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:stack_upgrade_tier_5"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedbackpacks:stack_upgrade_tier_4"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PSP",
+    " P ",
+    "P P"
+  ],
+  "key": {
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "S": {
+      "item": "deconstructedbackpacks:stack_upgrade_tier_4"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:stack_upgrade_tier_5",
+    "count": 3
+  }
+}

@@ -8,6 +8,7 @@ import dev.feldsher.deconstructedstorage.client.render.BarrelRenderer;
 import dev.feldsher.deconstructedstorage.client.render.ChestRenderer;
 import dev.feldsher.deconstructedstorage.client.render.ShulkerBoxRenderer;
 import dev.feldsher.deconstructedstorage.client.gui.StorageScreen;
+import dev.feldsher.deconstructedstorage.client.init.ModUpgradeTabs;
 import dev.feldsher.deconstructedstorage.client.gui.StorageSettingsScreen;
 import dev.feldsher.deconstructedstorage.common.gui.StorageContainerMenu;
 import dev.feldsher.deconstructedstorage.common.gui.StorageSettingsContainerMenu;
@@ -20,6 +21,11 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(BarrelBlockEntity.class, new BarrelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ChestBlockEntity.class, new ChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ShulkerBoxBlockEntity.class, new ShulkerBoxRenderer());
+	}
+
+	@Override
+	public void init() {
+		ModUpgradeTabs.register();
 	}
 
 	@Override

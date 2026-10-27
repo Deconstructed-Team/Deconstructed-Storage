@@ -1,0 +1,34 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "deconstructedbackpacks"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:crafting_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedbackpacks:crafting_upgrade"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PUP",
+    " P ",
+    "P P"
+  ],
+  "key": {
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "U": {
+      "item": "deconstructedbackpacks:crafting_upgrade"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:crafting_upgrade"
+  }
+}

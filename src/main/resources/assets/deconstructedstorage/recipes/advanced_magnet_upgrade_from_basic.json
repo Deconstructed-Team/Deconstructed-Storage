@@ -1,0 +1,38 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:advanced_magnet_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:magnet_upgrade"
+    }
+  ],
+  "type": "deconstructedcore:upgrade_next_tier",
+  "pattern": [
+    " D ",
+    "GMG",
+    "RRR"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "M": {
+      "item": "deconstructedstorage:magnet_upgrade"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:advanced_magnet_upgrade"
+  }
+}

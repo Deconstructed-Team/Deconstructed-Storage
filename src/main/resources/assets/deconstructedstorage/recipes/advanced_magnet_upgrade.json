@@ -1,0 +1,42 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:advanced_magnet_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:advanced_pickup_upgrade"
+    }
+  ],
+  "type": "deconstructedcore:upgrade_next_tier",
+  "pattern": [
+    "EIE",
+    "IPI",
+    "R L"
+  ],
+  "key": {
+    "E": {
+      "type": "forge:ore_dict",
+      "ore": "enderpearl"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "gemLapis"
+    },
+    "P": {
+      "item": "deconstructedstorage:advanced_pickup_upgrade"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:advanced_magnet_upgrade"
+  }
+}

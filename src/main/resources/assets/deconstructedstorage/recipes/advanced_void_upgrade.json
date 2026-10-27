@@ -1,0 +1,38 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:advanced_void_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:void_upgrade"
+    }
+  ],
+  "type": "deconstructedcore:upgrade_next_tier",
+  "pattern": [
+    " D ",
+    "GVG",
+    "RRR"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "V": {
+      "item": "deconstructedstorage:void_upgrade"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:advanced_void_upgrade"
+  }
+}

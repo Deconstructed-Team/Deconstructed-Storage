@@ -1,0 +1,38 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:advanced_compacting_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:compacting_upgrade"
+    }
+  ],
+  "type": "deconstructedcore:upgrade_next_tier",
+  "pattern": [
+    " D ",
+    "GCG",
+    "RRR"
+  ],
+  "key": {
+    "C": {
+      "item": "deconstructedstorage:compacting_upgrade"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:advanced_compacting_upgrade"
+  }
+}
