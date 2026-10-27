@@ -3,6 +3,7 @@ package dev.feldsher.deconstructedstorage.block;
 import dev.feldsher.deconstructedstorage.client.render.StorageParticles;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
+import dev.feldsher.deconstructedstorage.item.StorageToolItem;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -113,6 +114,9 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 				be.setCustomName(stack.getDisplayName());
 			}
 			setPlacedData(stack, be);
+			if (placer != null && placer.getHeldItemOffhand().getItem() instanceof StorageToolItem) {
+				StorageToolItem.useOffHandOnPlaced(placer.getHeldItemOffhand(), be);
+			}
 		}
 	}
 

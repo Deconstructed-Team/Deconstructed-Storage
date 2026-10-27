@@ -11,6 +11,7 @@ import dev.feldsher.deconstructedstorage.item.ChestBlockItem;
 import dev.feldsher.deconstructedstorage.item.PackingTapeItem;
 import dev.feldsher.deconstructedstorage.item.ShulkerBoxItem;
 import dev.feldsher.deconstructedstorage.item.StorageTierUpgradeItem;
+import dev.feldsher.deconstructedstorage.item.StorageToolItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -57,6 +58,7 @@ public class ModItems {
 	public static final StorageTierUpgradeItem DIAMOND_TO_NETHERITE_TIER_UPGRADE = item(new StorageTierUpgradeItem(StorageTier.DIAMOND, StorageTier.NETHERITE), "diamond_to_netherite_tier_upgrade");
 
 	public static final PackingTapeItem PACKING_TAPE = item(new PackingTapeItem(), "packing_tape");
+	public static final StorageToolItem STORAGE_TOOL = item(new StorageToolItem(), "storage_tool");
 
 	private static final List<StorageTierUpgradeItem> TIER_UPGRADES = Arrays.asList(BASIC_TIER_UPGRADE, BASIC_TO_COPPER_TIER_UPGRADE, BASIC_TO_IRON_TIER_UPGRADE,
 			BASIC_TO_GOLD_TIER_UPGRADE, BASIC_TO_DIAMOND_TIER_UPGRADE, BASIC_TO_NETHERITE_TIER_UPGRADE, COPPER_TO_IRON_TIER_UPGRADE, COPPER_TO_GOLD_TIER_UPGRADE,
@@ -94,6 +96,7 @@ public class ModItems {
 		}
 		items.addAll(getTierUpgrades());
 		items.add(PACKING_TAPE);
+		items.add(STORAGE_TOOL);
 		items.addAll(STORAGE_UPGRADES);
 		return items;
 	}

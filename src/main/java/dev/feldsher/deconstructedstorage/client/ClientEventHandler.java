@@ -10,6 +10,13 @@ import dev.feldsher.deconstructedstorage.client.render.ChestItemRenderer;
 import dev.feldsher.deconstructedstorage.init.ModBlocks;
 import dev.feldsher.deconstructedstorage.init.ModItems;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
+import dev.feldsher.deconstructedstorage.item.StorageToolItem;
+import dev.feldsher.deconstructedstorage.network.PacketHandler;
+import dev.feldsher.deconstructedstorage.network.ScrolledToolMessage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -37,6 +44,7 @@ public class ClientEventHandler {
 		for (Block block : ModBlocks.getAllBlocks()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Objects.requireNonNull(block.getRegistryName()), "inventory"));
 		}
+		ModelLoader.setCustomModelResourceLocation(ModItems.STORAGE_TOOL, 0, new ModelResourceLocation(Objects.requireNonNull(ModItems.STORAGE_TOOL.getRegistryName()), "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ModItems.PACKING_TAPE, 0, new ModelResourceLocation(Objects.requireNonNull(ModItems.PACKING_TAPE.getRegistryName()), "inventory"));
 		for (Item item : ModItems.getTierUpgrades()) {
 			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"));
@@ -44,6 +52,25 @@ public class ClientEventHandler {
 		ChestItemRenderer chestItemRenderer = new ChestItemRenderer();
 		ModBlocks.getChests().forEach(chest -> Item.getItemFromBlock(chest).setTileEntityItemStackRenderer(chestItemRenderer));
 		ModBlocks.getShulkerBoxes().forEach(box -> Item.getItemFromBlock(box).setTileEntityItemStackRenderer(chestItemRenderer));
+	}
+
+	/** Sneak and scroll with the storage tool in hand changes its mode, here at once and on the server, and says the new one. */
+	@SubscribeEvent
+	public static void onMouseScroll(MouseEvent event) {
+		Minecraft minecraft = Minecraft.getMinecraft();
+		EntityPlayerSP player = minecraft.player;
+		if (event.getDwheel() == 0 || player == null || !player.isSneaking() || minecraft.currentScreen != null) {
+			return;
+		}
+		ItemStack stack = player.getHeldItemMainhand();
+		if (!(stack.getItem() instanceof StorageToolItem)) {
+			return;
+		}
+		boolean next = event.getDwheel() < 0;
+		StorageToolItem.cycleMode(stack, next);
+		PacketHandler.INSTANCE.sendToServer(new ScrolledToolMessage(next));
+		minecraft.ingameGUI.setOverlayMessage(StorageToolItem.getOverlayMessage(stack), false);
+		event.setCanceled(true);
 	}
 
 	@SubscribeEvent
