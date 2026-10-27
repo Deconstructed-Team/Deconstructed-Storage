@@ -204,17 +204,16 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 		GlStateManager.color(1, 1, 1, 1);
 	}
 
-	/** The lid a hair bigger while it's open, as 1.21 draws it, so that it doesn't flicker into the bottom. */
+	/**
+	 * The lid a hair bigger than the bottom, always: closed, the two overlap a pixel high, their faces in one plane, and
+	 * the tier's corner plates of one would flicker through the other's.
+	 */
 	private static void renderBottomAndLid(Parts parts) {
-		if (parts.lid.rotateAngleX != 0) {
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(-0.0005F, -0.001F, -0.0005F);
-			GlStateManager.scale(1.001F, 1.001F, 1.001F);
-			parts.lid.render(1 / 16F);
-			GlStateManager.popMatrix();
-		} else {
-			parts.lid.render(1 / 16F);
-		}
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(-0.0005F, -0.001F, -0.0005F);
+		GlStateManager.scale(1.001F, 1.001F, 1.001F);
+		parts.lid.render(1 / 16F);
+		GlStateManager.popMatrix();
 		parts.bottom.render(1 / 16F);
 	}
 
