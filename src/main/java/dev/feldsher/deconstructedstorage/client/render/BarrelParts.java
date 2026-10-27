@@ -36,6 +36,10 @@ public final class BarrelParts {
 	private static final ResourceLocation BASE = DeconstructedStorage.getRL("block/barrel_part/base");
 	private static final ResourceLocation TINTABLE_MAIN = DeconstructedStorage.getRL("block/barrel_part/tintable_main");
 	private static final ResourceLocation TINTABLE_ACCENT = DeconstructedStorage.getRL("block/barrel_part/tintable_accent");
+	// a flat top is a plain cube: no rim around the lid
+	private static final ResourceLocation FLAT_BASE = new ResourceLocation("block/cube_bottom_top");
+	private static final ResourceLocation FLAT_TINTABLE_MAIN = DeconstructedStorage.getRL("block/barrel_part/flat_tintable_main");
+	private static final ResourceLocation FLAT_TINTABLE_ACCENT = DeconstructedStorage.getRL("block/barrel_part/flat_tintable_accent");
 	/** The tints of the tinted parts, as 1.21's model files have them: the main color and the accent. */
 	public static final int MAIN_TINT = 1000;
 	public static final int ACCENT_TINT = 1001;
@@ -91,31 +95,36 @@ public final class BarrelParts {
 		map.registerSprite(new ResourceLocation(BLOCK + "barrel_metal_bands"));
 	}
 
-	public static List<BakedQuad> getWoodQuads(WoodType woodType, boolean open, EnumFacing facing, @Nullable EnumFacing side) {
+	public static List<BakedQuad> getWoodQuads(WoodType woodType, boolean open, boolean flatTop, EnumFacing facing, @Nullable EnumFacing side) {
 		String prefix = BLOCK + woodType.getName() + "_barrel_";
 		String top = prefix + (open ? "top_open" : "top");
-		return getQuads("wood_" + woodType.getName() + (open ? "_open" : ""), BASE, () -> ImmutableMap.<String, String>builder()
+		return getQuads(flatPrefix(flatTop) + "wood_" + woodType.getName() + (open ? "_open" : ""), flatTop ? FLAT_BASE : BASE, () -> ImmutableMap.<String, String>builder()
 				.put("top", top).put("top_trim", top).put("top_inner_trim", top)
 				.put("side", prefix + "side").put("side_trim", prefix + "side")
 				.put("bottom", prefix + "bottom").put("bottom_trim", prefix + "bottom")
 				.put("particle", prefix + "top").build(), facing, side);
 	}
 
-	public static List<BakedQuad> getTierQuads(Block barrel, EnumFacing facing, @Nullable EnumFacing side) {
+	public static List<BakedQuad> getTierQuads(Block barrel, boolean flatTop, EnumFacing facing, @Nullable EnumFacing side) {
 		String tier = getTierName(barrel);
 		String prefix = BLOCK + tier + "_barrel_";
-		return getQuads("tier_" + tier, BASE, () -> ImmutableMap.of("top", prefix + "top", "top_trim", prefix + "top",
+		return getQuads(flatPrefix(flatTop) + "tier_" + tier, flatTop ? FLAT_BASE : BASE, () -> ImmutableMap.of("top", prefix + "top", "top_trim", prefix + "top",
 				"side", prefix + "side", "bottom", prefix + "bottom"), facing, side);
 	}
 
-	public static List<BakedQuad> getTintableMainQuads(boolean open, EnumFacing facing, @Nullable EnumFacing side) {
-		return open ? getQuads("tintable_main_open", TINTABLE_MAIN, () -> ImmutableMap.of("top", BLOCK + "barrel_top_tintable_main_open",
+	public static List<BakedQuad> getTintableMainQuads(boolean open, boolean flatTop, EnumFacing facing, @Nullable EnumFacing side) {
+		ResourceLocation model = flatTop ? FLAT_TINTABLE_MAIN : TINTABLE_MAIN;
+		return open ? getQuads(flatPrefix(flatTop) + "tintable_main_open", model, () -> ImmutableMap.of("top", BLOCK + "barrel_top_tintable_main_open",
 				"particle", BLOCK + "barrel_top_tintable_main_open"), facing, side)
-				: getQuads("tintable_main", TINTABLE_MAIN, ImmutableMap::of, facing, side);
+				: getQuads(flatPrefix(flatTop) + "tintable_main", model, ImmutableMap::of, facing, side);
 	}
 
-	public static List<BakedQuad> getTintableAccentQuads(EnumFacing facing, @Nullable EnumFacing side) {
-		return getQuads("tintable_accent", TINTABLE_ACCENT, ImmutableMap::of, facing, side);
+	public static List<BakedQuad> getTintableAccentQuads(boolean flatTop, EnumFacing facing, @Nullable EnumFacing side) {
+		return getQuads(flatPrefix(flatTop) + "tintable_accent", flatTop ? FLAT_TINTABLE_ACCENT : TINTABLE_ACCENT, ImmutableMap::of, facing, side);
+	}
+
+	private static String flatPrefix(boolean flatTop) {
+		return flatTop ? "flat_" : "";
 	}
 
 	/** The wood's sprite that particles take, as 1.21's barrels do theirs: the top. */

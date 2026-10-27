@@ -49,17 +49,17 @@ public class ClientEventHandler {
 		for (BarrelBlock barrel : ModBlocks.getBarrels()) {
 			for (EnumFacing facing : EnumFacing.values()) {
 				for (boolean flatTop : new boolean[] {false, true}) {
-					wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "facing=" + facing.getName() + ",flat_top=" + flatTop), barrel, facing);
+					wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "facing=" + facing.getName() + ",flat_top=" + flatTop), barrel, facing, flatTop);
 				}
 			}
-			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, EnumFacing.UP);
+			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, EnumFacing.UP, false);
 		}
 	}
 
-	private static void wrap(ModelBakeEvent event, ModelResourceLocation location, Block barrel, EnumFacing facing) {
+	private static void wrap(ModelBakeEvent event, ModelResourceLocation location, Block barrel, EnumFacing facing, boolean flatTop) {
 		IBakedModel model = event.getModelRegistry().getObject(location);
 		if (model != null && !(model instanceof BarrelBakedModel)) {
-			event.getModelRegistry().putObject(location, new BarrelBakedModel(model, barrel, facing));
+			event.getModelRegistry().putObject(location, new BarrelBakedModel(model, barrel, facing, flatTop));
 		}
 	}
 

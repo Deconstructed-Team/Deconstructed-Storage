@@ -3,6 +3,7 @@ package dev.feldsher.deconstructedstorage.client.render;
 import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.BarrelRenderData;
 import dev.feldsher.deconstructedstorage.block.WoodType;
+import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
 import net.minecraft.block.Block;
@@ -29,18 +30,20 @@ import java.util.Map;
 /**
  * A barrel facing one way, put together from {@link BarrelParts} by its render data: its wood, closed or open, unless
  * it's tinted all over; the tinted core and trim for the colors it has; and the tier's metal over all. As an item, the
- * same from what its stack says, facing up.
+ * same from what its stack says, facing up. A flat top is a plain cube, with no rim around the lid.
  */
 public class BarrelBakedModel implements IBakedModel {
 	private final IBakedModel baseModel;
 	private final Block barrel;
 	private final EnumFacing facing;
+	private final boolean flatTop;
 	private final ItemOverrideList overrides;
 
-	public BarrelBakedModel(IBakedModel baseModel, Block barrel, EnumFacing facing) {
+	public BarrelBakedModel(IBakedModel baseModel, Block barrel, EnumFacing facing, boolean flatTop) {
 		this.baseModel = baseModel;
 		this.barrel = barrel;
 		this.facing = facing;
+		this.flatTop = flatTop;
 		overrides = new StackOverrides();
 	}
 
@@ -54,15 +57,15 @@ public class BarrelBakedModel implements IBakedModel {
 		List<BakedQuad> ret = new ArrayList<>();
 		WoodType woodType = data.getWoodType();
 		if (!(data.hasMainColor() && data.hasAccentColor())) {
-			ret.addAll(BarrelParts.getWoodQuads(woodType == null ? WoodType.DEFAULT : woodType, data.isOpen(), facing, side));
+			ret.addAll(BarrelParts.getWoodQuads(woodType == null ? WoodType.DEFAULT : woodType, data.isOpen(), flatTop, facing, side));
 		}
 		if (data.hasAccentColor()) {
-			ret.addAll(BarrelParts.getTintableAccentQuads(facing, side));
+			ret.addAll(BarrelParts.getTintableAccentQuads(flatTop, facing, side));
 		}
 		if (data.hasMainColor()) {
-			ret.addAll(BarrelParts.getTintableMainQuads(data.isOpen(), facing, side));
+			ret.addAll(BarrelParts.getTintableMainQuads(data.isOpen(), flatTop, facing, side));
 		}
-		ret.addAll(BarrelParts.getTierQuads(barrel, facing, side));
+		ret.addAll(BarrelParts.getTierQuads(barrel, flatTop, facing, side));
 		return ret;
 	}
 
@@ -100,6 +103,7 @@ public class BarrelBakedModel implements IBakedModel {
 	/** A stack's barrel, as it would be placed; models kept by what they show, the few a game has. */
 	private class StackOverrides extends ItemOverrideList {
 		private final Map<BarrelRenderData, IBakedModel> models = new HashMap<>();
+		private final Map<BarrelRenderData, IBakedModel> flatTopModels = new HashMap<>();
 
 		StackOverrides() {
 			super(Collections.emptyList());
@@ -111,7 +115,8 @@ public class BarrelBakedModel implements IBakedModel {
 			boolean hasAccentColor = StorageBlockItem.getAccentColor(stack).isPresent();
 			WoodType woodType = WoodStorageBlockItem.getWoodType(stack).orElse(hasMainColor && hasAccentColor ? null : WoodType.DEFAULT);
 			BarrelRenderData data = new BarrelRenderData(woodType, hasMainColor, hasAccentColor, false);
-			return models.computeIfAbsent(data, d -> new BarrelBakedModel(baseModel, barrel, facing) {
+			Map<BarrelRenderData, IBakedModel> models = BarrelBlockItem.isFlatTop(stack) ? flatTopModels : this.models;
+			return models.computeIfAbsent(data, d -> new BarrelBakedModel(baseModel, barrel, facing, BarrelBlockItem.isFlatTop(stack)) {
 				@Override
 				public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
 					return getQuads(d, side);

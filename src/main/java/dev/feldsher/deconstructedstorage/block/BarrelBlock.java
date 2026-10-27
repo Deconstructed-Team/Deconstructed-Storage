@@ -1,6 +1,15 @@
 package dev.feldsher.deconstructedstorage.block;
 
+import dev.feldsher.deconstructedstorage.client.render.StorageParticles;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
+import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,6 +28,7 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
+import javax.annotation.Nullable;
 import java.util.function.IntSupplier;
 
 /**
@@ -103,6 +113,58 @@ public class BarrelBlock extends WoodStorageBlockBase {
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	/** The basic tier also comes with a flat top, in acacia, as in 1.21. */
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		super.getSubBlocks(tab, items);
+		if (isBasicTier()) {
+			ItemStack flatBarrel = WoodStorageBlockItem.setWoodType(new ItemStack(this), WoodType.ACACIA);
+			BarrelBlockItem.setFlatTop(flatBarrel, true);
+			items.add(flatBarrel);
+		}
+	}
+
+	@Nullable
+	private static BarrelRenderData getRenderData(IBlockAccess world, BlockPos pos) {
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		return be instanceof WoodStorageBlockEntity ? BarrelRenderData.of((WoodStorageBlockEntity) be) : null;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+		BarrelRenderData data = getRenderData(world, pos);
+		if (data == null) {
+			return false;
+		}
+		StorageParticles.addDestroyEffects(world, pos, world.getBlockState(pos), data, getStorageBlockEntity(world, pos).getStorageWrapper(), manager);
+		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager manager) {
+		BarrelRenderData data = getRenderData(world, target.getBlockPos());
+		if (data == null) {
+			return false;
+		}
+		StorageParticles.addHitEffects(world, target.getBlockPos(), target.sideHit, state, data, getStorageBlockEntity(world, target.getBlockPos()).getStorageWrapper(), manager);
+		return true;
+	}
+
+	/** The server has nothing to show; the client throws bits of the barrel's own wood. */
+	@Override
+	public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
+		if (world.isRemote) {
+			BarrelRenderData data = getRenderData(world, pos);
+			if (data == null) {
+				return false;
+			}
+			StorageParticles.addRunningEffects(world, pos, state, entity, data, getStorageBlockEntity(world, pos).getStorageWrapper());
+		}
+		return true;
 	}
 
 	public EnumFacing getFacing(IBlockState state) {
