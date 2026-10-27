@@ -7,11 +7,11 @@ import java.util.Objects;
 
 /**
  * What a barrel's model is made of, besides its facing: its wood, or none when it's tinted all over, which colors it
- * has, whether it's open, and whether it's packed. Equal data makes the same quads, which the model keeps.
+ * has, whether it's open or packed, and whether it shows its tier and its lock. Equal data makes the same quads, which the model keeps.
  */
 public final class BarrelRenderData {
 	/** A barrel with no block entity to say, as one an item shows: acacia, closed. */
-	public static final BarrelRenderData DEFAULT = new BarrelRenderData(WoodType.DEFAULT, false, false, false, false);
+	public static final BarrelRenderData DEFAULT = new BarrelRenderData(WoodType.DEFAULT, false, false, false, false, true, false);
 
 	@Nullable
 	private final WoodType woodType;
@@ -19,18 +19,24 @@ public final class BarrelRenderData {
 	private final boolean hasAccentColor;
 	private final boolean open;
 	private final boolean packed;
+	private final boolean showsTier;
+	private final boolean showsLock;
 
-	public BarrelRenderData(@Nullable WoodType woodType, boolean hasMainColor, boolean hasAccentColor, boolean open, boolean packed) {
+	public BarrelRenderData(@Nullable WoodType woodType, boolean hasMainColor, boolean hasAccentColor, boolean open, boolean packed, boolean showsTier,
+			boolean showsLock) {
 		this.woodType = woodType;
 		this.hasMainColor = hasMainColor;
 		this.hasAccentColor = hasAccentColor;
 		this.open = open;
 		this.packed = packed;
+		this.showsTier = showsTier;
+		this.showsLock = showsLock;
 	}
 
 	public static BarrelRenderData of(WoodStorageBlockEntity be) {
 		StorageWrapper wrapper = be.getStorageWrapper();
-		return new BarrelRenderData(be.getWoodType().orElse(null), wrapper.hasMainColor(), wrapper.hasAccentColor(), be.isOpen(), be.isPacked());
+		return new BarrelRenderData(be.getWoodType().orElse(null), wrapper.hasMainColor(), wrapper.hasAccentColor(), be.isOpen(), be.isPacked(),
+				be.shouldShowTier(), be.isLocked() && be.shouldShowLock());
 	}
 
 	@Nullable
@@ -54,6 +60,15 @@ public final class BarrelRenderData {
 		return packed;
 	}
 
+	public boolean showsTier() {
+		return showsTier;
+	}
+
+	/** Locked, with its lock shown. */
+	public boolean showsLock() {
+		return showsLock;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -63,12 +78,13 @@ public final class BarrelRenderData {
 			return false;
 		}
 		BarrelRenderData that = (BarrelRenderData) o;
-		return hasMainColor == that.hasMainColor && hasAccentColor == that.hasAccentColor && open == that.open && packed == that.packed && woodType == that.woodType;
+		return hasMainColor == that.hasMainColor && hasAccentColor == that.hasAccentColor && open == that.open && packed == that.packed && showsTier == that.showsTier
+				&& showsLock == that.showsLock && woodType == that.woodType;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(woodType, hasMainColor, hasAccentColor, open, packed);
+		return Objects.hash(woodType, hasMainColor, hasAccentColor, open, packed, showsTier, showsLock);
 	}
 
 	static class Property implements IUnlistedProperty<BarrelRenderData> {

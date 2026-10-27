@@ -1,5 +1,7 @@
 package dev.feldsher.deconstructedstorage.block;
 
+import dev.feldsher.deconstructedcore.settings.memory.MemorySettingsCategory;
+import dev.feldsher.deconstructedcore.storage.StorageContents;
 import dev.feldsher.deconstructedcore.upgrades.ITickableUpgrade;
 import dev.feldsher.deconstructedcore.util.InventoryHelper;
 import net.minecraft.block.Block;
@@ -41,6 +43,17 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	private boolean isDroppingContents = false;
 	private boolean contentsMovedToItem = false;
 	private boolean beingUpgraded = false;
+	private boolean locked = false;
+	private boolean showLock = true;
+	private boolean showTier = true;
+	private boolean showUpgrades = false;
+	private boolean renderInfoDirty = true;
+	// kept here: the contents hold it weakly, so that it goes with this block entity
+	private final Runnable slotChangeListener = () -> renderInfoDirty = true;
+	@Nullable
+	private StorageContents listenedContents = null;
+	@Nullable
+	private LockedItemHandler lockedItemHandler = null;
 	@Nullable
 	private IBlockState removedState = null;
 
@@ -184,6 +197,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 			clientTick();
 			return;
 		}
+		refreshRenderInfoIfChanged();
 		if (!canTickUpgrades()) {
 			return;
 		}
@@ -194,6 +208,26 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		}
 		for (ITickableUpgrade upgrade : tickableUpgrades) {
 			upgrade.tick(null, world, pos);
+		}
+	}
+
+	/**
+	 * What clients draw it with follows its items: told of each slot change by the contents, it builds that anew the
+	 * tick after. Open, its container refreshes it every tick as settings change too.
+	 */
+	private void refreshRenderInfoIfChanged() {
+		if (!storageWrapper.getContentsUuid().isPresent() || getMainBlockEntity() != this) {
+			return;
+		}
+		StorageContents contents = storageWrapper.getContents();
+		if (listenedContents != contents) {
+			contents.addSlotChangeListener(this, slotChangeListener);
+			listenedContents = contents;
+			renderInfoDirty = true;
+		}
+		if (renderInfoDirty) {
+			renderInfoDirty = false;
+			storageWrapper.refreshRenderInfo();
 		}
 	}
 
@@ -289,10 +323,95 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		if (displayName != null) {
 			tag.setString(DISPLAY_NAME_TAG, displayName);
 		}
+		if (locked) {
+			tag.setBoolean("locked", true);
+		}
+		if (!showLock) {
+			tag.setBoolean("showLock", false);
+		}
+		if (!showTier) {
+			tag.setBoolean("showTier", false);
+		}
+		if (showUpgrades) {
+			tag.setBoolean("showUpgrades", true);
+		}
 	}
 
 	protected void loadSynchronizedData(NBTTagCompound tag) {
 		displayName = tag.hasKey(DISPLAY_NAME_TAG) ? tag.getString(DISPLAY_NAME_TAG) : null;
+		locked = tag.getBoolean("locked");
+		showLock = !tag.hasKey("showLock") || tag.getBoolean("showLock");
+		showTier = !tag.hasKey("showTier") || tag.getBoolean("showTier");
+		showUpgrades = tag.getBoolean("showUpgrades");
+	}
+
+	/**
+	 * These toggles are the main block's, of a double chest the main half's: a second half passes them on, and is
+	 * drawn by them.
+	 *
+	 * Locked, a storage takes from pipes and the like only what it already holds, or what its memorized slots are set
+	 * for: no new kind of item gets in by itself. Players put in anything still.
+	 */
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void toggleLock() {
+		StorageBlockEntity main = getMainBlockEntity();
+		if (main != this) {
+			main.toggleLock();
+			return;
+		}
+		locked = !locked;
+		lockedItemHandler = null;
+		onToggled();
+	}
+
+	public boolean shouldShowLock() {
+		return showLock;
+	}
+
+	public void toggleLockVisibility() {
+		StorageBlockEntity main = getMainBlockEntity();
+		if (main != this) {
+			main.toggleLockVisibility();
+			return;
+		}
+		showLock = !showLock;
+		onToggled();
+	}
+
+	public boolean shouldShowTier() {
+		return showTier;
+	}
+
+	public void toggleTierVisibility() {
+		StorageBlockEntity main = getMainBlockEntity();
+		if (main != this) {
+			main.toggleTierVisibility();
+			return;
+		}
+		showTier = !showTier;
+		onToggled();
+	}
+
+	public boolean shouldShowUpgrades() {
+		return showUpgrades;
+	}
+
+	public void toggleUpgradesVisibility() {
+		StorageBlockEntity main = getMainBlockEntity();
+		if (main != this) {
+			main.toggleUpgradesVisibility();
+			return;
+		}
+		showUpgrades = !showUpgrades;
+		onToggled();
+	}
+
+	private void onToggled() {
+		markDirty();
+		notifyBlockUpdate();
 	}
 
 	/** What clients get of it: all but where the contents' handlers are, which the contents bring. */
@@ -371,7 +490,16 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getMainStorageWrapper().getInventoryForInputOutput());
+			StorageBlockEntity main = getMainBlockEntity();
+			if (main.isLocked()) {
+				if (main.lockedItemHandler == null) {
+					StorageWrapper mainWrapper = main.getStorageWrapper();
+					main.lockedItemHandler = new LockedItemHandler(mainWrapper::getInventoryForInputOutput, mainWrapper::getInventoryHandler,
+							() -> mainWrapper.getSettingsHandler().getTypeCategory(MemorySettingsCategory.class));
+				}
+				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(main.lockedItemHandler);
+			}
+			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(main.getStorageWrapper().getInventoryForInputOutput());
 		}
 		return super.getCapability(capability, facing);
 	}

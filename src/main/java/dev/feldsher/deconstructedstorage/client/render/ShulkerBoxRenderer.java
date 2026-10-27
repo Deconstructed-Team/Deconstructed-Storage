@@ -1,5 +1,6 @@
 package dev.feldsher.deconstructedstorage.client.render;
 
+import dev.feldsher.deconstructedcore.renderdata.RenderInfo;
 import dev.feldsher.deconstructedstorage.DeconstructedStorage;
 import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlock;
 import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlockEntity;
@@ -33,12 +34,42 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 			return;
 		}
 		StorageWrapper wrapper = box.getStorageWrapper();
-		render(state.getBlock(), state.getValue(ShulkerBoxBlock.FACING), wrapper.hasMainColor() ? wrapper.getMainColor() : -1,
-				wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, box.getProgress(partialTicks), x, y, z, destroyStage);
+		EnumFacing facing = state.getValue(ShulkerBoxBlock.FACING);
+		float progress = box.getProgress(partialTicks);
+		render(state.getBlock(), facing, wrapper.hasMainColor() ? wrapper.getMainColor() : -1,
+				wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, box.shouldShowTier(), progress, x, y, z, destroyStage);
+		if (destroyStage < 0) {
+			renderFront(box, facing, progress, x, y, z);
+		}
+	}
+
+	/** The display item and the lock, on the lid, as 1.21 puts them: they rise and turn with it. */
+	private void renderFront(ShulkerBoxBlockEntity box, EnumFacing facing, float progress, double x, double y, double z) {
+		RenderInfo renderInfo = box.getStorageWrapper().getRenderInfo();
+		boolean showsLock = box.isLocked() && box.shouldShowLock();
+		if (renderInfo.getItemDisplayRenderInfo().getDisplayItems().isEmpty() && !showsLock) {
+			return;
+		}
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+		StorageFrontRenderer.rotateToFront(facing);
+		StorageFrontRenderer.setFrontLight(box.getWorld(), box.getPos(), facing);
+		float zOffset = 0;
+		if (progress > 0) {
+			zOffset = progress * 0.5F;
+			GlStateManager.rotate(270.0F * progress, 0, 0, 1);
+		}
+		GlStateManager.translate(-0.5, -0.5, -0.5 - zOffset);
+		StorageFrontRenderer.renderDisplayItems(renderInfo, 0.5, 1);
+		if (showsLock) {
+			StorageFrontRenderer.renderLock(15 / 16F);
+		}
+		GlStateManager.popMatrix();
 	}
 
 	/** A shulker box of the block's tier with those colors, -1 for none, at x y z, its lid open by progress, from 0 to 1. */
-	public void render(Block shulkerBoxBlock, EnumFacing facing, int mainColor, int accentColor, float progress, double x, double y, double z, int destroyStage) {
+	public void render(Block shulkerBoxBlock, EnumFacing facing, int mainColor, int accentColor, boolean showsTier, float progress, double x, double y, double z,
+			int destroyStage) {
 		GlStateManager.enableDepth();
 		GlStateManager.depthFunc(GL11.GL_LEQUAL);
 		GlStateManager.depthMask(true);
@@ -74,8 +105,10 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 			if (accentColor != -1) {
 				renderTinted(progress, "tintable_accent", accentColor);
 			}
-			bindTexture(getTexture(getTierName(shulkerBoxBlock) + "_tier"));
-			renderModel(progress);
+			if (showsTier) {
+				bindTexture(getTexture(getTierName(shulkerBoxBlock) + "_tier"));
+				renderModel(progress);
+			}
 		}
 
 		GlStateManager.enableCull();

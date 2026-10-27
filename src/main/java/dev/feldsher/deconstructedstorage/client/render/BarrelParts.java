@@ -35,6 +35,7 @@ public final class BarrelParts {
 	private static final String BLOCK = DeconstructedStorage.MOD_ID + ":block/";
 	private static final ResourceLocation BASE = DeconstructedStorage.getRL("block/barrel_part/base");
 	private static final ResourceLocation TINTABLE_MAIN = DeconstructedStorage.getRL("block/barrel_part/tintable_main");
+	private static final ResourceLocation LOCKED = DeconstructedStorage.getRL("block/barrel_part/locked");
 	private static final ResourceLocation TINTABLE_ACCENT = DeconstructedStorage.getRL("block/barrel_part/tintable_accent");
 	// a flat top is a plain cube: no rim around the lid
 	private static final ResourceLocation FLAT_BASE = new ResourceLocation("block/cube_bottom_top");
@@ -95,6 +96,7 @@ public final class BarrelParts {
 		for (String part : new String[] {"top", "side", "bottom"}) {
 			map.registerSprite(new ResourceLocation(BLOCK + "barrel_" + part + "_packed"));
 		}
+		map.registerSprite(new ResourceLocation(BLOCK + "lock"));
 		map.registerSprite(new ResourceLocation(BLOCK + "barrel_metal_bands"));
 	}
 
@@ -113,6 +115,11 @@ public final class BarrelParts {
 		String prefix = BLOCK + tier + "_barrel_";
 		return getQuads(flatPrefix(flatTop) + "tier_" + tier, flatTop ? FLAT_BASE : BASE, () -> ImmutableMap.of("top", prefix + "top", "top_trim", prefix + "top",
 				"side", prefix + "side", "bottom", prefix + "bottom"), facing, side);
+	}
+
+	/** The lock on its top edge, as a locked barrel shows. */
+	public static List<BakedQuad> getLockQuads(EnumFacing facing, @Nullable EnumFacing side) {
+		return getQuads("locked", LOCKED, ImmutableMap::of, facing, side);
 	}
 
 	/** Tape around it, as a packed barrel has. */

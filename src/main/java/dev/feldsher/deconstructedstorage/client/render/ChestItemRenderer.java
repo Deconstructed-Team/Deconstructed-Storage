@@ -24,7 +24,7 @@ public class ChestItemRenderer extends TileEntityItemStackRenderer {
 		if (block instanceof ShulkerBoxBlock) {
 			TileEntitySpecialRenderer<ShulkerBoxBlockEntity> shulkerRenderer = TileEntityRendererDispatcher.instance.getRenderer(ShulkerBoxBlockEntity.class);
 			if (shulkerRenderer instanceof ShulkerBoxRenderer) {
-				((ShulkerBoxRenderer) shulkerRenderer).render(block, EnumFacing.UP, mainColor, accentColor, 0, 0, 0, 0, -1);
+				((ShulkerBoxRenderer) shulkerRenderer).render(block, EnumFacing.UP, mainColor, accentColor, true, 0, 0, 0, 0, -1);
 			}
 			return;
 		}
@@ -33,7 +33,7 @@ public class ChestItemRenderer extends TileEntityItemStackRenderer {
 			return;
 		}
 		WoodType woodType = WoodStorageBlockItem.getWoodType(stack).orElse(mainColor != -1 && accentColor != -1 ? null : WoodType.DEFAULT);
-		((ChestRenderer) renderer).render(block, ChestType.SINGLE, EnumFacing.SOUTH, woodType, mainColor, accentColor, StorageBlockItem.getContentsUuid(stack).isPresent(), 0,
+		((ChestRenderer) renderer).render(block, ChestType.SINGLE, EnumFacing.SOUTH, woodType, mainColor, accentColor, StorageBlockItem.getContentsUuid(stack).isPresent(), true, 0,
 				0, 0, 0, -1);
 	}
 }

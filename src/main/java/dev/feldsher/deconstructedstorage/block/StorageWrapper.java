@@ -3,7 +3,9 @@ package dev.feldsher.deconstructedstorage.block;
 import dev.feldsher.deconstructedcore.api.IStorageWrapper;
 import dev.feldsher.deconstructedcore.common.gui.SortBy;
 import dev.feldsher.deconstructedcore.inventory.InventoryHandler;
+import dev.feldsher.deconstructedcore.renderdata.RenderInfo;
 import dev.feldsher.deconstructedcore.settings.SettingsHandler;
+import dev.feldsher.deconstructedcore.settings.itemdisplay.ItemDisplaySettingsCategory;
 import dev.feldsher.deconstructedcore.settings.memory.MemorySettingsCategory;
 import dev.feldsher.deconstructedcore.settings.nosort.NoSortSettingsCategory;
 import dev.feldsher.deconstructedcore.storage.StorageContents;
@@ -56,6 +58,9 @@ public abstract class StorageWrapper implements IStorageWrapper {
 	private int numberOfUpgradeSlots = -1;
 	private int mainColor = -1;
 	private int accentColor = -1;
+	// what clients draw it with, as its items on display: built on the server, sent with the block
+	private NBTTagCompound renderInfoTag = new NBTTagCompound();
+	private RenderInfo renderInfo = RenderInfo.EMPTY;
 
 	protected StorageWrapper(Runnable saveHandler) {
 		this.saveHandler = saveHandler;
@@ -84,6 +89,9 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		if (accentColor != -1) {
 			tag.setInteger(ACCENT_COLOR_TAG, accentColor);
 		}
+		if (!renderInfoTag.isEmpty()) {
+			tag.setTag(RenderInfo.RENDER_INFO_TAG, renderInfoTag);
+		}
 		return tag;
 	}
 
@@ -96,6 +104,31 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		numberOfUpgradeSlots = tag.hasKey(NUMBER_OF_UPGRADE_SLOTS_TAG) ? tag.getInteger(NUMBER_OF_UPGRADE_SLOTS_TAG) : -1;
 		mainColor = tag.hasKey(MAIN_COLOR_TAG) ? tag.getInteger(MAIN_COLOR_TAG) : -1;
 		accentColor = tag.hasKey(ACCENT_COLOR_TAG) ? tag.getInteger(ACCENT_COLOR_TAG) : -1;
+		NBTTagCompound newRenderInfoTag = tag.getCompoundTag(RenderInfo.RENDER_INFO_TAG);
+		if (!newRenderInfoTag.equals(renderInfoTag)) {
+			renderInfoTag = newRenderInfoTag;
+			renderInfo = renderInfoTag.isEmpty() ? RenderInfo.EMPTY : RenderInfo.deserialize(renderInfoTag);
+		}
+	}
+
+	@Override
+	public RenderInfo getRenderInfo() {
+		return renderInfo;
+	}
+
+	/** Built anew from the contents and settings; saved, and so sent to clients, only when it changed. */
+	@Override
+	public void refreshRenderInfo() {
+		if (contentsUuid == null) {
+			return;
+		}
+		ItemDisplaySettingsCategory itemDisplay = getSettingsHandler().getTypeCategory(ItemDisplaySettingsCategory.class);
+		NBTTagCompound newRenderInfoTag = getUpgradeHandler().buildRenderInfo(itemDisplay.buildItemDisplayRenderInfo()).serialize();
+		if (!newRenderInfoTag.equals(renderInfoTag)) {
+			renderInfoTag = newRenderInfoTag;
+			renderInfo = renderInfoTag.isEmpty() ? RenderInfo.EMPTY : RenderInfo.deserialize(renderInfoTag);
+			save();
+		}
 	}
 
 	protected void save() {

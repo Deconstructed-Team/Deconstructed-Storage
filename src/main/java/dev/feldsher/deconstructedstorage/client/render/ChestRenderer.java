@@ -4,6 +4,9 @@ import dev.feldsher.deconstructedstorage.DeconstructedStorage;
 import dev.feldsher.deconstructedstorage.block.ChestBlock;
 import dev.feldsher.deconstructedstorage.block.ChestBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ChestType;
+import dev.feldsher.deconstructedcore.renderdata.DisplaySide;
+import dev.feldsher.deconstructedcore.renderdata.RenderInfo;
+import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageWrapper;
 import dev.feldsher.deconstructedstorage.block.WoodType;
 import net.minecraft.block.Block;
@@ -21,6 +24,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Draws chests as 1.21's chest renderer does: the wood, or the tinted core and trim in its place, then the tier's metal
@@ -78,13 +82,69 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 		float lidAngle = chest.getOpenness(partialTicks);
 		lidAngle = 1.0F - lidAngle;
 		lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
+		StorageBlockEntity main = chest.getMainBlockEntity();
 		render(state.getBlock(), state.getValue(ChestBlock.TYPE), state.getValue(ChestBlock.FACING), chest.getWoodType().orElse(null),
-				wrapper.hasMainColor() ? wrapper.getMainColor() : -1, wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, chest.isPacked(), lidAngle, x, y, z, destroyStage);
+				wrapper.hasMainColor() ? wrapper.getMainColor() : -1, wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, chest.isPacked(), main.shouldShowTier(),
+				lidAngle, x, y, z, destroyStage);
+		if (destroyStage < 0 && !chest.isPacked() && main == chest) {
+			renderFront(chest, state, lidAngle, x, y, z);
+		}
+	}
+
+	/**
+	 * The main half's lock and display item, on its front, or a double chest's middle, as 1.21's chest renderer puts
+	 * them; the lock goes up with the lid.
+	 */
+	private void renderFront(ChestBlockEntity chest, IBlockState state, float lidAngle, double x, double y, double z) {
+		ChestType chestType = state.getValue(ChestBlock.TYPE);
+		EnumFacing facing = state.getValue(ChestBlock.FACING);
+		RenderInfo renderInfo = chest.getStorageWrapper().getRenderInfo();
+		Optional<RenderInfo.DisplayItem> displayItem = renderInfo.getItemDisplayRenderInfo().getDisplayItem();
+		boolean showsLock = chest.isLocked() && chest.shouldShowLock();
+		if (!displayItem.isPresent() && !showsLock) {
+			return;
+		}
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+		GlStateManager.rotate(-facing.getHorizontalAngle(), 0, 1, 0);
+		GlStateManager.rotate(180, 0, 1, 0);
+		StorageFrontRenderer.setFrontLight(chest.getWorld(), chest.getPos(), facing);
+		if (showsLock) {
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(-0.5, -0.5, -(0.5 - 1 / 16D));
+			if (lidAngle > 0) {
+				GlStateManager.translate(0, 9 / 16D, 14 / 16D);
+				GlStateManager.rotate(lidAngle * 90, 1, 0, 0);
+				GlStateManager.translate(0, -9 / 16D, -14 / 16D);
+			}
+			GlStateManager.translate(chestType == ChestType.LEFT ? 0.5 : chestType == ChestType.RIGHT ? -0.5 : 0, 0, 0);
+			StorageFrontRenderer.renderLock(13 / 16F);
+			GlStateManager.popMatrix();
+		}
+		displayItem.ifPresent(item -> {
+			DisplaySide displaySide = item.getDisplaySide();
+			if (displaySide == DisplaySide.LEFT) {
+				GlStateManager.rotate(-90, 0, 1, 0);
+				if (chestType == ChestType.LEFT) {
+					GlStateManager.translate(0, 0, -1);
+				}
+			} else if (displaySide == DisplaySide.RIGHT) {
+				GlStateManager.rotate(90, 0, 1, 0);
+				if (chestType == ChestType.RIGHT) {
+					GlStateManager.translate(0, 0, -1);
+				}
+			} else if (chestType != ChestType.SINGLE) {
+				GlStateManager.translate(chestType == ChestType.RIGHT ? -0.5 : 0.5, 0, 0);
+			}
+			GlStateManager.translate(-0.5, -0.5, -(0.5 - 1 / 16D));
+			StorageFrontRenderer.renderDisplayItems(renderInfo, 0.5 * (14.01 / 16), 1);
+		});
+		GlStateManager.popMatrix();
 	}
 
 	/** A chest of the block's tier with that look, at x y z, its lid open by lidAngle, from 0 to 1. */
 	public void render(Block chestBlock, ChestType chestType, EnumFacing facing, @Nullable WoodType woodType, int mainColor, int accentColor, boolean packed,
-			float lidAngle, double x, double y, double z, int destroyStage) {
+			boolean showsTier, float lidAngle, double x, double y, double z, int destroyStage) {
 		Parts parts = PARTS.get(chestType);
 		parts.setLidAngle(lidAngle);
 		GlStateManager.pushMatrix();
@@ -117,7 +177,9 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 				renderTinted(parts, chestType, "tintable_accent", accentColor);
 			}
 			bindTexture(getTexture(chestType, getTierName(chestBlock) + "_tier"));
-			renderBottomAndLid(parts);
+			if (showsTier) {
+				renderBottomAndLid(parts);
+			}
 			parts.lock.render(1 / 16F);
 			if (packed) {
 				// the tape a hair bigger than the chest, around it
