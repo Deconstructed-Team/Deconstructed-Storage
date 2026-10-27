@@ -92,6 +92,9 @@ public final class BarrelParts {
 		}
 		map.registerSprite(new ResourceLocation(BLOCK + "barrel_top_tintable_main_open"));
 		map.registerSprite(new ResourceLocation(BLOCK + "barrel_handle"));
+		for (String part : new String[] {"top", "side", "bottom"}) {
+			map.registerSprite(new ResourceLocation(BLOCK + "barrel_" + part + "_packed"));
+		}
 		map.registerSprite(new ResourceLocation(BLOCK + "barrel_metal_bands"));
 	}
 
@@ -110,6 +113,12 @@ public final class BarrelParts {
 		String prefix = BLOCK + tier + "_barrel_";
 		return getQuads(flatPrefix(flatTop) + "tier_" + tier, flatTop ? FLAT_BASE : BASE, () -> ImmutableMap.of("top", prefix + "top", "top_trim", prefix + "top",
 				"side", prefix + "side", "bottom", prefix + "bottom"), facing, side);
+	}
+
+	/** Tape around it, as a packed barrel has. */
+	public static List<BakedQuad> getPackedQuads(boolean flatTop, EnumFacing facing, @Nullable EnumFacing side) {
+		return getQuads(flatPrefix(flatTop) + "packed", flatTop ? FLAT_BASE : BASE, () -> ImmutableMap.of("top", BLOCK + "barrel_top_packed",
+				"top_trim", BLOCK + "barrel_top_packed", "side", BLOCK + "barrel_side_packed", "bottom", BLOCK + "barrel_bottom_packed"), facing, side);
 	}
 
 	public static List<BakedQuad> getTintableMainQuads(boolean open, boolean flatTop, EnumFacing facing, @Nullable EnumFacing side) {

@@ -2,6 +2,8 @@ package dev.feldsher.deconstructedstorage.block;
 
 import dev.feldsher.deconstructedstorage.client.render.StorageParticles;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
+import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -114,7 +116,41 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 		}
 	}
 
+	/** The contents a stack carries become the storage's, at the size the stack says. */
 	protected void setPlacedData(ItemStack stack, StorageBlockEntity be) {
+		if (be.getWorld() != null && !be.getWorld().isRemote) {
+			StorageBlockItem.getContentsUuid(stack).ifPresent(uuid -> be.getStorageWrapper().setContents(uuid,
+					StorageBlockItem.getNumberOfInventorySlots(stack, getNumberOfInventorySlots()), StorageBlockItem.getNumberOfUpgradeSlots(stack, getNumberOfUpgradeSlots())));
+		}
+	}
+
+	/**
+	 * Whether it goes as a stack that carries what it holds, as a shulker box always does and a packed storage: its
+	 * contents stay, by UUID, and the stack takes them along. Else its items drop, and its contents go.
+	 */
+	protected boolean dropsWithContents(StorageBlockEntity be) {
+		return false;
+	}
+
+	/** The stack with the contents of the storage this block is part of; they're then the stack's, not the block's to drop. */
+	protected ItemStack getDropWithContents(IBlockAccess world, BlockPos pos, IBlockState state) {
+		ItemStack stack = getStorageStack(world, pos, state);
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		if (be != null && dropsWithContents(be)) {
+			StorageBlockEntity main = be.getMainBlockEntity();
+			StorageWrapper wrapper = main.getStorageWrapper();
+			wrapper.getContentsUuid().ifPresent(uuid -> {
+				StorageBlockItem.setContents(stack, uuid, wrapper.getInventoryHandler().getSlots(), wrapper.getUpgradeHandler().getSlots());
+				addContentsDropData(stack, be);
+				main.setContentsMovedToItem();
+				be.setContentsMovedToItem();
+			});
+		}
+		return stack;
+	}
+
+	/** What else a stack with contents says, as that it's both halves of a double chest. */
+	protected void addContentsDropData(ItemStack stack, StorageBlockEntity be) {
 		//noop by default
 	}
 
@@ -125,7 +161,19 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		drops.add(getStorageStack(world, pos, state));
+		drops.add(getDropWithContents(world, pos, state));
+	}
+
+	/** Creative breaking drops nothing: one that goes with what it holds drops itself all the same, not to lose it. */
+	@Override
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		if (!world.isRemote && player.isCreative() && be != null && dropsWithContents(be)) {
+			EntityItem entity = new EntityItem(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getDropWithContents(world, pos, state));
+			entity.setDefaultPickupDelay();
+			world.spawnEntity(entity);
+		}
+		super.onBlockHarvested(world, pos, state, player);
 	}
 
 	@Override

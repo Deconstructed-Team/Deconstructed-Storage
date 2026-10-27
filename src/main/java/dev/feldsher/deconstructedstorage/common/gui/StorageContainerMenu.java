@@ -3,6 +3,7 @@ package dev.feldsher.deconstructedstorage.common.gui;
 import dev.feldsher.deconstructedcore.common.gui.StorageContainerMenuBase;
 import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageWrapper;
+import dev.feldsher.deconstructedstorage.block.WoodStorageBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,7 +36,8 @@ public class StorageContainerMenu extends StorageContainerMenuBase<StorageWrappe
 	public boolean canInteractWith(EntityPlayer player) {
 		BlockPos pos = storageBlockEntity.getPos();
 		TileEntity te = player.world.getTileEntity(pos);
-		return te == storageBlockEntity && !te.isInvalid() && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
+		return te == storageBlockEntity && !te.isInvalid() && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D
+				&& !(te instanceof WoodStorageBlockEntity && ((WoodStorageBlockEntity) te).isPacked());
 	}
 
 	@Override

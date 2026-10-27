@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
@@ -37,9 +36,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.function.IntSupplier;
 
 /**
- * A shulker box, facing the way it was placed on. Broken, it drops itself with what it holds, which stays its contents,
- * by UUID; in creative too, as vanilla's does. Gone any other way, as by a command, it spills its items instead of
- * leaving them to no stack.
+ * A shulker box, facing the way it was placed on. Broken, it drops itself with what it holds, in creative too, as
+ * vanilla's does.
  */
 public class ShulkerBoxBlock extends StorageBlockBase {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
@@ -160,51 +158,25 @@ public class ShulkerBoxBlock extends StorageBlockBase {
 		}
 	}
 
-	private ItemStack getDropWithContents(IBlockAccess world, BlockPos pos, IBlockState state) {
-		ItemStack stack = getStorageStack(world, pos, state);
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof ShulkerBoxBlockEntity) {
-			ShulkerBoxBlockEntity be = (ShulkerBoxBlockEntity) te;
-			StorageWrapper wrapper = be.getStorageWrapper();
-			wrapper.getContentsUuid().ifPresent(uuid -> {
-				ShulkerBoxItem.setContents(stack, uuid, wrapper.getInventoryHandler().getSlots(), wrapper.getUpgradeHandler().getSlots());
-				be.setContentsMovedToItem();
-			});
-		}
-		return stack;
-	}
-
 	/** As vanilla's, it drops broken by anything, not only by a pickaxe, as its stone would want. */
 	@Override
 	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
 		return true;
 	}
 
+	/** It always goes as a stack with what it holds, as vanilla's does. */
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		drops.add(getDropWithContents(world, pos, state));
+	protected boolean dropsWithContents(StorageBlockEntity be) {
+		return true;
 	}
 
-	/** Creative breaking drops nothing: the box drops itself, with what it holds, all the same. */
-	@Override
-	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-		if (!world.isRemote && player.isCreative()) {
-			EntityItem entity = new EntityItem(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getDropWithContents(world, pos, state));
-			entity.setDefaultPickupDelay();
-			world.spawnEntity(entity);
-		}
-		super.onBlockHarvested(world, pos, state, player);
-	}
-
-	/** The contents a stack carries become the box's, at the size the stack says. */
+	/** Its colors, and the items of a vanilla box crafted into it. */
 	@Override
 	protected void setPlacedData(ItemStack stack, StorageBlockEntity be) {
 		super.setPlacedData(stack, be);
 		StorageWrapper wrapper = be.getStorageWrapper();
 		wrapper.setColors(StorageBlockItem.getMainColor(stack).orElse(-1), StorageBlockItem.getAccentColor(stack).orElse(-1));
 		if (be.getWorld() != null && !be.getWorld().isRemote) {
-			ShulkerBoxItem.getContentsUuid(stack).ifPresent(uuid -> wrapper.setContents(uuid,
-					ShulkerBoxItem.getNumberOfInventorySlots(stack, getNumberOfInventorySlots()), ShulkerBoxItem.getNumberOfUpgradeSlots(stack, getNumberOfUpgradeSlots())));
 			NBTTagList pendingItems = ShulkerBoxItem.getPendingItems(stack);
 			if (!pendingItems.isEmpty()) {
 				InventoryHandler inventoryHandler = wrapper.getInventoryHandler();

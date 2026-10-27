@@ -33,7 +33,7 @@ public class ChestItemRenderer extends TileEntityItemStackRenderer {
 			return;
 		}
 		WoodType woodType = WoodStorageBlockItem.getWoodType(stack).orElse(mainColor != -1 && accentColor != -1 ? null : WoodType.DEFAULT);
-		((ChestRenderer) renderer).render(block, ChestType.SINGLE, EnumFacing.SOUTH, woodType, mainColor, accentColor, 0,
+		((ChestRenderer) renderer).render(block, ChestType.SINGLE, EnumFacing.SOUTH, woodType, mainColor, accentColor, StorageBlockItem.getContentsUuid(stack).isPresent(), 0,
 				0, 0, 0, -1);
 	}
 }

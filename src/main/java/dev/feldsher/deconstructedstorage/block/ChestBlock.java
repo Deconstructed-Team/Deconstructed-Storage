@@ -1,6 +1,7 @@
 package dev.feldsher.deconstructedstorage.block;
 
 import dev.feldsher.deconstructedcore.util.InventoryHelper;
+import dev.feldsher.deconstructedstorage.item.ChestBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
 import net.minecraft.block.Block;
@@ -236,7 +237,10 @@ public class ChestBlock extends WoodStorageBlockBase {
 		return !chest.getStorageWrapper().getContentsUuid().isPresent() || InventoryHelper.isEmpty(chest.getStorageWrapper().getUpgradeHandler());
 	}
 
-	/** The other half gone, by whatever means, this is a chest of its own again. */
+	/**
+	 * The other half gone, by whatever means, this is a chest of its own again; or, a packed double chest's half whose
+	 * contents went with the other into one stack, it goes too, quietly.
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
@@ -250,6 +254,10 @@ public class ChestBlock extends WoodStorageBlockBase {
 			return;
 		}
 		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof ChestBlockEntity && ((ChestBlockEntity) te).isContentsMovedToItem()) {
+			world.setBlockToAir(pos);
+			return;
+		}
 		if (te instanceof ChestBlockEntity) {
 			ChestBlockEntity be = (ChestBlockEntity) te;
 			if (be.isMainChest()) {
@@ -281,6 +289,32 @@ public class ChestBlock extends WoodStorageBlockBase {
 
 	private static boolean isBlocked(World world, BlockPos pos) {
 		return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN);
+	}
+
+	/** A double chest packs whole: both halves. */
+	@Override
+	protected void packStorage(World world, BlockPos pos, WoodStorageBlockEntity be) {
+		super.packStorage(world, pos, be);
+		IBlockState state = world.getBlockState(pos);
+		if (state.getValue(TYPE) != ChestType.SINGLE) {
+			TileEntity other = world.getTileEntity(pos.offset(getConnectedDirection(state)));
+			if (other instanceof ChestBlockEntity) {
+				((ChestBlockEntity) other).setPacked(true);
+			}
+		}
+	}
+
+	/** A packed double chest goes as one stack, that places both halves again; the half not broken goes with it. */
+	@Override
+	protected void addContentsDropData(ItemStack stack, StorageBlockEntity be) {
+		IBlockState state = be.getBlockState();
+		if (state.getBlock() == this && state.getValue(TYPE) != ChestType.SINGLE) {
+			ChestBlockItem.setDoubleChest(stack, true);
+			TileEntity other = be.getWorld() == null ? null : be.getWorld().getTileEntity(be.getPos().offset(getConnectedDirection(state)));
+			if (other instanceof ChestBlockEntity) {
+				((ChestBlockEntity) other).setContentsMovedToItem();
+			}
+		}
 	}
 
 	@Override

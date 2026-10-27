@@ -43,6 +43,9 @@ public class Config {
 		@net.minecraftforge.common.config.Config.RequiresMcRestart
 		public boolean shulkerBoxesEnabled = true;
 
+		@net.minecraftforge.common.config.Config.Comment("Determines whether chests / barrels are always dropped as packed with their contents when broken without the need to use packing tape")
+		public boolean dropPacked = false;
+
 		@net.minecraftforge.common.config.Config.Comment("Wood Barrel Settings")
 		public final StorageConfig woodBarrel = new StorageConfig(27, 1);
 		@net.minecraftforge.common.config.Config.Comment("Copper Barrel Settings")

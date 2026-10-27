@@ -79,12 +79,12 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 		lidAngle = 1.0F - lidAngle;
 		lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
 		render(state.getBlock(), state.getValue(ChestBlock.TYPE), state.getValue(ChestBlock.FACING), chest.getWoodType().orElse(null),
-				wrapper.hasMainColor() ? wrapper.getMainColor() : -1, wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, lidAngle, x, y, z, destroyStage);
+				wrapper.hasMainColor() ? wrapper.getMainColor() : -1, wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, chest.isPacked(), lidAngle, x, y, z, destroyStage);
 	}
 
 	/** A chest of the block's tier with that look, at x y z, its lid open by lidAngle, from 0 to 1. */
-	public void render(Block chestBlock, ChestType chestType, EnumFacing facing, @Nullable WoodType woodType, int mainColor, int accentColor, float lidAngle,
-			double x, double y, double z, int destroyStage) {
+	public void render(Block chestBlock, ChestType chestType, EnumFacing facing, @Nullable WoodType woodType, int mainColor, int accentColor, boolean packed,
+			float lidAngle, double x, double y, double z, int destroyStage) {
 		Parts parts = PARTS.get(chestType);
 		parts.setLidAngle(lidAngle);
 		GlStateManager.pushMatrix();
@@ -119,6 +119,15 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 			bindTexture(getTexture(chestType, getTierName(chestBlock) + "_tier"));
 			renderBottomAndLid(parts);
 			parts.lock.render(1 / 16F);
+			if (packed) {
+				// the tape a hair bigger than the chest, around it
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(-0.005F, -0.005F, -0.005F);
+				GlStateManager.scale(1.01F, 1.01F, 1.01F);
+				bindTexture(getTexture(chestType, "packed"));
+				renderBottomAndLid(parts);
+				GlStateManager.popMatrix();
+			}
 		}
 
 		GlStateManager.disableRescaleNormal();

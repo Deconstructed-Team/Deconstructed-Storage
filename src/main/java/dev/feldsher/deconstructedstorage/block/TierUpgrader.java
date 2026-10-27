@@ -61,7 +61,8 @@ public final class TierUpgrader {
 	public static boolean isUpgradingBlocked(World world, BlockPos pos) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof StorageBlockEntity) {
-			return ((StorageBlockEntity) te).getMainBlockEntity().isOpen();
+			StorageBlockEntity main = ((StorageBlockEntity) te).getMainBlockEntity();
+			return main.isOpen() || main instanceof WoodStorageBlockEntity && ((WoodStorageBlockEntity) main).isPacked();
 		}
 		if (te instanceof TileEntityChest) {
 			return ((TileEntityChest) te).numPlayersUsing > 0;

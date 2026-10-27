@@ -37,6 +37,7 @@ public class ClientEventHandler {
 		for (Block block : ModBlocks.getAllBlocks()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Objects.requireNonNull(block.getRegistryName()), "inventory"));
 		}
+		ModelLoader.setCustomModelResourceLocation(ModItems.PACKING_TAPE, 0, new ModelResourceLocation(Objects.requireNonNull(ModItems.PACKING_TAPE.getRegistryName()), "inventory"));
 		for (Item item : ModItems.getTierUpgrades()) {
 			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"));
 		}

@@ -66,6 +66,9 @@ public class BarrelBakedModel implements IBakedModel {
 			ret.addAll(BarrelParts.getTintableMainQuads(data.isOpen(), flatTop, facing, side));
 		}
 		ret.addAll(BarrelParts.getTierQuads(barrel, flatTop, facing, side));
+		if (data.isPacked()) {
+			ret.addAll(BarrelParts.getPackedQuads(flatTop, facing, side));
+		}
 		return ret;
 	}
 
@@ -114,7 +117,7 @@ public class BarrelBakedModel implements IBakedModel {
 			boolean hasMainColor = StorageBlockItem.getMainColor(stack).isPresent();
 			boolean hasAccentColor = StorageBlockItem.getAccentColor(stack).isPresent();
 			WoodType woodType = WoodStorageBlockItem.getWoodType(stack).orElse(hasMainColor && hasAccentColor ? null : WoodType.DEFAULT);
-			BarrelRenderData data = new BarrelRenderData(woodType, hasMainColor, hasAccentColor, false);
+			BarrelRenderData data = new BarrelRenderData(woodType, hasMainColor, hasAccentColor, false, StorageBlockItem.getContentsUuid(stack).isPresent());
 			Map<BarrelRenderData, IBakedModel> models = BarrelBlockItem.isFlatTop(stack) ? flatTopModels : this.models;
 			return models.computeIfAbsent(data, d -> new BarrelBakedModel(baseModel, barrel, facing, BarrelBlockItem.isFlatTop(stack)) {
 				@Override

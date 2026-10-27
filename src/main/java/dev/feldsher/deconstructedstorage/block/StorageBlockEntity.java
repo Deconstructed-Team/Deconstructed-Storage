@@ -184,6 +184,9 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 			clientTick();
 			return;
 		}
+		if (!canTickUpgrades()) {
+			return;
+		}
 		if (tickableUpgrades == null) {
 			// none until the contents exist: a storage nobody opened has no upgrades
 			tickableUpgrades = storageWrapper.getContentsUuid().isPresent()
@@ -192,6 +195,11 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		for (ITickableUpgrade upgrade : tickableUpgrades) {
 			upgrade.tick(null, world, pos);
 		}
+	}
+
+	/** Whether its upgrades work now: not in a packed storage. */
+	protected boolean canTickUpgrades() {
+		return true;
 	}
 
 	/** What moves on both sides, as a shulker box's lid, which pushes entities out of its way. */
@@ -332,6 +340,10 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	/** Its contents went into the stack it dropped as, as a shulker box's: they're not to be dropped, nor removed. */
 	public void setContentsMovedToItem() {
 		contentsMovedToItem = true;
+	}
+
+	public boolean isContentsMovedToItem() {
+		return contentsMovedToItem;
 	}
 
 	/** Its items, and its upgrades, onto the ground; the contents themselves then go, with nothing left to hold. */

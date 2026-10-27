@@ -12,6 +12,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
@@ -44,6 +45,12 @@ public final class ShulkerBoxRecipes {
 		@Override
 		public boolean isDynamic() {
 			return true;
+		}
+
+		/** Not from a packed chest: its contents would have nowhere to go. */
+		@Override
+		public boolean matches(InventoryCrafting inv, World world) {
+			return super.matches(inv, world) && find(inv, ChestBlock.class).map(chest -> !StorageBlockItem.getContentsUuid(chest).isPresent()).orElse(false);
 		}
 
 		@Override

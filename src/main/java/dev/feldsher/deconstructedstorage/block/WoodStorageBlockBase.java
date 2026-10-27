@@ -1,6 +1,17 @@
 package dev.feldsher.deconstructedstorage.block;
 
+import dev.feldsher.deconstructedcore.util.InventoryHelper;
+import dev.feldsher.deconstructedstorage.Config;
+import dev.feldsher.deconstructedstorage.client.gui.StorageTranslationHelper;
+import dev.feldsher.deconstructedstorage.init.ModItems;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -61,6 +72,53 @@ public abstract class WoodStorageBlockBase extends StorageBlockBase {
 	}
 
 	protected abstract boolean isBasicTier();
+
+	/**
+	 * Packed, it goes with what it holds; with the config's dropPacked, so does any that holds something. A double
+	 * chest's halves, unpacked, part first: each then drops as a plain chest.
+	 */
+	@Override
+	protected boolean dropsWithContents(StorageBlockEntity be) {
+		if (!(be instanceof WoodStorageBlockEntity)) {
+			return false;
+		}
+		if (((WoodStorageBlockEntity) be).isPacked()) {
+			return true;
+		}
+		return Config.SERVER.dropPacked && be.getMainBlockEntity() == be && be.getStorageWrapper().getContentsUuid().isPresent()
+				&& !(InventoryHelper.isEmpty(be.getStorageWrapper().getInventoryHandler()) && InventoryHelper.isEmpty(be.getStorageWrapper().getUpgradeHandler()));
+	}
+
+	/** Packing tape packs it; a packed one opens to nobody. */
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		if (!(be instanceof WoodStorageBlockEntity)) {
+			return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+		}
+		if (((WoodStorageBlockEntity) be.getMainBlockEntity()).isPacked()) {
+			return true;
+		}
+		ItemStack held = player.getHeldItem(hand);
+		if (held.getItem() == ModItems.PACKING_TAPE) {
+			if (!world.isRemote) {
+				if (Config.SERVER.dropPacked) {
+					player.sendStatusMessage(new TextComponentTranslation(StorageTranslationHelper.INSTANCE.translGui("status.packing_tape_disabled")), true);
+				} else {
+					packStorage(world, pos, (WoodStorageBlockEntity) be);
+					if (!player.capabilities.isCreativeMode) {
+						held.damageItem(1, player);
+					}
+				}
+			}
+			return true;
+		}
+		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+	}
+
+	protected void packStorage(World world, BlockPos pos, WoodStorageBlockEntity be) {
+		be.setPacked(true);
+	}
 
 	/** What its bits look like when broken, hit or run over: of its wood, or of its tinted core when it has none. */
 	@SideOnly(Side.CLIENT)

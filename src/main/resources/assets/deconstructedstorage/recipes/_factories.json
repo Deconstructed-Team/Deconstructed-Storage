@@ -8,6 +8,7 @@
     "storage_dye": "dev.feldsher.deconstructedstorage.crafting.StorageDyeRecipe$Factory"
   },
   "conditions": {
-    "item_enabled": "dev.feldsher.deconstructedstorage.crafting.ItemEnabledCondition"
+    "item_enabled": "dev.feldsher.deconstructedstorage.crafting.ItemEnabledCondition",
+    "drop_packed_disabled": "dev.feldsher.deconstructedstorage.crafting.DropPackedDisabledCondition"
   }
 }

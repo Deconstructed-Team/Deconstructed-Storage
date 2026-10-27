@@ -139,6 +139,9 @@ public class ChestBlockEntity extends WoodStorageBlockEntity {
 	 */
 	@Override
 	public void dropContents() {
+		if (isContentsMovedToItem()) {
+			return;
+		}
 		ChestType chestType = getChestType();
 		if (destroyedByPlayer && chestType != null && chestType != ChestType.SINGLE) {
 			if (isMainChest()) {

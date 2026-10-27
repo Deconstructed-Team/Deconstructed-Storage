@@ -7,6 +7,8 @@ import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlock;
 import dev.feldsher.deconstructedstorage.block.StorageTier;
 import dev.feldsher.deconstructedstorage.block.WoodType;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
+import dev.feldsher.deconstructedstorage.item.ChestBlockItem;
+import dev.feldsher.deconstructedstorage.item.PackingTapeItem;
 import dev.feldsher.deconstructedstorage.item.ShulkerBoxItem;
 import dev.feldsher.deconstructedstorage.item.StorageTierUpgradeItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
@@ -54,6 +56,8 @@ public class ModItems {
 	public static final StorageTierUpgradeItem GOLD_TO_NETHERITE_TIER_UPGRADE = item(new StorageTierUpgradeItem(StorageTier.GOLD, StorageTier.NETHERITE), "gold_to_netherite_tier_upgrade");
 	public static final StorageTierUpgradeItem DIAMOND_TO_NETHERITE_TIER_UPGRADE = item(new StorageTierUpgradeItem(StorageTier.DIAMOND, StorageTier.NETHERITE), "diamond_to_netherite_tier_upgrade");
 
+	public static final PackingTapeItem PACKING_TAPE = item(new PackingTapeItem(), "packing_tape");
+
 	private static final List<StorageTierUpgradeItem> TIER_UPGRADES = Arrays.asList(BASIC_TIER_UPGRADE, BASIC_TO_COPPER_TIER_UPGRADE, BASIC_TO_IRON_TIER_UPGRADE,
 			BASIC_TO_GOLD_TIER_UPGRADE, BASIC_TO_DIAMOND_TIER_UPGRADE, BASIC_TO_NETHERITE_TIER_UPGRADE, COPPER_TO_IRON_TIER_UPGRADE, COPPER_TO_GOLD_TIER_UPGRADE,
 			COPPER_TO_DIAMOND_TIER_UPGRADE, COPPER_TO_NETHERITE_TIER_UPGRADE, IRON_TO_GOLD_TIER_UPGRADE, IRON_TO_DIAMOND_TIER_UPGRADE, IRON_TO_NETHERITE_TIER_UPGRADE,
@@ -83,12 +87,13 @@ public class ModItems {
 			items.add(itemBlock(new BarrelBlockItem(barrel)));
 		}
 		for (ChestBlock chest : ModBlocks.getChests()) {
-			items.add(itemBlock(new WoodStorageBlockItem(chest)));
+			items.add(itemBlock(new ChestBlockItem(chest)));
 		}
 		for (ShulkerBoxBlock shulkerBox : ModBlocks.getShulkerBoxes()) {
 			items.add(itemBlock(new ShulkerBoxItem(shulkerBox)));
 		}
 		items.addAll(getTierUpgrades());
+		items.add(PACKING_TAPE);
 		items.addAll(STORAGE_UPGRADES);
 		return items;
 	}

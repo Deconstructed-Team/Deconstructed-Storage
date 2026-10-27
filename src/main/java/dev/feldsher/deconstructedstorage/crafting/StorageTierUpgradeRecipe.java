@@ -2,8 +2,9 @@ package dev.feldsher.deconstructedstorage.crafting;
 
 import com.google.gson.JsonObject;
 import dev.feldsher.deconstructedstorage.block.StorageBlockBase;
-import dev.feldsher.deconstructedstorage.item.ShulkerBoxItem;
+import dev.feldsher.deconstructedstorage.item.ChestBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
+import net.minecraft.world.World;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -30,12 +31,17 @@ public final class StorageTierUpgradeRecipe {
 		getOriginalStorage(inv).filter(storage -> storage.getTagCompound() != null)
 				.ifPresent(storage -> result.setTagCompound(storage.getTagCompound().copy()));
 		Block block = Block.getBlockFromItem(result.getItem());
-		if (ShulkerBoxItem.getContentsUuid(result).isPresent() && block instanceof StorageBlockBase) {
+		if (StorageBlockItem.getContentsUuid(result).isPresent() && block instanceof StorageBlockBase) {
 			StorageBlockBase storageBlock = (StorageBlockBase) block;
-			ShulkerBoxItem.getContentsUuid(result).ifPresent(uuid ->
-					ShulkerBoxItem.setContents(result, uuid, storageBlock.getNumberOfInventorySlots(), storageBlock.getNumberOfUpgradeSlots()));
+			StorageBlockItem.getContentsUuid(result).ifPresent(uuid ->
+					StorageBlockItem.setContents(result, uuid, storageBlock.getNumberOfInventorySlots(), storageBlock.getNumberOfUpgradeSlots()));
 		}
 		return result;
+	}
+
+	/** A packed double chest isn't one storage of the tier: it goes up a tier only placed, with an upgrade item. */
+	static boolean isNotDoubleChest(InventoryCrafting inv) {
+		return getOriginalStorage(inv).map(storage -> !ChestBlockItem.isDoubleChest(storage)).orElse(false);
 	}
 
 	private static Optional<ItemStack> getOriginalStorage(InventoryCrafting inv) {
@@ -59,6 +65,11 @@ public final class StorageTierUpgradeRecipe {
 		}
 
 		@Override
+		public boolean matches(InventoryCrafting inv, World world) {
+			return super.matches(inv, world) && isNotDoubleChest(inv);
+		}
+
+		@Override
 		public ItemStack getCraftingResult(InventoryCrafting inv) {
 			return upgrade(super.getCraftingResult(inv), inv);
 		}
@@ -72,6 +83,11 @@ public final class StorageTierUpgradeRecipe {
 		@Override
 		public boolean isDynamic() {
 			return true;
+		}
+
+		@Override
+		public boolean matches(InventoryCrafting inv, World world) {
+			return super.matches(inv, world) && isNotDoubleChest(inv);
 		}
 
 		@Override

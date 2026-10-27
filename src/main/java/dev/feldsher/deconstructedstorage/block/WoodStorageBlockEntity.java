@@ -12,8 +12,10 @@ import java.util.Optional;
  */
 public abstract class WoodStorageBlockEntity extends StorageBlockEntity {
 	private static final String WOOD_TYPE_TAG = "woodType";
+	private static final String PACKED_TAG = "packed";
 	@Nullable
 	private WoodType woodType = null;
+	private boolean packed = false;
 
 	@Override
 	protected void saveSynchronizedData(NBTTagCompound tag) {
@@ -21,12 +23,47 @@ public abstract class WoodStorageBlockEntity extends StorageBlockEntity {
 		if (woodType != null) {
 			tag.setString(WOOD_TYPE_TAG, woodType.getName());
 		}
+		if (packed) {
+			tag.setBoolean(PACKED_TAG, true);
+		}
 	}
 
 	@Override
 	protected void loadSynchronizedData(NBTTagCompound tag) {
 		super.loadSynchronizedData(tag);
 		woodType = WoodType.fromName(tag.getString(WOOD_TYPE_TAG));
+		packed = tag.getBoolean(PACKED_TAG);
+	}
+
+	/**
+	 * Packed with tape, it's shut: it opens to nobody, no pipe reaches in, its upgrades rest; broken, it goes as a stack
+	 * with all it holds.
+	 */
+	public boolean isPacked() {
+		return packed;
+	}
+
+	public void setPacked(boolean packed) {
+		this.packed = packed;
+		refreshTickableUpgrades();
+		markDirty();
+		notifyBlockUpdate();
+	}
+
+	@Override
+	protected boolean canTickUpgrades() {
+		return !packed;
+	}
+
+	@Override
+	public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing) {
+		return !(packed && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) && super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing) {
+		return packed && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? null : super.getCapability(capability, facing);
 	}
 
 	public Optional<WoodType> getWoodType() {
