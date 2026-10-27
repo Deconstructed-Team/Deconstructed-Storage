@@ -45,6 +45,8 @@ public class ChestBlock extends WoodStorageBlockBase {
 	private static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(1 / 16D, 0, 1 / 16D, 1, 14 / 16D, 15 / 16D);
 
 	private final boolean basicTier;
+	/** While a double chest's halves are swapped for another tier's one by one: the other half isn't gone. */
+	private static boolean upgrading = false;
 
 	public ChestBlock(IntSupplier numberOfInventorySlotsSupplier, IntSupplier numberOfUpgradeSlotsSupplier, boolean basicTier) {
 		super(numberOfInventorySlotsSupplier, numberOfUpgradeSlotsSupplier);
@@ -192,6 +194,35 @@ public class ChestBlock extends WoodStorageBlockBase {
 		}
 	}
 
+	/** Runs the swap of a double chest's halves, during which neither half parts from the other. */
+	public static void runUpgrading(Runnable upgrade) {
+		upgrading = true;
+		try {
+			upgrade.run();
+		} finally {
+			upgrading = false;
+		}
+	}
+
+	/**
+	 * Two single chests side by side, facing the same way, made one double chest, as placing one beside the other
+	 * would: as vanilla's double chests are upgraded into these.
+	 */
+	public static void connect(World world, BlockPos pos, BlockPos otherPos) {
+		IBlockState state = world.getBlockState(pos);
+		IBlockState otherState = world.getBlockState(otherPos);
+		EnumFacing facing = state.getValue(FACING);
+		EnumFacing toOther = EnumFacing.getFacingFromVector(otherPos.getX() - pos.getX(), 0, otherPos.getZ() - pos.getZ());
+		ChestType chestType = toOther == facing.rotateY() ? ChestType.LEFT : ChestType.RIGHT;
+		world.setBlockState(pos, state.withProperty(TYPE, chestType));
+		world.setBlockState(otherPos, otherState.withProperty(FACING, facing).withProperty(TYPE, chestType.getOpposite()));
+		TileEntity current = world.getTileEntity(pos);
+		TileEntity other = world.getTileEntity(otherPos);
+		if (current instanceof ChestBlockEntity && other instanceof ChestBlockEntity) {
+			joinChests((ChestBlockEntity) current, (ChestBlockEntity) other, chestType);
+		}
+	}
+
 	/** The half with upgrades is the main one; with none, as in 1.21, the left one's partner, the right half. */
 	private static void joinChests(ChestBlockEntity current, ChestBlockEntity other, ChestType currentChestType) {
 		if (isWithoutUpgrades(current) && (currentChestType == ChestType.LEFT || !isWithoutUpgrades(other))) {
@@ -211,7 +242,7 @@ public class ChestBlock extends WoodStorageBlockBase {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		super.neighborChanged(state, world, pos, block, fromPos);
 		ChestType chestType = state.getValue(TYPE);
-		if (world.isRemote || chestType == ChestType.SINGLE || !fromPos.equals(pos.offset(getConnectedDirection(state)))) {
+		if (world.isRemote || upgrading || chestType == ChestType.SINGLE || !fromPos.equals(pos.offset(getConnectedDirection(state)))) {
 			return;
 		}
 		IBlockState otherState = world.getBlockState(fromPos);

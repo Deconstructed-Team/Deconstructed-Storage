@@ -40,6 +40,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	private List<ITickableUpgrade> tickableUpgrades = null;
 	private boolean isDroppingContents = false;
 	private boolean contentsMovedToItem = false;
+	private boolean beingUpgraded = false;
 	@Nullable
 	private IBlockState removedState = null;
 
@@ -316,6 +317,18 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		return oldState.getBlock() != newState.getBlock();
 	}
 
+	/**
+	 * Its block is being swapped for another tier's, which takes over its data: the old one isn't broken, its items not
+	 * dropped, its contents not removed.
+	 */
+	public void setBeingUpgraded() {
+		beingUpgraded = true;
+	}
+
+	public boolean isBeingUpgraded() {
+		return beingUpgraded;
+	}
+
 	/** Its contents went into the stack it dropped as, as a shulker box's: they're not to be dropped, nor removed. */
 	public void setContentsMovedToItem() {
 		contentsMovedToItem = true;
@@ -323,7 +336,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 
 	/** Its items, and its upgrades, onto the ground; the contents themselves then go, with nothing left to hold. */
 	public void dropContents() {
-		if (world == null || world.isRemote || contentsMovedToItem || !storageWrapper.getContentsUuid().isPresent()) {
+		if (world == null || world.isRemote || contentsMovedToItem || beingUpgraded || !storageWrapper.getContentsUuid().isPresent()) {
 			return;
 		}
 		isDroppingContents = true;

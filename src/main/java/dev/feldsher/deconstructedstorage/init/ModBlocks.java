@@ -8,6 +8,7 @@ import dev.feldsher.deconstructedstorage.block.ChestBlock;
 import dev.feldsher.deconstructedstorage.block.ChestBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlock;
 import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlockEntity;
+import dev.feldsher.deconstructedstorage.block.StorageTier;
 import net.minecraft.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = DeconstructedStorage.MOD_ID)
 public class ModBlocks {
@@ -47,6 +49,37 @@ public class ModBlocks {
 		NETHERITE_BARREL.setResistance(400);
 		NETHERITE_CHEST.setResistance(400);
 		NETHERITE_SHULKER_BOX.setResistance(400);
+	}
+
+	private static final Block[][] TIERED = {
+			{BARREL, COPPER_BARREL, IRON_BARREL, GOLD_BARREL, DIAMOND_BARREL, NETHERITE_BARREL},
+			{CHEST, COPPER_CHEST, IRON_CHEST, GOLD_CHEST, DIAMOND_CHEST, NETHERITE_CHEST},
+			{SHULKER_BOX, COPPER_SHULKER_BOX, IRON_SHULKER_BOX, GOLD_SHULKER_BOX, DIAMOND_SHULKER_BOX, NETHERITE_SHULKER_BOX}
+	};
+
+	/** The storage's tier, when it's one of these storages. */
+	public static Optional<StorageTier> getTier(Block block) {
+		for (Block[] tiers : TIERED) {
+			for (int i = 0; i < tiers.length; i++) {
+				if (tiers[i] == block) {
+					return Optional.of(StorageTier.values()[i]);
+				}
+			}
+		}
+		return Optional.empty();
+	}
+
+	/** The same kind of storage in another tier, when that one exists: enabled by the config. */
+	public static Optional<Block> getInTier(Block block, StorageTier tier) {
+		for (Block[] tiers : TIERED) {
+			for (Block tierBlock : tiers) {
+				if (tierBlock == block) {
+					Block ret = tiers[tier.ordinal()];
+					return getAllBlocks().contains(ret) ? Optional.of(ret) : Optional.empty();
+				}
+			}
+		}
+		return Optional.empty();
 	}
 
 	/** The barrel tiers the config enables; none with barrels off. */
