@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:iron_shulker_box"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:iron_chest"
+    }
+  ],
+  "type": "deconstructedstorage:shulker_box_from_chest",
+  "pattern": [
+    "S",
+    "C",
+    "S"
+  ],
+  "key": {
+    "C": {
+      "item": "deconstructedstorage:iron_chest"
+    },
+    "S": {
+      "item": "minecraft:shulker_shell"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:iron_shulker_box"
+  }
+}

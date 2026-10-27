@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:copper_chest"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:chest"
+    }
+  ],
+  "type": "deconstructedstorage:storage_tier_upgrade",
+  "pattern": [
+    "CCC",
+    "CSC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "ingotCopper"
+    },
+    "S": {
+      "item": "deconstructedstorage:chest"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:copper_chest"
+  }
+}

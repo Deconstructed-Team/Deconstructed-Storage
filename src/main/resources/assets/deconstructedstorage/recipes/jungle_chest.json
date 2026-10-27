@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:chest"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "PRP",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:planks",
+      "data": 3
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:chest",
+    "nbt": {
+      "wood_type": "jungle"
+    }
+  }
+}

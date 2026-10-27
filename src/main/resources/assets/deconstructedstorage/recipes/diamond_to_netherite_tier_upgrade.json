@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:diamond_to_netherite_tier_upgrade"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:redstone_torch"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotNetherite"
+    }
+  ],
+  "result": {
+    "item": "deconstructedstorage:diamond_to_netherite_tier_upgrade"
+  }
+}

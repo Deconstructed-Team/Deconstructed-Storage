@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:basic_to_iron_tier_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:basic_to_copper_tier_upgrade"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IRI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "R": {
+      "item": "deconstructedstorage:basic_to_copper_tier_upgrade"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:basic_to_iron_tier_upgrade"
+  }
+}

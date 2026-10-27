@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:iron_to_gold_tier_upgrade"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GRG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:iron_to_gold_tier_upgrade"
+  }
+}

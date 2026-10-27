@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:chest"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "minecraft:redstone_torch"
+    }
+  ],
+  "result": {
+    "item": "deconstructedstorage:chest",
+    "nbt": {
+      "wood_type": "oak"
+    }
+  }
+}

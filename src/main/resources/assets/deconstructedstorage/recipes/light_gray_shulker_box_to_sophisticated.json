@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:shulker_box"
+    }
+  ],
+  "type": "deconstructedstorage:shulker_box_from_vanilla",
+  "ingredients": [
+    {
+      "item": "minecraft:silver_shulker_box"
+    },
+    {
+      "item": "minecraft:redstone_torch"
+    }
+  ],
+  "result": {
+    "item": "deconstructedstorage:shulker_box",
+    "nbt": {
+      "main_color": 10329495,
+      "accent_color": 10329495
+    }
+  }
+}

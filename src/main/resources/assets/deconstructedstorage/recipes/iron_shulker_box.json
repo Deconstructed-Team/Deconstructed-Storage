@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:iron_shulker_box"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:shulker_box"
+    }
+  ],
+  "type": "deconstructedstorage:storage_tier_upgrade",
+  "pattern": [
+    "III",
+    "ISI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "S": {
+      "item": "deconstructedstorage:shulker_box"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:iron_shulker_box"
+  }
+}

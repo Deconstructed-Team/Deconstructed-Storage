@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:barrel"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PSP",
+    "PRP",
+    "PSP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:planks",
+      "data": 4
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    },
+    "S": {
+      "item": "minecraft:wooden_slab",
+      "data": 4
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:barrel",
+    "nbt": {
+      "wood_type": "acacia"
+    }
+  }
+}

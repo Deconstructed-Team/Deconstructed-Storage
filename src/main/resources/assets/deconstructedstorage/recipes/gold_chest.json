@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:gold_chest"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:iron_chest"
+    }
+  ],
+  "type": "deconstructedstorage:storage_tier_upgrade",
+  "pattern": [
+    "GGG",
+    "GSG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "S": {
+      "item": "deconstructedstorage:iron_chest"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:gold_chest"
+  }
+}

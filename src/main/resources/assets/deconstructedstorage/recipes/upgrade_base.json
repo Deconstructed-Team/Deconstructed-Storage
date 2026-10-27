@@ -1,0 +1,27 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:upgrade_base"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PIP",
+    "IPI",
+    "PIP"
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:upgrade_base"
+  }
+}

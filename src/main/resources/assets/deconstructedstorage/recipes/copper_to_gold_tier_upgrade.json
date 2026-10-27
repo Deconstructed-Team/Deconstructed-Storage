@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:copper_to_gold_tier_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:copper_to_iron_tier_upgrade"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GTG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "T": {
+      "item": "deconstructedstorage:copper_to_iron_tier_upgrade"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:copper_to_gold_tier_upgrade"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:diamond_chest"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:gold_chest"
+    }
+  ],
+  "type": "deconstructedstorage:storage_tier_upgrade",
+  "pattern": [
+    "DDD",
+    "DSD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "S": {
+      "item": "deconstructedstorage:gold_chest"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:diamond_chest"
+  }
+}

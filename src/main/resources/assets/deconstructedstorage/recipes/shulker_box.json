@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:shulker_box"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S",
+    "RC",
+    " S"
+  ],
+  "key": {
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "chestWood"
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    },
+    "S": {
+      "item": "minecraft:shulker_shell"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:shulker_box"
+  }
+}

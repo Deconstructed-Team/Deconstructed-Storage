@@ -130,7 +130,24 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		this.contentsUuid = contentsUuid;
 		this.numberOfInventorySlots = numberOfInventorySlots;
 		this.numberOfUpgradeSlots = numberOfUpgradeSlots;
+		growHandlersToSlotNumbers();
 		save();
+	}
+
+	/**
+	 * The shared handlers grow to the counts this holds, in place, as a box crafted a tier up holds more than its
+	 * contents were saved with. Never shrunk here: that drops what's in the slots past the new end.
+	 */
+	private void growHandlersToSlotNumbers() {
+		InventoryHandler inventoryHandler = getInventoryHandler();
+		int expectedInventorySlots = getExpectedInventorySlots();
+		if (inventoryHandler.getSlots() < expectedInventorySlots) {
+			inventoryHandler.changeSlots(expectedInventorySlots - inventoryHandler.getSlots());
+		}
+		UpgradeHandler upgradeHandler = getUpgradeHandler();
+		if (upgradeHandler.getSlots() < getNumberOfUpgradeSlots()) {
+			upgradeHandler.increaseSize(getNumberOfUpgradeSlots() - upgradeHandler.getSlots());
+		}
 	}
 
 	/** Its contents are gone, the block broken: the UUID goes with them, so nothing finds them again. */

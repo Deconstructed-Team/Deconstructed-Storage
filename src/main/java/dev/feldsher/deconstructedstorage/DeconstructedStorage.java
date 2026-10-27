@@ -2,12 +2,14 @@ package dev.feldsher.deconstructedstorage;
 
 import dev.feldsher.deconstructedcore.compat.bogosorter.BogoSorterCompat;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
+import dev.feldsher.deconstructedstorage.crafting.OreDependentRecipes;
 import dev.feldsher.deconstructedstorage.common.gui.StorageContainerMenu;
 import dev.feldsher.deconstructedstorage.network.PacketHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -37,6 +39,12 @@ public class DeconstructedStorage {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		BogoSorterCompat.registerStorageContainers(StorageContainerMenu.class);
 		proxy.init();
+	}
+
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
+		// Every mod has registered its ores by now
+		OreDependentRecipes.removeRecipesWithoutOres();
 	}
 
 	public static ResourceLocation getRL(String regName) {

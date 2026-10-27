@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:basic_to_diamond_tier_upgrade"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:basic_to_gold_tier_upgrade"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DDD",
+    "DTD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "T": {
+      "item": "deconstructedstorage:basic_to_gold_tier_upgrade"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:basic_to_diamond_tier_upgrade"
+  }
+}

@@ -5,8 +5,10 @@ import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -20,6 +22,8 @@ import java.util.UUID;
  * it has, and the box placed from it takes them up again.
  */
 public class ShulkerBoxItem extends StorageBlockItem {
+	private static final String PENDING_ITEMS_TAG = "pending_items";
+
 	public ShulkerBoxItem(Block block) {
 		super(block);
 		setMaxStackSize(1);
@@ -34,6 +38,16 @@ public class ShulkerBoxItem extends StorageBlockItem {
 		NBTTagCompound tag = StorageNbt.getOrCreateTag(stack);
 		tag.setInteger(StorageNbt.NUMBER_OF_INVENTORY_SLOTS, numberOfInventorySlots);
 		tag.setInteger(StorageNbt.NUMBER_OF_UPGRADE_SLOTS, numberOfUpgradeSlots);
+	}
+
+	/** Items to go into the box as it's placed, as a vanilla box's crafted into this one: kept as vanilla keeps them. */
+	public static void setPendingItems(ItemStack stack, NBTTagList items) {
+		StorageNbt.getOrCreateTag(stack).setTag(PENDING_ITEMS_TAG, items);
+	}
+
+	public static NBTTagList getPendingItems(ItemStack stack) {
+		NBTTagCompound tag = stack.getTagCompound();
+		return tag == null ? new NBTTagList() : tag.getTagList(PENDING_ITEMS_TAG, Constants.NBT.TAG_COMPOUND);
 	}
 
 	public static int getNumberOfInventorySlots(ItemStack stack, int defaultValue) {

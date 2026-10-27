@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:basic_tier_upgrade"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SRS",
+    " S "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone_torch"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:basic_tier_upgrade"
+  }
+}

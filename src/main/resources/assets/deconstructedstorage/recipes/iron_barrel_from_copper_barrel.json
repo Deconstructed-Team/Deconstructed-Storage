@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:iron_barrel"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:copper_barrel"
+    }
+  ],
+  "type": "deconstructedstorage:storage_tier_upgrade",
+  "pattern": [
+    " I ",
+    "ISI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "S": {
+      "item": "deconstructedstorage:copper_barrel"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:iron_barrel"
+  }
+}

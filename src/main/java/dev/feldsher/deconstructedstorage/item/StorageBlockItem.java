@@ -10,9 +10,9 @@ import java.util.Optional;
 
 /** A storage block as an item: it keeps how the storage looks, and puts it back when placed. */
 public class StorageBlockItem extends ItemBlock {
+	/** Its kinds, woods and colors, are told apart by NBT, not metadata: recipes take any of it by its item alone. */
 	public StorageBlockItem(Block block) {
 		super(block);
-		setHasSubtypes(true);
 	}
 
 	public static Optional<Integer> getMainColor(ItemStack stack) {

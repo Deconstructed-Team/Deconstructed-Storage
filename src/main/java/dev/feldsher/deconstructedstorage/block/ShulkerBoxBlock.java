@@ -1,5 +1,6 @@
 package dev.feldsher.deconstructedstorage.block;
 
+import dev.feldsher.deconstructedcore.inventory.InventoryHandler;
 import dev.feldsher.deconstructedstorage.item.ShulkerBoxItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import net.minecraft.block.SoundType;
@@ -17,6 +18,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -202,6 +205,17 @@ public class ShulkerBoxBlock extends StorageBlockBase {
 		if (be.getWorld() != null && !be.getWorld().isRemote) {
 			ShulkerBoxItem.getContentsUuid(stack).ifPresent(uuid -> wrapper.setContents(uuid,
 					ShulkerBoxItem.getNumberOfInventorySlots(stack, getNumberOfInventorySlots()), ShulkerBoxItem.getNumberOfUpgradeSlots(stack, getNumberOfUpgradeSlots())));
+			NBTTagList pendingItems = ShulkerBoxItem.getPendingItems(stack);
+			if (!pendingItems.isEmpty()) {
+				InventoryHandler inventoryHandler = wrapper.getInventoryHandler();
+				for (int i = 0; i < pendingItems.tagCount(); i++) {
+					NBTTagCompound itemTag = pendingItems.getCompoundTagAt(i);
+					int slot = itemTag.getByte("Slot") & 255;
+					if (slot < inventoryHandler.getSlots()) {
+						inventoryHandler.setStackInSlot(slot, new ItemStack(itemTag));
+					}
+				}
+			}
 		}
 	}
 

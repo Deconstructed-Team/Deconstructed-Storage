@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:shulker_box"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:chest"
+    }
+  ],
+  "type": "deconstructedstorage:shulker_box_from_chest",
+  "pattern": [
+    "S",
+    "C",
+    "S"
+  ],
+  "key": {
+    "C": {
+      "item": "deconstructedstorage:chest"
+    },
+    "S": {
+      "item": "minecraft:shulker_shell"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:shulker_box"
+  }
+}
