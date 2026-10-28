@@ -1,7 +1,44 @@
-apply from: rootProject.file('gradle/scripts/mod.gradle')
+/**
+ * Deconstructed Storage's build: ForgeDevEnv's, in gradle/scripts/mod.gradle, with the plugins it needs and the IDEA settings.
+ */
+import org.jetbrains.gradle.ext.Gradle
+
+plugins {
+    id 'idea'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
+    id 'com.gtnewhorizons.retrofuturagradle' version '2.0.3'
+    id 'com.gradleup.shadow' version '9.6.+'
+    id 'maven-publish'
+}
+
+apply from: 'gradle/scripts/mod.gradle'
 
 dependencies {
-    implementation project(':core')
-    compileOnly project(':backpacks')
+    implementation rfg.deobf("com.github.Deconstructed-Team:Deconstructed-Core:${propertyString('core_version')}")
+    // Only for the compatibility with it (upgrade recipes both ways, the decoration table on backpacks)
+    compileOnly(rfg.deobf("com.github.Deconstructed-Team:Deconstructed-Backpacks:${propertyString('backpacks_version')}")) {
+        transitive = false
+    }
     compileOnly rfg.deobf('maven.modrinth:had-enough-items:4.36.1')
+}
+
+idea {
+    project {
+        settings {
+            runConfigurations {
+                "1. Run Client"(Gradle) {
+                    taskNames = ['runClient']
+                }
+                "2. Run Server"(Gradle) {
+                    taskNames = ['runServer']
+                }
+            }
+            compiler.javac {
+                javacAdditionalOptions = '-encoding utf8'
+            }
+            taskTriggers {
+                afterSync('cleanroomAfterSync')
+            }
+        }
+    }
 }
