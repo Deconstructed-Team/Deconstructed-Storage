@@ -471,6 +471,11 @@ public class CompressionInventoryPart implements IInventoryPartHandler {
 	}
 
 	@Override
+	public boolean sharesCapacityAcrossSlots() {
+		return true;
+	}
+
+	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate, SlotInserter insertSuper) {
 		return insertItem(slot, stack, simulate);
 	}
