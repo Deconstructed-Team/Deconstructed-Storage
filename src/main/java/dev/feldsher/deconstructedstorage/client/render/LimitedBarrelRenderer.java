@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -77,6 +78,9 @@ public class LimitedBarrelRenderer extends TileEntitySpecialRenderer<LimitedBarr
 		List<Integer> slotCounts = itemDisplay.getSlotCounts();
 		List<Integer> infiniteSlots = itemDisplay.getInfiniteSlots();
 		FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+		// as 1.21's, in the uniform font: smaller than the default, it keeps off the slot's frame
+		boolean unicode = font.getUnicodeFlag();
+		font.setUnicodeFlag(true);
 		float countDisplayYOffset = -(slotCounts.size() == 1 ? 0.25F : 0.11F);
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
@@ -100,12 +104,13 @@ public class LimitedBarrelRenderer extends TileEntitySpecialRenderer<LimitedBarr
 			GlStateManager.rotate(180, 0, 1, 0);
 			GlStateManager.scale(scale, -scale, scale);
 			if (infinite) {
-				font.drawString(countString, -font.getStringWidth(countString) / 2, 0, barrel.getSlotColor(slot));
+				font.drawString(countString, -font.getStringWidth(countString) / 2F, 0, barrel.getSlotColor(slot), false);
 			} else {
 				drawBold(font, countString, barrel.getSlotColor(slot));
 			}
 			GlStateManager.popMatrix();
 		}
+		font.setUnicodeFlag(unicode);
 		GlStateManager.depthMask(true);
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
@@ -113,18 +118,14 @@ public class LimitedBarrelRenderer extends TileEntitySpecialRenderer<LimitedBarr
 	}
 
 	/**
-	 * Bold, centered on x 0: as 1.12's, each char again a pixel to the right, but a char is drawn 0.01 short of its width,
-	 * so up close a seam shows between the two. One more 0.01 over fills it; its edges all fall inside the other two.
+	 * Bold, centered on x 0. 1.12's bold draws each char again a pixel to the right, but a char is drawn 0.01 short of its
+	 * width, so up close a seam shows between the two: all of it again 0.01 over fills that, its edges inside the rest.
 	 */
 	private static void drawBold(FontRenderer font, String text, int color) {
-		float x = -(font.getStringWidth(text) + text.length()) / 2F;
-		for (char c : text.toCharArray()) {
-			String ch = String.valueOf(c);
-			font.drawString(ch, x, 0, color, false);
-			font.drawString(ch, x + 0.01F, 0, color, false);
-			font.drawString(ch, x + 1, 0, color, false);
-			x += font.getCharWidth(c) + 1;
-		}
+		String bold = TextFormatting.BOLD + text;
+		float x = -font.getStringWidth(bold) / 2F;
+		font.drawString(bold, x, 0, color, false);
+		font.drawString(bold, x + 0.01F, 0, color, false);
 	}
 
 	/** A bar by each slot, filled as far as the slot is; see-through while the tool is set to show the hidden ones. */
