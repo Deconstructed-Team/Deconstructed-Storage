@@ -2,6 +2,7 @@ package dev.feldsher.deconstructedstorage.block;
 
 import dev.feldsher.deconstructedcore.util.InventoryHelper;
 import dev.feldsher.deconstructedstorage.item.ChestBlockItem;
+import dev.feldsher.deconstructedstorage.item.StackStorageWrapper;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
 import net.minecraft.block.Block;
@@ -174,8 +175,14 @@ public class ChestBlock extends WoodStorageBlockBase {
 		boolean sameLook = StorageBlockItem.getMainColor(stack).orElse(-1) == wrapper.getMainColor()
 				&& StorageBlockItem.getAccentColor(stack).orElse(-1) == wrapper.getAccentColor()
 				&& WoodStorageBlockItem.getWoodType(stack).orElse(WoodType.DEFAULT) == be.getWoodType().orElse(WoodType.DEFAULT);
-		// a stack carries no upgrades yet: the neighbor may have them, and becomes the main half
-		return sameLook ? neighborState.getValue(FACING) : null;
+		// the half with upgrades becomes the main one: only one of them may have any, or the other's would go
+		boolean upgradesFromOneHalf = !hasUpgrades(stack) || InventoryHelper.isEmpty(wrapper.getUpgradeHandler());
+		return sameLook && upgradesFromOneHalf ? neighborState.getValue(FACING) : null;
+	}
+
+	/** A packed chest's stack carries its upgrades along with its items. */
+	private static boolean hasUpgrades(ItemStack stack) {
+		return StorageBlockItem.getContentsUuid(stack).isPresent() && !InventoryHelper.isEmpty(StackStorageWrapper.fromStack(stack).getUpgradeHandler());
 	}
 
 	@Override
