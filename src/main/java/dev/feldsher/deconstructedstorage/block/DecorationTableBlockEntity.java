@@ -302,6 +302,10 @@ public class DecorationTableBlockEntity extends TileEntity {
 	}
 
 	public void setSlotMaterialInheritance(int slot, boolean value) {
+		// a material slot's, which the client is held to: any other would only grow what's saved and sent
+		if (slot < TOP_INNER_TRIM_SLOT || slot > BOTTOM_CORE_SLOT) {
+			return;
+		}
 		if (value) {
 			slotMaterialInheritance.remove(slot);
 		} else {
@@ -401,7 +405,10 @@ public class DecorationTableBlockEntity extends TileEntity {
 		NBTTagList inheritance = tag.getTagList("slotMaterialInheritance", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < inheritance.tagCount(); i++) {
 			NBTTagCompound slotTag = inheritance.getCompoundTagAt(i);
-			slotMaterialInheritance.put(slotTag.getInteger("slot"), slotTag.getBoolean("value"));
+			int slot = slotTag.getInteger("slot");
+			if (slot >= TOP_INNER_TRIM_SLOT && slot <= BOTTOM_CORE_SLOT) {
+				slotMaterialInheritance.put(slot, slotTag.getBoolean("value"));
+			}
 		}
 		remainingParts.clear();
 		NBTTagCompound remainingPartsTag = tag.getCompoundTag("remainingParts");
