@@ -43,6 +43,13 @@ public class ShulkerBoxItem extends StorageBlockItem implements IStashStorageIte
 
 	/** Items to go into the box as it's placed, as a vanilla box's crafted into this one: kept as vanilla keeps them. */
 	public static void setPendingItems(ItemStack stack, NBTTagList items) {
+		if (items.isEmpty()) {
+			NBTTagCompound tag = stack.getTagCompound();
+			if (tag != null) {
+				tag.removeTag(PENDING_ITEMS_TAG);
+			}
+			return;
+		}
 		StorageNbt.getOrCreateTag(stack).setTag(PENDING_ITEMS_TAG, items);
 	}
 

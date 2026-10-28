@@ -7,6 +7,7 @@ import dev.feldsher.deconstructedstorage.block.StorageWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 /**
  * A storage carried as an item, as a shulker box with what it holds: its contents by the UUID on the stack, with the
@@ -34,7 +35,36 @@ public class StackStorageWrapper extends StorageWrapper {
 
 	@Override
 	protected void save() {
-		getContentsUuid().ifPresent(uuid -> StorageBlockItem.setContents(storageStack, uuid, getNumberOfInventorySlots(), getNumberOfUpgradeSlots()));
+		getContentsUuid().ifPresent(uuid -> {
+			StorageBlockItem.setContents(storageStack, uuid, getNumberOfInventorySlots(), getNumberOfUpgradeSlots());
+			movePendingItemsIn();
+		});
+	}
+
+	/**
+	 * A vanilla box's items, crafted into this one, go into the contents as soon as it has them: kept apart, placing
+	 * the box would put them over what went in since.
+	 */
+	private void movePendingItemsIn() {
+		if (!(storageStack.getItem() instanceof ShulkerBoxItem)) {
+			return;
+		}
+		NBTTagList pendingItems = ShulkerBoxItem.getPendingItems(storageStack);
+		if (pendingItems.isEmpty()) {
+			return;
+		}
+		ShulkerBoxItem.setPendingItems(storageStack, new NBTTagList());
+		NBTTagList left = new NBTTagList();
+		for (int i = 0; i < pendingItems.tagCount(); i++) {
+			NBTTagCompound itemTag = pendingItems.getCompoundTagAt(i);
+			ItemStack remainder = getInventoryHandler().insertItem(new ItemStack(itemTag), false);
+			if (!remainder.isEmpty()) {
+				NBTTagCompound remainderTag = remainder.writeToNBT(new NBTTagCompound());
+				remainderTag.setByte("Slot", itemTag.getByte("Slot"));
+				left.appendTag(remainderTag);
+			}
+		}
+		ShulkerBoxItem.setPendingItems(storageStack, left);
 	}
 
 	@Override

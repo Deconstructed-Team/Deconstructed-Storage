@@ -53,6 +53,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	private List<ITickableUpgrade> tickableUpgrades = null;
 	private boolean isDroppingContents = false;
 	private boolean contentsMovedToItem = false;
+	private boolean contentsFromPlacedItem = false;
 	private boolean beingUpgraded = false;
 	private boolean locked = false;
 	private boolean showLock = true;
@@ -623,9 +624,21 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		return contentsMovedToItem;
 	}
 
+	/** Its contents are the ones the stack it was placed from carried, by UUID. */
+	public void setContentsFromPlacedItem() {
+		contentsFromPlacedItem = true;
+	}
+
 	/** Its items, and its upgrades, onto the ground; the contents themselves then go, with nothing left to hold. */
 	public void dropContents() {
 		if (world == null || world.isRemote || contentsMovedToItem || beingUpgraded || !storageWrapper.getContentsUuid().isPresent()) {
+			return;
+		}
+		if (world.restoringBlockSnapshots) {
+			// a placement undone, as a claim refuses it: the stack comes back as it was, with the contents it carries
+			if (!contentsFromPlacedItem) {
+				storageWrapper.removeContents();
+			}
 			return;
 		}
 		isDroppingContents = true;

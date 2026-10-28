@@ -190,8 +190,15 @@ public class ShulkerBoxBlock extends StorageBlockBase {
 				for (int i = 0; i < pendingItems.tagCount(); i++) {
 					NBTTagCompound itemTag = pendingItems.getCompoundTagAt(i);
 					int slot = itemTag.getByte("Slot") & 255;
-					if (slot < inventoryHandler.getSlots()) {
-						inventoryHandler.setStackInSlot(slot, new ItemStack(itemTag));
+					ItemStack pendingStack = new ItemStack(itemTag);
+					if (slot < inventoryHandler.getSlots() && inventoryHandler.getStackInSlot(slot).isEmpty()) {
+						inventoryHandler.setStackInSlot(slot, pendingStack);
+						continue;
+					}
+					// its slot taken: anywhere, else on the ground
+					ItemStack remainder = inventoryHandler.insertItem(pendingStack, false);
+					if (!remainder.isEmpty()) {
+						spawnAsEntity(be.getWorld(), be.getPos(), remainder);
 					}
 				}
 			}

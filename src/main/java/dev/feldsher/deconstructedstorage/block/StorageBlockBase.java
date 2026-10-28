@@ -177,8 +177,11 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 	/** The contents a stack carries become the storage's, at the size the stack says. */
 	protected void setPlacedData(ItemStack stack, StorageBlockEntity be) {
 		if (be.getWorld() != null && !be.getWorld().isRemote) {
-			StorageBlockItem.getContentsUuid(stack).ifPresent(uuid -> be.getStorageWrapper().setContents(uuid,
-					StorageBlockItem.getNumberOfInventorySlots(stack, getNumberOfInventorySlots()), StorageBlockItem.getNumberOfUpgradeSlots(stack, getNumberOfUpgradeSlots())));
+			StorageBlockItem.getContentsUuid(stack).ifPresent(uuid -> {
+				be.getStorageWrapper().setContents(uuid, StorageBlockItem.getNumberOfInventorySlots(stack, getNumberOfInventorySlots()),
+						StorageBlockItem.getNumberOfUpgradeSlots(stack, getNumberOfUpgradeSlots()));
+				be.setContentsFromPlacedItem();
+			});
 		}
 	}
 
@@ -220,6 +223,16 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		drops.add(getDropWithContents(world, pos, state));
+	}
+
+	/**
+	 * One that goes with what it holds always drops, as vanilla's shulker box: getDrops has its contents moved to the
+	 * stack already, and an explosion's chance would leave them with nothing.
+	 */
+	@Override
+	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		super.dropBlockAsItemWithChance(world, pos, state, be != null && dropsWithContents(be) ? 1 : chance, fortune);
 	}
 
 	/** Creative breaking drops nothing: one that goes with what it holds drops itself all the same, not to lose it. */
