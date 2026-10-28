@@ -145,6 +145,11 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		}
 	}
 
+	/** The inventory grew or shrank, as a tier up or an upgrade taking columns: a controller's slots move. */
+	protected void onInventorySlotsChanged() {
+		//noop by default
+	}
+
 	/** Whether the render info has every slot's count and fill ratio, as a limited barrel's front shows them. */
 	protected boolean showsCountsAndFillLevels() {
 		return false;
@@ -337,6 +342,9 @@ public abstract class StorageWrapper implements IStorageWrapper {
 			getUpgradeHandler().increaseSize(additionalUpgradeSlots);
 		}
 		save();
+		if (additionalInventorySlots != 0) {
+			onInventorySlotsChanged();
+		}
 	}
 
 	@Override
@@ -421,6 +429,9 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		if (hasChanged && originalColumnsTaken != columnsTaken && contentsUuid != null) {
 			getInventoryHandler().changeSlots((originalColumnsTaken - columnsTaken) * getNumberOfSlotRows());
 			refreshInventoryForUpgradeProcessing();
+			save();
+			onInventorySlotsChanged();
+			return;
 		}
 		save();
 	}

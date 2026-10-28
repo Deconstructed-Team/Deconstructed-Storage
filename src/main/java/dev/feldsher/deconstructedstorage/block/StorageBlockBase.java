@@ -117,6 +117,9 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 				be.setCustomName(stack.getDisplayName());
 			}
 			setPlacedData(stack, be);
+			if (!world.isRemote) {
+				be.tryToAddToController();
+			}
 			if (placer != null && placer.getHeldItemOffhand().getItem() instanceof StorageToolItem) {
 				StorageToolItem.useOffHandOnPlaced(placer.getHeldItemOffhand(), be);
 			}
@@ -200,6 +203,9 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 		StorageBlockEntity be = getStorageBlockEntity(world, pos);
 		if (be != null) {
 			be.setRemovedState(state);
+			if (!be.isBeingUpgraded()) {
+				be.removeFromController();
+			}
 			be.dropContents();
 			world.updateComparatorOutputLevel(pos, this);
 		}

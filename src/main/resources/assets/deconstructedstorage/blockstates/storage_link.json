@@ -1,0 +1,30 @@
+{
+    "variants": {
+        "facing=down": {
+            "model": "deconstructedstorage:storage_link",
+            "x": 180
+        },
+        "facing=east": {
+            "model": "deconstructedstorage:storage_link",
+            "x": 90,
+            "y": 90
+        },
+        "facing=north": {
+            "model": "deconstructedstorage:storage_link",
+            "x": 90
+        },
+        "facing=south": {
+            "model": "deconstructedstorage:storage_link",
+            "x": 90,
+            "y": 180
+        },
+        "facing=up": {
+            "model": "deconstructedstorage:storage_link"
+        },
+        "facing=west": {
+            "model": "deconstructedstorage:storage_link",
+            "x": 90,
+            "y": 270
+        }
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+        "top": "deconstructedstorage:block/controller_top",
+        "bottom": "deconstructedstorage:block/controller_top",
+        "side": "deconstructedstorage:block/controller_side"
+    }
+}

@@ -58,9 +58,20 @@ public class ChestBlockEntity extends WoodStorageBlockEntity {
 		markDirty();
 	}
 
+	/** Single again: in a controller's network, it's now a storage of its own, not only what joins the other half. */
 	public void removeDoubleMainPos() {
 		doubleMainPos = null;
 		markDirty();
+		if (world != null && !world.isRemote && getControllerPos().isPresent()) {
+			removeFromController();
+			tryToAddToController();
+		}
+	}
+
+	/** The second half of a double chest has no inventory of its own: in a controller's network, it only joins. */
+	@Override
+	public boolean hasStorageData() {
+		return doubleMainPos == null;
 	}
 
 	public void setDestroyedByPlayer() {
@@ -111,6 +122,11 @@ public class ChestBlockEntity extends WoodStorageBlockEntity {
 			getStorageWrapper().removeContents();
 		}
 		mainBE.notifyBlockUpdate();
+		if (world != null && !world.isRemote) {
+			removeFromController();
+			setNotLinked();
+			tryToAddToController();
+		}
 	}
 
 	private static void copySettings(ChestBlockEntity from, ChestBlockEntity to, int startFromSlot, int slotOffset) {

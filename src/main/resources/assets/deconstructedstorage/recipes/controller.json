@@ -1,0 +1,46 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:controller"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:barrel"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:chest"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SCS",
+    "PBP",
+    "SCS"
+  ],
+  "key": {
+    "B": [
+      {
+        "item": "deconstructedstorage:barrel"
+      },
+      {
+        "item": "deconstructedstorage:chest"
+      }
+    ],
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:controller"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:storage_output"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:barrel"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:chest"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "PBP",
+    "SRS"
+  ],
+  "key": {
+    "B": [
+      {
+        "item": "deconstructedstorage:barrel"
+      },
+      {
+        "item": "deconstructedstorage:chest"
+      }
+    ],
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:storage_output"
+  }
+}

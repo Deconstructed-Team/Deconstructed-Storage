@@ -6,6 +6,12 @@ import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.BarrelBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ChestBlock;
 import dev.feldsher.deconstructedstorage.block.ChestBlockEntity;
+import dev.feldsher.deconstructedstorage.block.ControllerBlock;
+import dev.feldsher.deconstructedstorage.block.ControllerBlockEntity;
+import dev.feldsher.deconstructedstorage.block.StorageIOBlock;
+import dev.feldsher.deconstructedstorage.block.StorageIOBlockEntity;
+import dev.feldsher.deconstructedstorage.block.StorageLinkBlock;
+import dev.feldsher.deconstructedstorage.block.StorageLinkBlockEntity;
 import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlock;
 import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlock;
@@ -98,6 +104,12 @@ public class ModBlocks {
 	public static final LimitedBarrelBlock LIMITED_NETHERITE_BARREL_4 = block(new LimitedBarrelBlock(4, () -> Config.SERVER.netheriteLimitedBarrel4.baseSlotLimitMultiplier,
 			() -> Config.SERVER.netheriteLimitedBarrel4.upgradeSlotCount, false), "limited_netherite_barrel_4");
 
+	public static final ControllerBlock CONTROLLER = block(new ControllerBlock(), "controller");
+	public static final StorageLinkBlock STORAGE_LINK = block(new StorageLinkBlock(), "storage_link");
+	public static final StorageIOBlock STORAGE_IO = block(new StorageIOBlock(StorageIOBlockEntity::new), "storage_io");
+	public static final StorageIOBlock STORAGE_INPUT = block(new StorageIOBlock(StorageIOBlockEntity.Input::new), "storage_input");
+	public static final StorageIOBlock STORAGE_OUTPUT = block(new StorageIOBlock(StorageIOBlockEntity.Output::new), "storage_output");
+
 	static {
 		// as 1.21's netherite storages, 1200: 1.12 keeps three times what it's given
 		NETHERITE_BARREL.setResistance(400);
@@ -184,6 +196,17 @@ public class ModBlocks {
 		return getEnabledTiers(Config.SERVER.shulkerBoxesEnabled, SHULKER_BOX, COPPER_SHULKER_BOX, IRON_SHULKER_BOX, GOLD_SHULKER_BOX, DIAMOND_SHULKER_BOX, NETHERITE_SHULKER_BOX);
 	}
 
+	/** The controller and what joins its network besides storages. */
+	public static List<Block> getNetworkBlocks() {
+		List<Block> blocks = new ArrayList<>();
+		blocks.add(CONTROLLER);
+		blocks.add(STORAGE_LINK);
+		blocks.add(STORAGE_IO);
+		blocks.add(STORAGE_INPUT);
+		blocks.add(STORAGE_OUTPUT);
+		return blocks;
+	}
+
 	public static List<Block> getAllBlocks() {
 		List<Block> blocks = new ArrayList<>(getBarrels());
 		blocks.addAll(getLimitedBarrels());
@@ -202,6 +225,12 @@ public class ModBlocks {
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		getAllBlocks().forEach(event.getRegistry()::register);
+		getNetworkBlocks().forEach(event.getRegistry()::register);
+		GameRegistry.registerTileEntity(ControllerBlockEntity.class, DeconstructedStorage.getRL("controller"));
+		GameRegistry.registerTileEntity(StorageLinkBlockEntity.class, DeconstructedStorage.getRL("storage_link"));
+		GameRegistry.registerTileEntity(StorageIOBlockEntity.class, DeconstructedStorage.getRL("storage_io"));
+		GameRegistry.registerTileEntity(StorageIOBlockEntity.Input.class, DeconstructedStorage.getRL("storage_input"));
+		GameRegistry.registerTileEntity(StorageIOBlockEntity.Output.class, DeconstructedStorage.getRL("storage_output"));
 		GameRegistry.registerTileEntity(BarrelBlockEntity.class, DeconstructedStorage.getRL("barrel"));
 		GameRegistry.registerTileEntity(LimitedBarrelBlockEntity.class, DeconstructedStorage.getRL("limited_barrel"));
 		GameRegistry.registerTileEntity(ChestBlockEntity.class, DeconstructedStorage.getRL("chest"));

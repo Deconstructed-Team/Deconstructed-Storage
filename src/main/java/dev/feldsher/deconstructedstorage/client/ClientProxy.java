@@ -3,6 +3,8 @@ package dev.feldsher.deconstructedstorage.client;
 import dev.feldsher.deconstructedstorage.CommonProxy;
 import dev.feldsher.deconstructedstorage.block.BarrelBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ChestBlockEntity;
+import dev.feldsher.deconstructedstorage.block.ControllerBlockEntity;
+import dev.feldsher.deconstructedstorage.client.render.ControllerRenderer;
 import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlockEntity;
 import dev.feldsher.deconstructedstorage.client.gui.LimitedBarrelScreen;
 import dev.feldsher.deconstructedstorage.client.gui.LimitedBarrelSettingsScreen;
@@ -24,6 +26,7 @@ public class ClientProxy extends CommonProxy {
 	public void preInit() {
 		ClientRegistry.bindTileEntitySpecialRenderer(BarrelBlockEntity.class, new BarrelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(LimitedBarrelBlockEntity.class, new LimitedBarrelRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(ControllerBlockEntity.class, new ControllerRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ChestBlockEntity.class, new ChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ShulkerBoxBlockEntity.class, new ShulkerBoxRenderer());
 	}

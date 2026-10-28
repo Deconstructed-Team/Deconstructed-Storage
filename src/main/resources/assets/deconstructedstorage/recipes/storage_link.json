@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:storage_link"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "EP",
+    "RS"
+  ],
+  "key": {
+    "E": {
+      "type": "forge:ore_dict",
+      "ore": "enderpearl"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:storage_link"
+  }
+}

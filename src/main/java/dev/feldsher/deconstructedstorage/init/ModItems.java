@@ -185,6 +185,9 @@ public class ModItems {
 		for (ShulkerBoxBlock shulkerBox : ModBlocks.getShulkerBoxes()) {
 			items.add(itemBlock(new ShulkerBoxItem(shulkerBox)));
 		}
+		for (net.minecraft.block.Block block : ModBlocks.getNetworkBlocks()) {
+			items.add(itemBlock(new ItemBlock(block)));
+		}
 		items.addAll(getTierUpgrades());
 		items.add(UPGRADE_BASE);
 		items.add(PACKING_TAPE);

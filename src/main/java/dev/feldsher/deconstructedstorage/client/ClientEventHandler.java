@@ -47,6 +47,9 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
+		for (Block block : ModBlocks.getNetworkBlocks()) {
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Objects.requireNonNull(block.getRegistryName()), "inventory"));
+		}
 		for (Block block : ModBlocks.getAllBlocks()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Objects.requireNonNull(block.getRegistryName()), "inventory"));
 		}

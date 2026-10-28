@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": {
+            "model": "deconstructedstorage:storage_output"
+        }
+    }
+}

@@ -43,11 +43,20 @@ public abstract class WoodStorageBlockEntity extends StorageBlockEntity {
 		return packed;
 	}
 
+	/** Packed, it leaves its controller's network: nothing reaches in. */
 	public void setPacked(boolean packed) {
+		if (packed && !this.packed && world != null && !world.isRemote) {
+			removeFromController();
+		}
 		this.packed = packed;
 		refreshTickableUpgrades();
 		markDirty();
 		notifyBlockUpdate();
+	}
+
+	@Override
+	public boolean canBeConnected() {
+		return !packed && super.canBeConnected();
 	}
 
 	@Override

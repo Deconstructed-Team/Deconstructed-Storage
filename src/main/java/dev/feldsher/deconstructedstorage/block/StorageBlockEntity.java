@@ -21,18 +21,28 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import dev.feldsher.deconstructedcore.controller.IControllableStorage;
+import dev.feldsher.deconstructedcore.controller.ILinkable;
+import dev.feldsher.deconstructedcore.inventory.IItemHandlerSimpleInserter;
+
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * A placed storage. It keeps what its contents are, by UUID, and how it looks; the contents are in
  * {@link StorageBlockContents}. It ticks only for upgrades that tick: 1.12 can't take a block entity in and out of the
  * ticking list as 1.21 swaps its ticker, so it asks the upgrades each tick, from a list made again as they change.
+ * <p>
+ * Next to a controller's network, or linked to one with the storage tool, it's part of the controller's inventory.
  */
-public abstract class StorageBlockEntity extends TileEntity implements ITickable {
+public abstract class StorageBlockEntity extends TileEntity implements ITickable, IControllableStorage, ILinkable {
 	public static final String STORAGE_WRAPPER_TAG = "storageWrapper";
 	private static final String DISPLAY_NAME_TAG = "displayName";
 	private static final int OPENERS_EVENT = 1;
+	private static final String LINKED_TO_CONTROLLER_TAG = "isLinkedToController";
 
 	private final StorageWrapper storageWrapper;
 	@Nullable
@@ -56,6 +66,10 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	private LockedItemHandler lockedItemHandler = null;
 	@Nullable
 	private IBlockState removedState = null;
+	@Nullable
+	private BlockPos controllerPos = null;
+	private boolean isLinkedToController = false;
+	private boolean chunkBeingUnloaded = false;
 
 	protected StorageBlockEntity() {
 		storageWrapper = new StorageWrapper(this::onWrapperChanged) {
@@ -110,6 +124,11 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 			@Override
 			protected boolean showsCountsAndFillLevels() {
 				return StorageBlockEntity.this.showsCountsAndFillLevels();
+			}
+
+			@Override
+			protected void onInventorySlotsChanged() {
+				changeSlots(getItemHandlerForIO().getSlots());
 			}
 		};
 	}
@@ -321,6 +340,8 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		super.readFromNBT(compound);
 		storageWrapper.load(compound.getCompoundTag(STORAGE_WRAPPER_TAG));
 		loadSynchronizedData(compound);
+		loadControllerPos(compound);
+		isLinkedToController = compound.getBoolean(LINKED_TO_CONTROLLER_TAG);
 	}
 
 	@Override
@@ -328,7 +349,111 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		super.writeToNBT(compound);
 		compound.setTag(STORAGE_WRAPPER_TAG, storageWrapper.save(new NBTTagCompound()));
 		saveSynchronizedData(compound);
+		saveControllerPos(compound);
+		if (isLinkedToController) {
+			compound.setBoolean(LINKED_TO_CONTROLLER_TAG, true);
+		}
 		return compound;
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (world != null && !world.isRemote) {
+			registerWithControllerOnLoad();
+		}
+	}
+
+	@Override
+	public void onChunkUnload() {
+		super.onChunkUnload();
+		chunkBeingUnloaded = true;
+	}
+
+	public boolean isChunkBeingUnloaded() {
+		return chunkBeingUnloaded;
+	}
+
+	@Override
+	public void setControllerPos(BlockPos controllerPos) {
+		this.controllerPos = controllerPos;
+		markDirty();
+	}
+
+	@Override
+	public Optional<BlockPos> getControllerPos() {
+		return Optional.ofNullable(controllerPos);
+	}
+
+	@Override
+	public void removeControllerPos() {
+		if (controllerPos != null) {
+			controllerPos = null;
+			markDirty();
+		}
+	}
+
+	@Override
+	public BlockPos getStorageBlockPos() {
+		return getPos();
+	}
+
+	@Override
+	public World getStorageBlockLevel() {
+		return world;
+	}
+
+	@Override
+	public void linkToController(BlockPos controllerPos) {
+		if (getControllerPos().isPresent()) {
+			return;
+		}
+		isLinkedToController = true;
+		ILinkable.super.linkToController(controllerPos);
+		markDirty();
+	}
+
+	@Override
+	public boolean isLinked() {
+		return isLinkedToController && getControllerPos().isPresent();
+	}
+
+	@Override
+	public void setNotLinked() {
+		ILinkable.super.setNotLinked();
+		isLinkedToController = false;
+		markDirty();
+	}
+
+	/** Linked from afar, it's in the network by itself: what's next to it isn't. */
+	@Override
+	public boolean canConnectStorages() {
+		return !isLinkedToController;
+	}
+
+	@Override
+	public Set<BlockPos> getConnectablePositions() {
+		return Collections.emptySet();
+	}
+
+	@Override
+	public boolean connectLinkedSelf() {
+		return true;
+	}
+
+	@Override
+	public boolean canBeConnected() {
+		return isLinked() || IControllableStorage.super.canBeConnected();
+	}
+
+	@Override
+	public IItemHandlerSimpleInserter getControllerInventory() {
+		return getItemHandlerForIO();
+	}
+
+	@Override
+	public boolean emptySlotsAcceptItems() {
+		return !isLocked() || allowsEmptySlotsMatchingItemInsertsWhenLocked();
 	}
 
 	protected void saveSynchronizedData(NBTTagCompound tag) {
@@ -522,17 +647,20 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			StorageBlockEntity main = getMainBlockEntity();
-			if (main.isLocked()) {
-				if (main.lockedItemHandler == null) {
-					StorageWrapper mainWrapper = main.getStorageWrapper();
-					main.lockedItemHandler = new LockedItemHandler(mainWrapper::getInventoryForInputOutput, mainWrapper::getInventoryHandler,
-							() -> mainWrapper.getSettingsHandler().getTypeCategory(MemorySettingsCategory.class), main.allowsEmptySlotsMatchingItemInsertsWhenLocked());
-				}
-				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(main.lockedItemHandler);
-			}
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(main.getStorageWrapper().getInventoryForInputOutput());
+			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(getMainBlockEntity().getItemHandlerForIO());
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	/** What pipes and a controller put items in and take them from: through the filters, and the lock when locked. */
+	public IItemHandlerSimpleInserter getItemHandlerForIO() {
+		if (isLocked()) {
+			if (lockedItemHandler == null) {
+				lockedItemHandler = new LockedItemHandler(storageWrapper::getInventoryForInputOutput, storageWrapper::getInventoryHandler,
+						() -> storageWrapper.getSettingsHandler().getTypeCategory(MemorySettingsCategory.class), allowsEmptySlotsMatchingItemInsertsWhenLocked());
+			}
+			return lockedItemHandler;
+		}
+		return storageWrapper.getInventoryForInputOutput();
 	}
 }

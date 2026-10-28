@@ -3,7 +3,7 @@ package dev.feldsher.deconstructedstorage.block;
 import dev.feldsher.deconstructedcore.inventory.InventoryHandler;
 import dev.feldsher.deconstructedcore.settings.memory.MemorySettingsCategory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import dev.feldsher.deconstructedcore.inventory.IItemHandlerSimpleInserter;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
@@ -14,13 +14,13 @@ import java.util.function.Supplier;
  * One whose empty slots don't take what other slots hold, as a limited barrel, fills empty slots only by what they
  * remember. The rest it hands out and reports as its inventory does.
  */
-class LockedItemHandler implements IItemHandler {
-	private final Supplier<IItemHandler> inputOutput;
+class LockedItemHandler implements IItemHandlerSimpleInserter {
+	private final Supplier<IItemHandlerSimpleInserter> inputOutput;
 	private final Supplier<InventoryHandler> inventory;
 	private final Supplier<MemorySettingsCategory> memorySettings;
 	private final boolean emptySlotsTakeMatchingItems;
 
-	LockedItemHandler(Supplier<IItemHandler> inputOutput, Supplier<InventoryHandler> inventory, Supplier<MemorySettingsCategory> memorySettings,
+	LockedItemHandler(Supplier<IItemHandlerSimpleInserter> inputOutput, Supplier<InventoryHandler> inventory, Supplier<MemorySettingsCategory> memorySettings,
 			boolean emptySlotsTakeMatchingItems) {
 		this.inputOutput = inputOutput;
 		this.inventory = inventory;
@@ -68,6 +68,27 @@ class LockedItemHandler implements IItemHandler {
 			}
 		}
 		return false;
+	}
+
+	/** Into the whole inventory, as a controller puts items away: only where a slot would take it in. */
+	@Override
+	public ItemStack insertItem(ItemStack stack, boolean simulate) {
+		if (stack.isEmpty() || !isAllowed(stack)) {
+			return stack;
+		}
+		if (emptySlotsTakeMatchingItems) {
+			return inputOutput.get().insertItem(stack, simulate);
+		}
+		ItemStack remaining = stack;
+		for (int slot = 0; slot < getSlots() && !remaining.isEmpty(); slot++) {
+			remaining = insertItem(slot, remaining, simulate);
+		}
+		return remaining;
+	}
+
+	@Override
+	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+		inputOutput.get().setStackInSlot(slot, stack);
 	}
 
 	@Nonnull

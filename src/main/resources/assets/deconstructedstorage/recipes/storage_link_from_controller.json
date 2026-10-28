@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:storage_link"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:controller"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "deconstructedstorage:controller"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "enderpearl"
+    }
+  ],
+  "result": {
+    "item": "deconstructedstorage:storage_link",
+    "count": 3
+  }
+}
