@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:paintbrush"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " W ",
+    " SW",
+    "S  "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "blockWool"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:paintbrush"
+  }
+}

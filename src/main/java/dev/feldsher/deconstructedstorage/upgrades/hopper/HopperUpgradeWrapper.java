@@ -29,6 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 /**
  * Pulls items in from the inventories on its pull sides and pushes them out to those on its push sides, a stack of up
@@ -46,7 +47,7 @@ public class HopperUpgradeWrapper extends UpgradeWrapperBase<HopperUpgradeWrappe
 	private final TargetContentsFilterLogic outputFilterLogic;
 	private long coolDownTime = 0;
 
-	protected HopperUpgradeWrapper(IStorageWrapper storageWrapper, ItemStack upgrade, java.util.function.Consumer<ItemStack> upgradeSaveHandler) {
+	protected HopperUpgradeWrapper(IStorageWrapper storageWrapper, ItemStack upgrade, Consumer<ItemStack> upgradeSaveHandler) {
 		super(storageWrapper, upgrade, upgradeSaveHandler);
 		inputFilterLogic = new ContentsFilterLogic(upgrade, this.upgradeSaveHandler, upgradeItem.getInputFilterSlotCount(), storageWrapper::getInventoryHandler, "input_filter_attributes");
 		outputFilterLogic = new TargetContentsFilterLogic(upgrade, this.upgradeSaveHandler, upgradeItem.getOutputFilterSlotCount(), storageWrapper::getInventoryHandler, "output_filter_attributes");

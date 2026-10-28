@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import net.minecraft.init.Blocks;
 
 /**
  * A placed storage. It keeps what its contents are, by UUID, and how it looks; the contents are in
@@ -147,7 +148,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		if (removedState != null) {
 			return removedState;
 		}
-		return world != null ? world.getBlockState(pos) : net.minecraft.init.Blocks.AIR.getDefaultState();
+		return world != null ? world.getBlockState(pos) : Blocks.AIR.getDefaultState();
 	}
 
 	/** Called as its block is broken, before its items drop. */
@@ -235,7 +236,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		if (tickableUpgrades == null) {
 			// none until the contents exist: a storage nobody opened has no upgrades
 			tickableUpgrades = storageWrapper.getContentsUuid().isPresent()
-					? storageWrapper.getUpgradeHandler().getWrappersThatImplement(ITickableUpgrade.class) : java.util.Collections.emptyList();
+					? storageWrapper.getUpgradeHandler().getWrappersThatImplement(ITickableUpgrade.class) : Collections.emptyList();
 		}
 		for (ITickableUpgrade upgrade : tickableUpgrades) {
 			upgrade.tick(null, world, pos);

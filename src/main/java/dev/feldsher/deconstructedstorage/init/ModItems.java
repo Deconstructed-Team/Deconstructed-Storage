@@ -27,6 +27,7 @@ import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlock;
 import dev.feldsher.deconstructedstorage.block.StorageTier;
 import dev.feldsher.deconstructedstorage.block.WoodType;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
+import dev.feldsher.deconstructedstorage.item.PaintbrushItem;
 import dev.feldsher.deconstructedstorage.item.ChestBlockItem;
 import dev.feldsher.deconstructedstorage.item.PackingTapeItem;
 import dev.feldsher.deconstructedstorage.item.ShulkerBoxItem;
@@ -46,6 +47,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import net.minecraft.block.Block;
 
 @Mod.EventBusSubscriber(modid = DeconstructedStorage.MOD_ID)
 public class ModItems {
@@ -54,7 +56,7 @@ public class ModItems {
 	public static final CreativeTabs CREATIVE_TAB = new CreativeTabs(DeconstructedStorage.MOD_ID) {
 		@Override
 		public ItemStack createIcon() {
-			List<net.minecraft.block.Block> blocks = ModBlocks.getAllBlocks();
+			List<Block> blocks = ModBlocks.getAllBlocks();
 			// the gold barrel, or with barrels off whatever's left
 			return WoodStorageBlockItem.setWoodType(new ItemStack(blocks.contains(ModBlocks.GOLD_BARREL) || blocks.isEmpty() ? ModBlocks.GOLD_BARREL : blocks.get(0)), WoodType.SPRUCE);
 		}
@@ -167,6 +169,8 @@ public class ModItems {
 			STACK_UPGRADE_TIER_1, STACK_UPGRADE_TIER_1_PLUS, STACK_UPGRADE_TIER_2, STACK_UPGRADE_TIER_3, STACK_UPGRADE_TIER_4, STACK_UPGRADE_TIER_5,
 			STACK_DOWNGRADE_TIER_1, STACK_DOWNGRADE_TIER_2, STACK_DOWNGRADE_TIER_3, STACK_UPGRADE_OMEGA_TIER, COMPRESSION_UPGRADE, HOPPER_UPGRADE, ADVANCED_HOPPER_UPGRADE));
 
+	public static final PaintbrushItem PAINTBRUSH = item(new PaintbrushItem(), "paintbrush");
+
 	public static boolean isStorageUpgrade(Item item) {
 		return STORAGE_UPGRADES.contains(item);
 	}
@@ -185,13 +189,14 @@ public class ModItems {
 		for (ShulkerBoxBlock shulkerBox : ModBlocks.getShulkerBoxes()) {
 			items.add(itemBlock(new ShulkerBoxItem(shulkerBox)));
 		}
-		for (net.minecraft.block.Block block : ModBlocks.getNetworkBlocks()) {
+		for (Block block : ModBlocks.getNetworkBlocks()) {
 			items.add(itemBlock(new ItemBlock(block)));
 		}
 		items.addAll(getTierUpgrades());
 		items.add(UPGRADE_BASE);
 		items.add(PACKING_TAPE);
 		items.add(STORAGE_TOOL);
+		items.add(PAINTBRUSH);
 		items.addAll(STORAGE_UPGRADES);
 		return items;
 	}

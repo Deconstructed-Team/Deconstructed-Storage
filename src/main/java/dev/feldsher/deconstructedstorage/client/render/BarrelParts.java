@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
+import java.util.function.Supplier;
 
 /**
  * The parts a barrel's model is put together from, as 1.21's barrel model has them: the wood, closed or open, or the
@@ -219,7 +221,7 @@ public final class BarrelParts {
 			ModelRotation rotation, @Nullable EnumFacing side) {
 		String top = limitedSlots > 0 ? BLOCK + "limited_" + woodType.getName() + "_barrel_" + limitedSlots + "_top" : BLOCK + woodType.getName() + "_barrel_top";
 		String prefix = BLOCK + woodType.getName() + "_barrel_";
-		Map<String, String> textures = new java.util.TreeMap<>();
+		Map<String, String> textures = new TreeMap<>();
 		textures.put("top", top);
 		textures.put("top_trim", top);
 		textures.put("top_inner_trim", top);
@@ -285,12 +287,12 @@ public final class BarrelParts {
 		return barrel instanceof BarrelBlock && path.endsWith("_barrel") ? path.substring(0, path.length() - "_barrel".length()) : "wood";
 	}
 
-	private static List<BakedQuad> getQuads(String key, ResourceLocation model, java.util.function.Supplier<ImmutableMap<String, String>> textures,
+	private static List<BakedQuad> getQuads(String key, ResourceLocation model, Supplier<ImmutableMap<String, String>> textures,
 			ModelRotation rotation, @Nullable EnumFacing side) {
 		return getQuads(key, Collections.singletonList(model), textures, rotation, side);
 	}
 
-	private static List<BakedQuad> getQuads(String key, List<ResourceLocation> models, java.util.function.Supplier<ImmutableMap<String, String>> textures,
+	private static List<BakedQuad> getQuads(String key, List<ResourceLocation> models, Supplier<ImmutableMap<String, String>> textures,
 			ModelRotation rotation, @Nullable EnumFacing side) {
 		Map<EnumFacing, List<BakedQuad>> bySide = BAKED.computeIfAbsent(key, k -> new EnumMap<>(ModelRotation.class))
 				.computeIfAbsent(rotation, r -> bake(models, textures.get(), r));

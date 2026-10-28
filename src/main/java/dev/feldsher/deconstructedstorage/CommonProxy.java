@@ -4,6 +4,7 @@ import dev.feldsher.deconstructedstorage.common.gui.StorageContainerMenu;
 import dev.feldsher.deconstructedstorage.common.gui.StorageSettingsContainerMenu;
 
 import javax.annotation.Nullable;
+import dev.feldsher.deconstructedstorage.common.gui.DecorationTableMenu;
 
 /** What only one side does. The server's half does nothing; the client's is {@link dev.feldsher.deconstructedstorage.client.ClientProxy}. */
 public class CommonProxy {
@@ -21,7 +22,7 @@ public class CommonProxy {
 	}
 
 	@Nullable
-	public Object createDecorationTableScreen(dev.feldsher.deconstructedstorage.common.gui.DecorationTableMenu container) {
+	public Object createDecorationTableScreen(DecorationTableMenu container) {
 		return null;
 	}
 

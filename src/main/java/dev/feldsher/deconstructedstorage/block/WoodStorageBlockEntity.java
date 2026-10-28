@@ -5,6 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 /**
  * A storage made of wood, which it keeps the kind of. One with both colors set is tinted, and of no wood; one with
@@ -65,14 +68,14 @@ public abstract class WoodStorageBlockEntity extends StorageBlockEntity {
 	}
 
 	@Override
-	public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing) {
-		return !(packed && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) && super.hasCapability(capability, facing);
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return !(packed && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) && super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
-	public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing) {
-		return packed && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? null : super.getCapability(capability, facing);
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		return packed && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? null : super.getCapability(capability, facing);
 	}
 
 	public Optional<WoodType> getWoodType() {

@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import net.minecraft.init.Blocks;
 
 /**
  * Swaps a placed storage for another tier's, in place, keeping all it holds and how it looks: one of these storages, or
@@ -45,7 +46,7 @@ public final class TierUpgrader {
 	@Nullable
 	public static Block getUpgradedBlock(Block block, @Nullable StorageTier from, StorageTier to) {
 		if (from == null || from == StorageTier.BASIC) {
-			if (block == net.minecraft.init.Blocks.CHEST) {
+			if (block == Blocks.CHEST) {
 				return ModBlocks.getInTier(ModBlocks.CHEST, to).orElse(null);
 			}
 			if (block instanceof BlockShulkerBox) {

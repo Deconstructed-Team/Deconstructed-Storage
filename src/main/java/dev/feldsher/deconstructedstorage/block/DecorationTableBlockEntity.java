@@ -1,7 +1,9 @@
 package dev.feldsher.deconstructedstorage.block;
 
 import dev.feldsher.deconstructedcore.util.InventoryHelper;
+import dev.feldsher.deconstructedstorage.init.ModBlocks;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
+import dev.feldsher.deconstructedstorage.item.PaintbrushItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.util.DecorationHelper;
 import net.minecraft.block.Block;
@@ -20,6 +22,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -571,6 +574,69 @@ public class DecorationTableBlockEntity extends TileEntity {
 		}
 	};
 
+	/** A paintbrush remembers the materials or colors set, for what it paints; it takes nothing for it. */
+	private static final IItemDecorator PAINTBRUSH_DECORATOR = new IItemDecorator() {
+		@Override
+		public boolean consumesIngredientsOnCraft() {
+			return false;
+		}
+
+		@Override
+		public boolean supportsMaterials(ItemStack input) {
+			return true;
+		}
+
+		@Override
+		public boolean supportsTints(ItemStack input) {
+			return true;
+		}
+
+		@Override
+		public boolean supportsTopInnerTrim(ItemStack input) {
+			return true;
+		}
+
+		@Override
+		public ItemStack decorateWithMaterials(ItemStack input, Map<BarrelMaterial, MaterialBlock> materialsToApply) {
+			Map<BarrelMaterial, MaterialBlock> materials = new EnumMap<>(BarrelMaterial.class);
+			materials.putAll(materialsToApply);
+			BarrelBlockItem.compactMaterials(materials);
+			if (allMaterialsMatch(materials, PaintbrushItem.getBarrelMaterials(input))) {
+				return ItemStack.EMPTY;
+			}
+			ItemStack result = input.copy();
+			result.setCount(1);
+			PaintbrushItem.setBarrelMaterials(result, materials);
+			return result;
+		}
+
+		@Override
+		public TintDecorationResult decorateWithTints(ItemStack input, int mainColorToSet, int accentColorToSet) {
+			if (mainColorToSet == -1 && accentColorToSet == -1
+					|| mainColorToSet == PaintbrushItem.getMainColor(input) && accentColorToSet == PaintbrushItem.getAccentColor(input)) {
+				return TintDecorationResult.EMPTY;
+			}
+			ItemStack result = input.copy();
+			result.setCount(1);
+			if (mainColorToSet != -1) {
+				PaintbrushItem.setMainColor(result, mainColorToSet);
+			}
+			if (accentColorToSet != -1) {
+				PaintbrushItem.setAccentColor(result, accentColorToSet);
+			}
+			return new TintDecorationResult(result, Collections.emptyMap());
+		}
+
+		/** What it would paint: a limited barrel for materials, else a barrel, a chest and a shulker box. */
+		@Override
+		public List<ItemStack> getPreviewStackInputs(ItemStack input, boolean materialsInCraftingSlots) {
+			if (materialsInCraftingSlots) {
+				return Collections.singletonList(new ItemStack(ModBlocks.LIMITED_BARREL_3));
+			}
+			return Arrays.asList(new ItemStack(ModBlocks.LIMITED_BARREL_3), new ItemStack(ModBlocks.CHEST), new ItemStack(ModBlocks.SHULKER_BOX));
+		}
+	};
+
 	/** Leather armor takes the main color, from 24 parts of dyes. */
 	private static final IItemDecorator DYEABLE_DECORATOR = new IItemDecorator() {
 		@Override
@@ -609,6 +675,7 @@ public class DecorationTableBlockEntity extends TileEntity {
 
 	static {
 		registerItemDecorator(stack -> stack.getItem() instanceof StorageBlockItem, STORAGE_DECORATOR);
+		registerItemDecorator(stack -> stack.getItem() instanceof PaintbrushItem, PAINTBRUSH_DECORATOR);
 		registerItemDecorator(stack -> stack.getItem() instanceof ItemArmor && ((ItemArmor) stack.getItem()).getArmorMaterial() == ItemArmor.ArmorMaterial.LEATHER,
 				DYEABLE_DECORATOR);
 	}

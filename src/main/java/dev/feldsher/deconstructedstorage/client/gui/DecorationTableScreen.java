@@ -49,6 +49,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.IntConsumer;
 import java.util.function.Supplier;
+import dev.feldsher.deconstructedstorage.init.ModBlocks;
+import java.util.Optional;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
 /**
  * A decoration table's screen: the material slots, each with an icon of the part it's for and an arrow between it and
@@ -271,7 +274,7 @@ public class DecorationTableScreen extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(I18n.format(dev.feldsher.deconstructedstorage.init.ModBlocks.DECORATION_TABLE.getTranslationKey() + ".name"), 8, 6, 0x404040);
+		fontRenderer.drawString(I18n.format(ModBlocks.DECORATION_TABLE.getTranslationKey() + ".name"), 8, 6, 0x404040);
 		fontRenderer.drawString(I18n.format("container.inventory"), 45, menu.getSlot(DecorationTableBlockEntity.BOTTOM_TRIM_SLOT).yPos + 18 + 2, 0x404040);
 	}
 
@@ -307,9 +310,9 @@ public class DecorationTableScreen extends GuiContainer {
 		}
 		List<String> tooltip = getItemToolTip(stack);
 		tooltip.addAll(getResultPartsNeededTooltip());
-		net.minecraftforge.fml.client.config.GuiUtils.preItemToolTip(stack);
+		GuiUtils.preItemToolTip(stack);
 		drawHoveringText(tooltip, x, y, fontRenderer);
-		net.minecraftforge.fml.client.config.GuiUtils.postItemToolTip();
+		GuiUtils.postItemToolTip();
 	}
 
 	private List<String> getResultPartsNeededTooltip() {
@@ -336,14 +339,14 @@ public class DecorationTableScreen extends GuiContainer {
 
 	/** The stack a part key is of: a dye's first item by the ore dictionary, a material's block. */
 	@SuppressWarnings("deprecation")
-	private static java.util.Optional<ItemStack> getPartStack(String key) {
+	private static Optional<ItemStack> getPartStack(String key) {
 		if (key.startsWith("dye")) {
 			List<ItemStack> ores = OreDictionary.getOres(key);
-			return ores.isEmpty() ? java.util.Optional.empty() : java.util.Optional.of(ores.get(0));
+			return ores.isEmpty() ? Optional.empty() : Optional.of(ores.get(0));
 		}
 		MaterialBlock block = MaterialBlock.parse(key);
 		if (block == null) {
-			return java.util.Optional.empty();
+			return Optional.empty();
 		}
 		return block.getState().map(state -> {
 			Item item = Item.getItemFromBlock(state.getBlock());

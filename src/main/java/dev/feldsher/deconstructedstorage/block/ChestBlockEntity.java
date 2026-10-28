@@ -17,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * A placed chest. Two side by side make a double chest: one half, the main one, holds the storage of both, its
@@ -228,7 +230,7 @@ public class ChestBlockEntity extends WoodStorageBlockEntity {
 		}
 		for (ItemStack stack : dropItems) {
 			while (!stack.isEmpty()) {
-				net.minecraft.inventory.InventoryHelper.spawnItemStack(world, dropPosition.getX(), dropPosition.getY(), dropPosition.getZ(), stack.splitStack(stack.getMaxStackSize()));
+				InventoryHelper.spawnItemStack(world, dropPosition.getX(), dropPosition.getY(), dropPosition.getZ(), stack.splitStack(stack.getMaxStackSize()));
 			}
 		}
 		shrinkToSingle(this);
@@ -298,7 +300,7 @@ public class ChestBlockEntity extends WoodStorageBlockEntity {
 	}
 
 	@Override
-	public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
-		return new net.minecraft.util.math.AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
 	}
 }

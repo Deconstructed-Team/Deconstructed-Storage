@@ -29,6 +29,9 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 import javax.annotation.Nullable;
 import java.util.function.IntSupplier;
+import dev.feldsher.deconstructedstorage.client.render.MaterialSprites;
+import java.util.Map;
+import net.minecraft.block.properties.IProperty;
 
 /**
  * A barrel, facing any way. Its facing and flat top are its metadata; whether it's open, and its wood and colors,
@@ -63,7 +66,7 @@ public class BarrelBlock extends WoodStorageBlockBase {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new ExtendedBlockState(this, new net.minecraft.block.properties.IProperty[] {FACING, FLAT_TOP}, new IUnlistedProperty[] {RENDER_DATA});
+		return new ExtendedBlockState(this, new IProperty[] {FACING, FLAT_TOP}, new IUnlistedProperty[] {RENDER_DATA});
 	}
 
 	@Override
@@ -151,10 +154,10 @@ public class BarrelBlock extends WoodStorageBlockBase {
 	@Override
 	protected TextureAtlasSprite getParticleSprite(StorageBlockEntity be) {
 		if (be instanceof IMaterialHolder) {
-			java.util.Map<BarrelMaterial, MaterialBlock> materials = ((IMaterialHolder) be).getMaterials();
+			Map<BarrelMaterial, MaterialBlock> materials = ((IMaterialHolder) be).getMaterials();
 			for (BarrelMaterial material : new BarrelMaterial[] {BarrelMaterial.ALL, BarrelMaterial.ALL_BUT_TRIM, BarrelMaterial.TOP_ALL, BarrelMaterial.TOP}) {
 				if (materials.containsKey(material)) {
-					return dev.feldsher.deconstructedstorage.client.render.MaterialSprites.getParticleSprite(materials.get(material));
+					return MaterialSprites.getParticleSprite(materials.get(material));
 				}
 			}
 		}

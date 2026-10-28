@@ -36,6 +36,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.IntSupplier;
+import dev.feldsher.deconstructedstorage.DeconstructedStorage;
+import dev.feldsher.deconstructedstorage.init.ModItems;
+import net.minecraft.client.particle.ParticleManager;
 
 /**
  * A barrel of one to four slots, each holding many stacks of one item: its base stack size multiplier says how many.
@@ -188,7 +191,7 @@ public class LimitedBarrelBlock extends BarrelBlock {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		String key = numberOfInventorySlots == 1 ? "limited_barrel_singular" : "limited_barrel_plural";
-		tooltip.add(TextFormatting.DARK_GRAY + StorageTranslationHelper.INSTANCE.translate("block." + dev.feldsher.deconstructedstorage.DeconstructedStorage.MOD_ID + "." + key + ".tooltip",
+		tooltip.add(TextFormatting.DARK_GRAY + StorageTranslationHelper.INSTANCE.translate("block." + DeconstructedStorage.MOD_ID + "." + key + ".tooltip",
 				numberOfInventorySlots, getBaseStackSizeMultiplier()));
 		super.addInformation(stack, world, tooltip, flag);
 	}
@@ -202,7 +205,7 @@ public class LimitedBarrelBlock extends BarrelBlock {
 			float hitZ) {
 		StorageBlockEntity be = getStorageBlockEntity(world, pos);
 		if (!(be instanceof LimitedBarrelBlockEntity) || facing != getFacing(state) || player.isSneaking()
-				|| player.getHeldItem(hand).getItem() == dev.feldsher.deconstructedstorage.init.ModItems.PACKING_TAPE) {
+				|| player.getHeldItem(hand).getItem() == ModItems.PACKING_TAPE) {
 			return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
 		}
 		LimitedBarrelBlockEntity barrel = (LimitedBarrelBlockEntity) be;
@@ -299,7 +302,7 @@ public class LimitedBarrelBlock extends BarrelBlock {
 	/** Hitting the front takes items out, it doesn't chip the barrel: no bits fly from it. */
 	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, net.minecraft.client.particle.ParticleManager manager) {
+	public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager manager) {
 		if (target.sideHit == getFacing(state)) {
 			return true;
 		}

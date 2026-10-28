@@ -34,6 +34,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nullable;
 import java.util.function.BiConsumer;
 import java.util.function.IntSupplier;
+import java.util.Collections;
 
 /**
  * A storage block. Broken, it drops its items and upgrades, and itself as an item that keeps how it looks; its
@@ -335,7 +336,7 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 
 	/** The blocks next to the whole storage on that side: a double chest has two of them on its long sides. */
 	public List<BlockPos> getNeighborPos(IBlockState state, BlockPos origin, EnumFacing facing) {
-		return java.util.Collections.singletonList(origin.offset(facing));
+		return Collections.singletonList(origin.offset(facing));
 	}
 
 	@Override
