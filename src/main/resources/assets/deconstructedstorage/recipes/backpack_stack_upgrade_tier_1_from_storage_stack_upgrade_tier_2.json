@@ -6,10 +6,6 @@
     },
     {
       "type": "deconstructedstorage:item_enabled",
-      "item": "sophisticatedbackpacks:stack_upgrade_tier_1"
-    },
-    {
-      "type": "deconstructedstorage:item_enabled",
       "item": "deconstructedbackpacks:stack_upgrade_tier_1"
     },
     {

@@ -6,10 +6,6 @@
     },
     {
       "type": "deconstructedstorage:item_enabled",
-      "item": "sophisticatedbackpacks:feeding_upgrade"
-    },
-    {
-      "type": "deconstructedstorage:item_enabled",
       "item": "deconstructedbackpacks:feeding_upgrade"
     },
     {

@@ -6,10 +6,6 @@
     },
     {
       "type": "deconstructedstorage:item_enabled",
-      "item": "sophisticatedbackpacks:void_upgrade"
-    },
-    {
-      "type": "deconstructedstorage:item_enabled",
       "item": "deconstructedbackpacks:void_upgrade"
     },
     {

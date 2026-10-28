@@ -6,10 +6,6 @@
     },
     {
       "type": "deconstructedstorage:item_enabled",
-      "item": "sophisticatedbackpacks:advanced_jukebox_upgrade"
-    },
-    {
-      "type": "deconstructedstorage:item_enabled",
       "item": "deconstructedbackpacks:advanced_jukebox_upgrade"
     },
     {

@@ -6,10 +6,6 @@
     },
     {
       "type": "deconstructedstorage:item_enabled",
-      "item": "sophisticatedbackpacks:blasting_upgrade"
-    },
-    {
-      "type": "deconstructedstorage:item_enabled",
       "item": "deconstructedbackpacks:blasting_upgrade"
     },
     {
