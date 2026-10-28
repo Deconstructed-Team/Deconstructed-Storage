@@ -20,7 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = DeconstructedStorage.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION,
-		dependencies = "required-after:deconstructedcore")
+		dependencies = "required-after:deconstructedcore@[" + Tags.VERSION + ",)")
 public class DeconstructedStorage {
 	public static final String MOD_ID = Tags.MOD_ID;
 	public static final Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
