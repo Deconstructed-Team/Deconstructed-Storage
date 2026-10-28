@@ -113,15 +113,16 @@ public class LimitedBarrelRenderer extends TileEntitySpecialRenderer<LimitedBarr
 	}
 
 	/**
-	 * Bold, centered on x 0: each char twice, the second 0.99 to the right. 1.12's bold puts it a whole pixel over, but a
-	 * char is drawn 0.01 short of its width, so up close a seam shows between the two.
+	 * Bold, centered on x 0: as 1.12's, each char again a pixel to the right, but a char is drawn 0.01 short of its width,
+	 * so up close a seam shows between the two. One more 0.01 over fills it; its edges all fall inside the other two.
 	 */
 	private static void drawBold(FontRenderer font, String text, int color) {
 		float x = -(font.getStringWidth(text) + text.length()) / 2F;
 		for (char c : text.toCharArray()) {
 			String ch = String.valueOf(c);
 			font.drawString(ch, x, 0, color, false);
-			font.drawString(ch, x + 0.99F, 0, color, false);
+			font.drawString(ch, x + 0.01F, 0, color, false);
+			font.drawString(ch, x + 1, 0, color, false);
 			x += font.getCharWidth(c) + 1;
 		}
 	}
