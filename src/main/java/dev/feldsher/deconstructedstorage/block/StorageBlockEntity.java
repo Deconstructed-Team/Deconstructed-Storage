@@ -82,6 +82,8 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 			@Override
 			protected void onUpgradeRefresh() {
 				tickableUpgrades = null;
+				// the front shows the upgrades
+				renderInfoDirty = true;
 			}
 
 			@Override

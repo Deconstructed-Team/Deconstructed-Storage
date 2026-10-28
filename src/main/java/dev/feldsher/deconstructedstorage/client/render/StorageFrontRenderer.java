@@ -1,7 +1,9 @@
 package dev.feldsher.deconstructedstorage.client.render;
 
 import dev.feldsher.deconstructedcore.renderdata.RenderInfo;
+import dev.feldsher.deconstructedcore.common.gui.StorageInventorySlot;
 import dev.feldsher.deconstructedstorage.DeconstructedStorage;
+import dev.feldsher.deconstructedstorage.init.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,17 +20,24 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * What storages show on their front, as 1.21's display item renderer: the items the item display settings pick, one
- * big or up to four small, and the lock of a locked storage. Lit as the block the front faces.
+ * big or up to four small, the lock of a locked storage and the upgrades. Lit as the block the front faces.
  */
 public final class StorageFrontRenderer {
 	private static final float SMALL_3D_ITEM_SCALE = 0.5F;
 	private static final float BIG_2D_ITEM_SCALE = 0.5F;
 	private static final float SMALL_2D_ITEM_SCALE = 0.25F;
+	private static final float UPGRADE_ITEM_SCALE = 0.125F;
+	// GL 1.4's blend factors, which the GL classes here don't name
+	private static final int GL_CONSTANT_ALPHA = 0x8003;
+	private static final int GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004;
+	private static final Supplier<ItemStack> EMPTY_UPGRADE_STACK = () -> new ItemStack(ModItems.UPGRADE_BASE);
 
 	private StorageFrontRenderer() {}
 
@@ -109,6 +118,72 @@ public final class StorageFrontRenderer {
 			default:
 				return new float[] {index == 0 || index == 2 ? 0.75F : 0.25F, index == 0 || index == 1 ? yCenter + half : half};
 		}
+	}
+
+	/**
+	 * The upgrades, tiny, in a row from the front's lower right corner, each two pixels wide, moved by the offset. Holding
+	 * an upgrade or the tool shows the empty upgrade slots too, as see-through upgrade bases; disabled, as the tool set to
+	 * toggle them shows hidden ones, they're crossed out.
+	 */
+	public static void renderUpgradeItems(List<ItemStack> upgradeItems, float offsetX, float offsetY, float offsetZ, boolean renderEmptySlots, boolean renderDisabled) {
+		int i = 0;
+		for (ItemStack upgradeItem : upgradeItems) {
+			if (upgradeItem.isEmpty() && !renderEmptySlots) {
+				continue;
+			}
+			float x = 1F - i * 2 / 16F - 1 / 16F + offsetX;
+			float y = 1 / 16F + offsetY;
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(x, y, offsetZ);
+			GlStateManager.pushMatrix();
+			GlStateManager.rotate(180, 0, 1, 0);
+			GlStateManager.scale(UPGRADE_ITEM_SCALE, UPGRADE_ITEM_SCALE, UPGRADE_ITEM_SCALE);
+			if (upgradeItem.isEmpty()) {
+				renderTranslucent(EMPTY_UPGRADE_STACK.get(), 0.5F);
+			} else {
+				renderFixed(upgradeItem);
+			}
+			GlStateManager.popMatrix();
+			if (renderDisabled) {
+				Minecraft minecraft = Minecraft.getMinecraft();
+				minecraft.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+				renderQuad(minecraft.getTextureMapBlocks().getAtlasSprite(StorageInventorySlot.INACCESSIBLE_SLOT_BACKGROUND), -1 / 16F, -1 / 16F, 1 / 16F, 1 / 16F, -0.01F);
+			}
+			GlStateManager.popMatrix();
+			i++;
+		}
+	}
+
+	private static void renderFixed(ItemStack stack) {
+		GlStateManager.pushAttrib();
+		RenderHelper.enableStandardItemLighting();
+		Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+		RenderHelper.disableStandardItemLighting();
+		GlStateManager.popAttrib();
+	}
+
+	/** Item quads carry their own color, so it's the blend that makes them see-through, by a constant alpha. */
+	private static void renderTranslucent(ItemStack stack, float alpha) {
+		GlStateManager.enableBlend();
+		GL14.glBlendColor(1, 1, 1, alpha);
+		GlStateManager.blendFunc(GL_CONSTANT_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
+		GlStateManager.depthMask(false);
+		renderFixed(stack);
+		GlStateManager.depthMask(true);
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL14.glBlendColor(1, 1, 1, 1);
+		GlStateManager.disableBlend();
+	}
+
+	private static void renderQuad(TextureAtlasSprite sprite, float x1, float y1, float x2, float y2, float z) {
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		buffer.pos(x2, y1, z).tex(sprite.getMinU(), sprite.getMaxV()).normal(0, 0, -1).endVertex();
+		buffer.pos(x1, y1, z).tex(sprite.getMaxU(), sprite.getMaxV()).normal(0, 0, -1).endVertex();
+		buffer.pos(x1, y2, z).tex(sprite.getMaxU(), sprite.getMinV()).normal(0, 0, -1).endVertex();
+		buffer.pos(x2, y2, z).tex(sprite.getMinU(), sprite.getMinV()).normal(0, 0, -1).endVertex();
+		tessellator.draw();
 	}
 
 	/** The lock, a pixel square on the front, its middle at x 0.5, its bottom at y. */

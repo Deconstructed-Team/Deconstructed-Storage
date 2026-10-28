@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 
 /**
- * The items a barrel shows on its front, up to four: its model has the rest. The front of one with a rim around its
- * lid is a pixel in.
+ * The items a barrel shows on its front, up to four, and its upgrades: its model has the rest. The front of one with a
+ * rim around its lid is a pixel in; the upgrades sit on the rim.
  */
 public class BarrelRenderer extends TileEntitySpecialRenderer<BarrelBlockEntity> {
 	@Override
@@ -19,7 +19,9 @@ public class BarrelRenderer extends TileEntitySpecialRenderer<BarrelBlockEntity>
 			return;
 		}
 		RenderInfo renderInfo = barrel.getStorageWrapper().getRenderInfo();
-		if (renderInfo.getItemDisplayRenderInfo().getDisplayItems().isEmpty()) {
+		boolean holdsItemThatShowsUpgrades = HeldItemDisplays.holdsItemThatShowsUpgrades();
+		boolean showsUpgrades = barrel.shouldShowUpgrades() || holdsItemThatShowsUpgrades;
+		if (renderInfo.getItemDisplayRenderInfo().getDisplayItems().isEmpty() && !showsUpgrades) {
 			return;
 		}
 		IBlockState state = barrel.getWorld().getBlockState(barrel.getPos());
@@ -34,6 +36,10 @@ public class BarrelRenderer extends TileEntitySpecialRenderer<BarrelBlockEntity>
 		GlStateManager.translate(-0.5, -0.5, -(0.5 - (flatTop ? 0 : 1 / 16D)));
 		StorageFrontRenderer.setFrontLight(barrel.getWorld(), barrel.getPos(), facing);
 		StorageFrontRenderer.renderDisplayItems(renderInfo, 0.5, 4);
+		if (showsUpgrades) {
+			StorageFrontRenderer.renderUpgradeItems(renderInfo.getUpgradeItems(), 0, 0, flatTop ? 0 : -1 / 16F, holdsItemThatShowsUpgrades,
+					HeldItemDisplays.showsDisabledUpgrades(barrel));
+		}
 		GlStateManager.popMatrix();
 	}
 }

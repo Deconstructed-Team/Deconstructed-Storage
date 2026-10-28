@@ -47,7 +47,9 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 	private void renderFront(ShulkerBoxBlockEntity box, EnumFacing facing, float progress, double x, double y, double z) {
 		RenderInfo renderInfo = box.getStorageWrapper().getRenderInfo();
 		boolean showsLock = box.isLocked() && box.shouldShowLock();
-		if (renderInfo.getItemDisplayRenderInfo().getDisplayItems().isEmpty() && !showsLock) {
+		boolean holdsItemThatShowsUpgrades = HeldItemDisplays.holdsItemThatShowsUpgrades();
+		boolean showsUpgrades = box.shouldShowUpgrades() || holdsItemThatShowsUpgrades;
+		if (renderInfo.getItemDisplayRenderInfo().getDisplayItems().isEmpty() && !showsLock && !showsUpgrades) {
 			return;
 		}
 		GlStateManager.pushMatrix();
@@ -60,6 +62,9 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 			GlStateManager.rotate(270.0F * progress, 0, 0, 1);
 		}
 		GlStateManager.translate(-0.5, -0.5, -0.5 - zOffset);
+		if (showsUpgrades) {
+			StorageFrontRenderer.renderUpgradeItems(renderInfo.getUpgradeItems(), 0, 0, -0.0075F, holdsItemThatShowsUpgrades, HeldItemDisplays.showsDisabledUpgrades(box));
+		}
 		StorageFrontRenderer.renderDisplayItems(renderInfo, 0.5, 1);
 		if (showsLock) {
 			StorageFrontRenderer.renderLock(15 / 16F);

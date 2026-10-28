@@ -101,7 +101,9 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 		RenderInfo renderInfo = chest.getStorageWrapper().getRenderInfo();
 		Optional<RenderInfo.DisplayItem> displayItem = renderInfo.getItemDisplayRenderInfo().getDisplayItem();
 		boolean showsLock = chest.isLocked() && chest.shouldShowLock();
-		if (!displayItem.isPresent() && !showsLock) {
+		boolean holdsItemThatShowsUpgrades = HeldItemDisplays.holdsItemThatShowsUpgrades();
+		boolean showsUpgrades = chest.shouldShowUpgrades() || holdsItemThatShowsUpgrades;
+		if (!displayItem.isPresent() && !showsLock && !showsUpgrades) {
 			return;
 		}
 		GlStateManager.pushMatrix();
@@ -119,6 +121,17 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 			}
 			GlStateManager.translate(chestType == ChestType.LEFT ? 0.5 : chestType == ChestType.RIGHT ? -0.5 : 0, 0, 0);
 			StorageFrontRenderer.renderLock(13 / 16F);
+			GlStateManager.popMatrix();
+		}
+		if (showsUpgrades) {
+			// along the front's lower edge, from the right end of the whole chest
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(-0.5, -0.5, -(0.5 - 1 / 16D));
+			if (chestType == ChestType.LEFT) {
+				GlStateManager.translate(1, 0, 0);
+			}
+			StorageFrontRenderer.renderUpgradeItems(renderInfo.getUpgradeItems(), -1 / 16F, 0, -0.0075F, holdsItemThatShowsUpgrades,
+					HeldItemDisplays.showsDisabledUpgrades(chest));
 			GlStateManager.popMatrix();
 		}
 		displayItem.ifPresent(item -> {

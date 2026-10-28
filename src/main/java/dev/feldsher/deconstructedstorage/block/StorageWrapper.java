@@ -1,5 +1,8 @@
 package dev.feldsher.deconstructedstorage.block;
 
+import net.minecraftforge.items.ItemHandlerHelper;
+import java.util.List;
+import java.util.ArrayList;
 import dev.feldsher.deconstructedcore.api.IStorageWrapper;
 import dev.feldsher.deconstructedcore.common.gui.SortBy;
 import dev.feldsher.deconstructedcore.inventory.InventoryHandler;
@@ -123,7 +126,11 @@ public abstract class StorageWrapper implements IStorageWrapper {
 			return;
 		}
 		ItemDisplaySettingsCategory itemDisplay = getSettingsHandler().getTypeCategory(ItemDisplaySettingsCategory.class);
-		NBTTagCompound newRenderInfoTag = getUpgradeHandler().buildRenderInfo(itemDisplay.buildItemDisplayRenderInfo()).serialize();
+		List<ItemStack> upgradeItems = new ArrayList<>();
+		for (int slot = 0; slot < getUpgradeHandler().getSlots(); slot++) {
+			upgradeItems.add(ItemHandlerHelper.copyStackWithSize(getUpgradeHandler().getStackInSlot(slot), 1));
+		}
+		NBTTagCompound newRenderInfoTag = getUpgradeHandler().buildRenderInfo(itemDisplay.buildItemDisplayRenderInfo()).withUpgradeItems(upgradeItems).serialize();
 		if (!newRenderInfoTag.equals(renderInfoTag)) {
 			renderInfoTag = newRenderInfoTag;
 			renderInfo = renderInfoTag.isEmpty() ? RenderInfo.EMPTY : RenderInfo.deserialize(renderInfoTag);
