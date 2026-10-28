@@ -1,7 +1,5 @@
 package dev.feldsher.deconstructedstorage.client;
 
-import dev.feldsher.deconstructedcore.client.render.StorageContentsTooltip;
-import dev.feldsher.deconstructedstorage.client.render.ShulkerBoxContentsTooltipSource;
 import dev.feldsher.deconstructedstorage.CommonProxy;
 import dev.feldsher.deconstructedstorage.block.BarrelBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ChestBlockEntity;
@@ -46,7 +44,6 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init() {
 		ModUpgradeTabs.register();
-		StorageContentsTooltip.registerSource(new ShulkerBoxContentsTooltipSource());
 	}
 
 	@Override
