@@ -27,6 +27,10 @@ public final class StorageBlockContents {
 		CONTENTS.setClientContents(storageUuid, contents);
 	}
 
+	public static boolean hasClientContents(UUID storageUuid) {
+		return CONTENTS.hasReceivedClientContents(storageUuid);
+	}
+
 	public static void removeContents(UUID storageUuid) {
 		CONTENTS.remove(storageUuid);
 	}

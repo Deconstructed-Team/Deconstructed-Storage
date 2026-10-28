@@ -36,6 +36,11 @@ public class ShulkerBoxBlockEntity extends StorageBlockEntity {
 
 	@Override
 	protected boolean isAllowedInStorage(ItemStack stack) {
+		return isAllowedInShulkerBox(stack);
+	}
+
+	/** No shulker boxes, ours or vanilla, and nothing the config forbids: placed, or carried as an item. */
+	public static boolean isAllowedInShulkerBox(ItemStack stack) {
 		Block block = Block.getBlockFromItem(stack.getItem());
 		return !(block instanceof ShulkerBoxBlock) && !(block instanceof BlockShulkerBox) && !Config.SERVER.isItemDisallowedInShulkerBox(stack.getItem());
 	}
