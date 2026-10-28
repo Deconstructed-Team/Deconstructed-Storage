@@ -222,6 +222,32 @@ public final class StorageFrontRenderer {
 		tessellator.draw();
 	}
 
+	/** Drawn after this, what's hidden shows half see-through, over what's drawn already. */
+	public static void beginSeeThrough() {
+		GlStateManager.enableBlend();
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+				GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		GlStateManager.color(1, 1, 1, 0.5F);
+		GlStateManager.depthMask(false);
+	}
+
+	public static void endSeeThrough() {
+		GlStateManager.depthMask(true);
+		GlStateManager.color(1, 1, 1, 1);
+		GlStateManager.disableBlend();
+	}
+
+	/** The lock, see-through when it's hidden and only the tool in hand shows it. */
+	public static void renderLock(float y, boolean seeThrough) {
+		if (seeThrough) {
+			beginSeeThrough();
+		}
+		renderLock(y);
+		if (seeThrough) {
+			endSeeThrough();
+		}
+	}
+
 	/** The lock, a pixel square on the front, its middle at x 0.5, its bottom at y. */
 	public static void renderLock(float y) {
 		Minecraft minecraft = Minecraft.getMinecraft();

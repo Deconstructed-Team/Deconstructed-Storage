@@ -29,6 +29,14 @@ public final class StorageParticles {
 				setRBGColorF(0.6F * (color >> 16 & 255) / 255F, 0.6F * (color >> 8 & 255) / 255F, 0.6F * (color & 255) / 255F);
 			}
 		}
+
+		/** Moving just so, as vanilla's block dust does. */
+		Bit withMotion(double xSpeed, double ySpeed, double zSpeed) {
+			motionX = xSpeed;
+			motionY = ySpeed;
+			motionZ = zSpeed;
+			return this;
+		}
 	}
 
 	/** As ParticleManager.addBlockDestroyEffects: a 4x4x4 of bits. */
@@ -72,6 +80,15 @@ public final class StorageParticles {
 				break;
 		}
 		manager.addEffect(new Bit(world, x, y, z, 0, 0, 0, state, pos, sprite, color).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+	}
+
+	/** As the block dust vanilla sends where an entity lands: bits at its feet, flying out at random. */
+	public static void addLandingEffects(World world, BlockPos pos, IBlockState state, double x, double y, double z, int count, TextureAtlasSprite sprite, int color) {
+		ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
+		for (int i = 0; i < count; i++) {
+			manager.addEffect(new Bit(world, x, y, z, 0, 0, 0, state, pos, sprite, color)
+					.withMotion(world.rand.nextGaussian() * 0.15D, world.rand.nextGaussian() * 0.15D, world.rand.nextGaussian() * 0.15D));
+		}
 	}
 
 	/** As Entity.createRunningParticles: a bit kicked up under the entity's feet. */

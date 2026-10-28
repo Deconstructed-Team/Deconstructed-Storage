@@ -34,6 +34,7 @@ public class LimitedBarrelRenderer extends TileEntitySpecialRenderer<LimitedBarr
 		if (!barrel.hasWorld() || barrel.isPacked() || destroyStage >= 0) {
 			return;
 		}
+		BarrelRenderer.renderHiddenTierAndLock(barrel, x, y, z);
 		IBlockState state = barrel.getWorld().getBlockState(barrel.getPos());
 		if (!(state.getBlock() instanceof LimitedBarrelBlock)) {
 			return;

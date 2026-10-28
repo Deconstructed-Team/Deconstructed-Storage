@@ -37,6 +37,18 @@ public final class HeldItemDisplays {
 		return holds(stack -> stack.getItem() instanceof StorageToolItem && StorageToolItem.getMode(stack) == StorageToolItem.Mode.FILL_LEVEL_DISPLAY);
 	}
 
+	/** The tool set to toggle the tier, or a tier upgrade: a hidden tier shows see-through. */
+	public static boolean holdsItemThatShowsHiddenTiers() {
+		return holds(stack -> stack.getItem() instanceof StorageToolItem && StorageToolItem.getMode(stack) == StorageToolItem.Mode.TIER_DISPLAY
+				|| stack.getItem() instanceof StorageTierUpgradeItem);
+	}
+
+	/** The tool set to lock or to toggle the lock: a hidden lock shows see-through. */
+	public static boolean holdsToolInLockMode() {
+		return holds(stack -> stack.getItem() instanceof StorageToolItem
+				&& (StorageToolItem.getMode(stack) == StorageToolItem.Mode.LOCK || StorageToolItem.getMode(stack) == StorageToolItem.Mode.LOCK_DISPLAY));
+	}
+
 	private static boolean holds(Predicate<ItemStack> matcher) {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		return player != null && (matcher.test(player.getHeldItemMainhand()) || matcher.test(player.getHeldItemOffhand()));

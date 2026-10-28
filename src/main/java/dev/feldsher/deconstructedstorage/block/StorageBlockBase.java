@@ -3,6 +3,8 @@ package dev.feldsher.deconstructedstorage.block;
 import dev.feldsher.deconstructedstorage.client.render.StorageParticles;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
 import dev.feldsher.deconstructedstorage.init.ModItems;
+import dev.feldsher.deconstructedstorage.network.LandingParticlesMessage;
+import dev.feldsher.deconstructedstorage.network.PacketHandler;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageToolItem;
 import dev.feldsher.deconstructedcore.upgrades.IPickupResponseUpgrade;
@@ -32,6 +34,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -346,6 +350,20 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 	public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager manager) {
 		BlockPos pos = target.getBlockPos();
 		return addParticles(world, pos, (sprite, color) -> StorageParticles.addHitEffects(world, pos, target.sideHit, state, sprite, color, manager));
+	}
+
+	/** Landed on, the clients near throw bits of what the storage is made of where the entity landed, as vanilla's dust. */
+	@Override
+	public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState stateAgain, EntityLivingBase entity, int numberOfParticles) {
+		PacketHandler.INSTANCE.sendToAllAround(new LandingParticlesMessage(pos, entity.posX, entity.posY, entity.posZ, numberOfParticles),
+				new NetworkRegistry.TargetPoint(world.provider.getDimension(), entity.posX, entity.posY, entity.posZ, 32));
+		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void addLandingParticles(World world, BlockPos pos, double x, double y, double z, int count) {
+		IBlockState state = world.getBlockState(pos);
+		addParticles(world, pos, (sprite, color) -> StorageParticles.addLandingEffects(world, pos, state, x, y, z, count, sprite, color));
 	}
 
 	/** The server has nothing to show; the client throws bits of what the storage is made of. */

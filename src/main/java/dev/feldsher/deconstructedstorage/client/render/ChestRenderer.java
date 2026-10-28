@@ -85,7 +85,7 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 		StorageBlockEntity main = chest.getMainBlockEntity();
 		render(state.getBlock(), state.getValue(ChestBlock.TYPE), state.getValue(ChestBlock.FACING), chest.getWoodType().orElse(null),
 				wrapper.hasMainColor() ? wrapper.getMainColor() : -1, wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, chest.isPacked(), main.shouldShowTier(),
-				lidAngle, x, y, z, destroyStage);
+				!main.shouldShowTier() && HeldItemDisplays.holdsItemThatShowsHiddenTiers(), lidAngle, x, y, z, destroyStage);
 		if (destroyStage < 0 && !chest.isPacked() && main == chest) {
 			renderFront(chest, state, lidAngle, x, y, z);
 		}
@@ -100,7 +100,7 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 		EnumFacing facing = state.getValue(ChestBlock.FACING);
 		RenderInfo renderInfo = chest.getStorageWrapper().getRenderInfo();
 		Optional<RenderInfo.DisplayItem> displayItem = renderInfo.getItemDisplayRenderInfo().getDisplayItem();
-		boolean showsLock = chest.isLocked() && chest.shouldShowLock();
+		boolean showsLock = chest.isLocked() && (chest.shouldShowLock() || HeldItemDisplays.holdsToolInLockMode());
 		boolean holdsItemThatShowsUpgrades = HeldItemDisplays.holdsItemThatShowsUpgrades();
 		boolean showsUpgrades = chest.shouldShowUpgrades() || holdsItemThatShowsUpgrades;
 		if (!displayItem.isPresent() && !showsLock && !showsUpgrades) {
@@ -120,7 +120,7 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 				GlStateManager.translate(0, -9 / 16D, -14 / 16D);
 			}
 			GlStateManager.translate(chestType == ChestType.LEFT ? 0.5 : chestType == ChestType.RIGHT ? -0.5 : 0, 0, 0);
-			StorageFrontRenderer.renderLock(13 / 16F);
+			StorageFrontRenderer.renderLock(13 / 16F, !chest.shouldShowLock());
 			GlStateManager.popMatrix();
 		}
 		if (showsUpgrades) {
@@ -158,6 +158,12 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 	/** A chest of the block's tier with that look, at x y z, its lid open by lidAngle, from 0 to 1. */
 	public void render(Block chestBlock, ChestType chestType, EnumFacing facing, @Nullable WoodType woodType, int mainColor, int accentColor, boolean packed,
 			boolean showsTier, float lidAngle, double x, double y, double z, int destroyStage) {
+		render(chestBlock, chestType, facing, woodType, mainColor, accentColor, packed, showsTier, false, lidAngle, x, y, z, destroyStage);
+	}
+
+	/** A hidden tier shows see-through, while the player holds what shows it. */
+	public void render(Block chestBlock, ChestType chestType, EnumFacing facing, @Nullable WoodType woodType, int mainColor, int accentColor, boolean packed,
+			boolean showsTier, boolean showsHiddenTier, float lidAngle, double x, double y, double z, int destroyStage) {
 		Parts parts = PARTS.get(chestType);
 		parts.setLidAngle(lidAngle);
 		GlStateManager.pushMatrix();
@@ -192,6 +198,10 @@ public class ChestRenderer extends TileEntitySpecialRenderer<ChestBlockEntity> {
 			bindTexture(getTexture(chestType, getTierName(chestBlock) + "_tier"));
 			if (showsTier) {
 				renderBottomAndLid(parts);
+			} else if (showsHiddenTier) {
+				StorageFrontRenderer.beginSeeThrough();
+				renderBottomAndLid(parts);
+				StorageFrontRenderer.endSeeThrough();
 			}
 			parts.lock.render(1 / 16F);
 			if (packed) {

@@ -20,6 +20,10 @@ import dev.feldsher.deconstructedstorage.client.init.ModUpgradeTabs;
 import dev.feldsher.deconstructedstorage.client.gui.StorageSettingsScreen;
 import dev.feldsher.deconstructedstorage.common.gui.StorageContainerMenu;
 import dev.feldsher.deconstructedstorage.common.gui.StorageSettingsContainerMenu;
+import dev.feldsher.deconstructedstorage.block.StorageBlockBase;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import dev.feldsher.deconstructedstorage.block.DecorationTableBlockEntity;
 import dev.feldsher.deconstructedstorage.client.gui.DecorationTableScreen;
@@ -43,6 +47,14 @@ public class ClientProxy extends CommonProxy {
 	public void init() {
 		ModUpgradeTabs.register();
 		StorageContentsTooltip.registerSource(new ShulkerBoxContentsTooltipSource());
+	}
+
+	@Override
+	public void addLandingParticles(BlockPos pos, double x, double y, double z, int count) {
+		World world = Minecraft.getMinecraft().world;
+		if (world != null && world.getBlockState(pos).getBlock() instanceof StorageBlockBase) {
+			((StorageBlockBase) world.getBlockState(pos).getBlock()).addLandingParticles(world, pos, x, y, z, count);
+		}
 	}
 
 	@Override

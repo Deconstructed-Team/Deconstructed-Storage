@@ -37,7 +37,8 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 		EnumFacing facing = state.getValue(ShulkerBoxBlock.FACING);
 		float progress = box.getProgress(partialTicks);
 		render(state.getBlock(), facing, wrapper.hasMainColor() ? wrapper.getMainColor() : -1,
-				wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, box.shouldShowTier(), progress, x, y, z, destroyStage);
+				wrapper.hasAccentColor() ? wrapper.getAccentColor() : -1, box.shouldShowTier(),
+				!box.shouldShowTier() && HeldItemDisplays.holdsItemThatShowsHiddenTiers(), progress, x, y, z, destroyStage);
 		if (destroyStage < 0) {
 			renderFront(box, facing, progress, x, y, z);
 		}
@@ -46,7 +47,7 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 	/** The display item and the lock, on the lid, as 1.21 puts them: they rise and turn with it. */
 	private void renderFront(ShulkerBoxBlockEntity box, EnumFacing facing, float progress, double x, double y, double z) {
 		RenderInfo renderInfo = box.getStorageWrapper().getRenderInfo();
-		boolean showsLock = box.isLocked() && box.shouldShowLock();
+		boolean showsLock = box.isLocked() && (box.shouldShowLock() || HeldItemDisplays.holdsToolInLockMode());
 		boolean holdsItemThatShowsUpgrades = HeldItemDisplays.holdsItemThatShowsUpgrades();
 		boolean showsUpgrades = box.shouldShowUpgrades() || holdsItemThatShowsUpgrades;
 		if (renderInfo.getItemDisplayRenderInfo().getDisplayItems().isEmpty() && !showsLock && !showsUpgrades) {
@@ -67,7 +68,7 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 		}
 		StorageFrontRenderer.renderDisplayItems(renderInfo, 0.5, 1);
 		if (showsLock) {
-			StorageFrontRenderer.renderLock(15 / 16F);
+			StorageFrontRenderer.renderLock(15 / 16F, !box.shouldShowLock());
 		}
 		GlStateManager.popMatrix();
 	}
@@ -75,6 +76,12 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 	/** A shulker box of the block's tier with those colors, -1 for none, at x y z, its lid open by progress, from 0 to 1. */
 	public void render(Block shulkerBoxBlock, EnumFacing facing, int mainColor, int accentColor, boolean showsTier, float progress, double x, double y, double z,
 			int destroyStage) {
+		render(shulkerBoxBlock, facing, mainColor, accentColor, showsTier, false, progress, x, y, z, destroyStage);
+	}
+
+	/** A hidden tier shows see-through, while the player holds what shows it. */
+	public void render(Block shulkerBoxBlock, EnumFacing facing, int mainColor, int accentColor, boolean showsTier, boolean showsHiddenTier, float progress,
+			double x, double y, double z, int destroyStage) {
 		GlStateManager.enableDepth();
 		GlStateManager.depthFunc(GL11.GL_LEQUAL);
 		GlStateManager.depthMask(true);
@@ -110,9 +117,15 @@ public class ShulkerBoxRenderer extends TileEntitySpecialRenderer<ShulkerBoxBloc
 			if (accentColor != -1) {
 				renderTinted(progress, "tintable_accent", accentColor);
 			}
-			if (showsTier) {
+			if (showsTier || showsHiddenTier) {
 				bindTexture(getTexture(getTierName(shulkerBoxBlock) + "_tier"));
+				if (!showsTier) {
+					StorageFrontRenderer.beginSeeThrough();
+				}
 				renderModel(progress);
+				if (!showsTier) {
+					StorageFrontRenderer.endSeeThrough();
+				}
 			}
 		}
 

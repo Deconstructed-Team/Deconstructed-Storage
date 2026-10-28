@@ -16,5 +16,6 @@ public class PacketHandler {
 		INSTANCE.registerMessage(OpenStorageInventoryMessage.Handler.class, OpenStorageInventoryMessage.class, id++, Side.SERVER);
 		INSTANCE.registerMessage(ScrolledToolMessage.Handler.class, ScrolledToolMessage.class, id++, Side.SERVER);
 		INSTANCE.registerMessage(RequestStorageContentsMessage.Handler.class, RequestStorageContentsMessage.class, id++, Side.SERVER);
+		INSTANCE.registerMessage(LandingParticlesMessage.Handler.class, LandingParticlesMessage.class, id++, Side.CLIENT);
 	}
 }

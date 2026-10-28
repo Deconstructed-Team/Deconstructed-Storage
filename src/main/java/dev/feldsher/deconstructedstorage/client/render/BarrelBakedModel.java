@@ -100,6 +100,15 @@ public class BarrelBakedModel implements IBakedModel {
 		return ret;
 	}
 
+	/** The tier's metal, drawn apart see-through while hidden: only with what shows it in hand. */
+	public List<BakedQuad> getTierQuads(@Nullable EnumFacing side) {
+		return BarrelParts.getTierQuads(barrel, flatTop, rotation, side);
+	}
+
+	public List<BakedQuad> getLockQuads(@Nullable EnumFacing side) {
+		return BarrelParts.getLockQuads(rotation, side);
+	}
+
 	/**
 	 * Its parts in the blocks' textures: each face takes the blocks' texture of the face it is on the barrel as it would
 	 * be facing north. With materials on only the core or only the trim, those alone are baked anew, over the tints.
