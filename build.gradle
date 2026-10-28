@@ -2,5 +2,6 @@ apply from: rootProject.file('gradle/scripts/mod.gradle')
 
 dependencies {
     implementation project(':core')
+    compileOnly project(':backpacks')
     compileOnly rfg.deobf('maven.modrinth:had-enough-items:4.36.1')
 }

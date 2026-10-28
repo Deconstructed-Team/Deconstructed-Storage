@@ -1,12 +1,14 @@
 package dev.feldsher.deconstructedstorage;
 
 import dev.feldsher.deconstructedcore.compat.bogosorter.BogoSorterCompat;
+import dev.feldsher.deconstructedstorage.compat.backpacks.BackpacksCompat;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
 import dev.feldsher.deconstructedstorage.crafting.OreDependentRecipes;
 import dev.feldsher.deconstructedstorage.init.ModUpgradeContainers;
 import dev.feldsher.deconstructedstorage.common.gui.StorageContainerMenu;
 import dev.feldsher.deconstructedstorage.network.PacketHandler;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -40,6 +42,9 @@ public class DeconstructedStorage {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		ModUpgradeContainers.register();
 		BogoSorterCompat.registerStorageContainers(StorageContainerMenu.class);
+		if (Loader.isModLoaded(BackpacksCompat.MOD_ID)) {
+			BackpacksCompat.init();
+		}
 		proxy.init();
 	}
 
