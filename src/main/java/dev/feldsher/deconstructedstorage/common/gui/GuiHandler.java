@@ -1,6 +1,7 @@
 package dev.feldsher.deconstructedstorage.common.gui;
 
 import dev.feldsher.deconstructedstorage.DeconstructedStorage;
+import dev.feldsher.deconstructedstorage.block.DecorationTableBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageWrapper;
 import dev.feldsher.deconstructedstorage.network.PacketHandler;
@@ -19,6 +20,20 @@ import javax.annotation.Nullable;
 public class GuiHandler implements IGuiHandler {
 	public static final int STORAGE = 0;
 	public static final int STORAGE_SETTINGS = 1;
+	public static final int DECORATION_TABLE = 2;
+
+	/** The decoration table's screen; its block entity goes to the client first, with the colors and parts kept. */
+	public static void openDecorationTable(EntityPlayerMP player, BlockPos pos) {
+		TileEntity te = player.world.getTileEntity(pos);
+		if (!(te instanceof DecorationTableBlockEntity)) {
+			return;
+		}
+		SPacketUpdateTileEntity updatePacket = te.getUpdatePacket();
+		if (updatePacket != null) {
+			player.connection.sendPacket(updatePacket);
+		}
+		player.openGui(DeconstructedStorage.instance, DECORATION_TABLE, player.world, pos.getX(), pos.getY(), pos.getZ());
+	}
 
 	public static void openStorage(EntityPlayerMP player, BlockPos pos) {
 		open(player, pos, STORAGE);
@@ -59,8 +74,18 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	@Nullable
+	private static DecorationTableBlockEntity getDecorationTable(EntityPlayer player, World world, int x, int y, int z) {
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+		return te instanceof DecorationTableBlockEntity && player.getDistanceSq(x + 0.5D, y + 0.5D, z + 0.5D) <= 64.0D ? (DecorationTableBlockEntity) te : null;
+	}
+
+	@Nullable
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+		if (id == DECORATION_TABLE) {
+			DecorationTableBlockEntity table = getDecorationTable(player, world, x, y, z);
+			return table == null ? null : new DecorationTableMenu(player, table);
+		}
 		StorageBlockEntity be = getBlockEntity(player, world, x, y, z);
 		if (be == null) {
 			return null;
@@ -71,6 +96,10 @@ public class GuiHandler implements IGuiHandler {
 	@Nullable
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+		if (id == DECORATION_TABLE) {
+			DecorationTableBlockEntity table = getDecorationTable(player, world, x, y, z);
+			return table == null ? null : DeconstructedStorage.proxy.createDecorationTableScreen(new DecorationTableMenu(player, table));
+		}
 		StorageBlockEntity be = getBlockEntity(player, world, x, y, z);
 		if (be == null) {
 			return null;

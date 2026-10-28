@@ -21,6 +21,10 @@ public class CommonProxy {
 	}
 
 	@Nullable
+	public Object createDecorationTableScreen(dev.feldsher.deconstructedstorage.common.gui.DecorationTableMenu container) {
+		return null;
+	}
+
 	public Object createStorageSettingsScreen(StorageSettingsContainerMenu container) {
 		return null;
 	}

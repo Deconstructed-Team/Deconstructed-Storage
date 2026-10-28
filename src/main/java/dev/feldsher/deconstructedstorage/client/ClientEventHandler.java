@@ -5,6 +5,7 @@ import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageWrapper;
 import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlock;
+import dev.feldsher.deconstructedstorage.common.gui.DecorationTableMenu;
 import dev.feldsher.deconstructedstorage.block.VerticalFacing;
 import dev.feldsher.deconstructedstorage.client.render.BarrelBakedModel;
 import dev.feldsher.deconstructedstorage.client.render.BarrelParts;
@@ -92,6 +93,10 @@ public class ClientEventHandler {
 		event.getMap().registerSprite(new ResourceLocation(HopperUpgradeContainer.EMPTY_INPUT_FILTER_SLOT_BACKGROUND));
 		event.getMap().registerSprite(new ResourceLocation(CompressionInventoryPart.EMPTY_COMPRESSION_SLOT));
 		event.getMap().registerSprite(new ResourceLocation(HopperUpgradeContainer.EMPTY_OUTPUT_FILTER_SLOT_BACKGROUND));
+		for (String background : new String[] {DecorationTableMenu.EMPTY_RED_DYE_SLOT_BACKGROUND, DecorationTableMenu.EMPTY_GREEN_DYE_SLOT_BACKGROUND,
+				DecorationTableMenu.EMPTY_BLUE_DYE_SLOT_BACKGROUND, DecorationTableMenu.EMPTY_MATERIAL_SLOT_BACKGROUND}) {
+			event.getMap().registerSprite(new ResourceLocation(background));
+		}
 	}
 
 	/** Barrels get put together from their parts, placed by their render data, as items by their stacks. */

@@ -8,6 +8,8 @@ import dev.feldsher.deconstructedstorage.block.ChestBlock;
 import dev.feldsher.deconstructedstorage.block.ChestBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ControllerBlock;
 import dev.feldsher.deconstructedstorage.block.ControllerBlockEntity;
+import dev.feldsher.deconstructedstorage.block.DecorationTableBlock;
+import dev.feldsher.deconstructedstorage.block.DecorationTableBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageIOBlock;
 import dev.feldsher.deconstructedstorage.block.StorageIOBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageLinkBlock;
@@ -105,6 +107,7 @@ public class ModBlocks {
 			() -> Config.SERVER.netheriteLimitedBarrel4.upgradeSlotCount, false), "limited_netherite_barrel_4");
 
 	public static final ControllerBlock CONTROLLER = block(new ControllerBlock(), "controller");
+	public static final DecorationTableBlock DECORATION_TABLE = block(new DecorationTableBlock(), "decoration_table");
 	public static final StorageLinkBlock STORAGE_LINK = block(new StorageLinkBlock(), "storage_link");
 	public static final StorageIOBlock STORAGE_IO = block(new StorageIOBlock(StorageIOBlockEntity::new), "storage_io");
 	public static final StorageIOBlock STORAGE_INPUT = block(new StorageIOBlock(StorageIOBlockEntity.Input::new), "storage_input");
@@ -196,7 +199,7 @@ public class ModBlocks {
 		return getEnabledTiers(Config.SERVER.shulkerBoxesEnabled, SHULKER_BOX, COPPER_SHULKER_BOX, IRON_SHULKER_BOX, GOLD_SHULKER_BOX, DIAMOND_SHULKER_BOX, NETHERITE_SHULKER_BOX);
 	}
 
-	/** The controller and what joins its network besides storages. */
+	/** The controller and what joins its network besides storages, and the decoration table. */
 	public static List<Block> getNetworkBlocks() {
 		List<Block> blocks = new ArrayList<>();
 		blocks.add(CONTROLLER);
@@ -204,6 +207,7 @@ public class ModBlocks {
 		blocks.add(STORAGE_IO);
 		blocks.add(STORAGE_INPUT);
 		blocks.add(STORAGE_OUTPUT);
+		blocks.add(DECORATION_TABLE);
 		return blocks;
 	}
 
@@ -227,6 +231,7 @@ public class ModBlocks {
 		getAllBlocks().forEach(event.getRegistry()::register);
 		getNetworkBlocks().forEach(event.getRegistry()::register);
 		GameRegistry.registerTileEntity(ControllerBlockEntity.class, DeconstructedStorage.getRL("controller"));
+		GameRegistry.registerTileEntity(DecorationTableBlockEntity.class, DeconstructedStorage.getRL("decoration_table"));
 		GameRegistry.registerTileEntity(StorageLinkBlockEntity.class, DeconstructedStorage.getRL("storage_link"));
 		GameRegistry.registerTileEntity(StorageIOBlockEntity.class, DeconstructedStorage.getRL("storage_io"));
 		GameRegistry.registerTileEntity(StorageIOBlockEntity.Input.class, DeconstructedStorage.getRL("storage_input"));

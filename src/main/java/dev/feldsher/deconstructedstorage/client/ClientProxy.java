@@ -27,6 +27,8 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(BarrelBlockEntity.class, new BarrelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(LimitedBarrelBlockEntity.class, new LimitedBarrelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ControllerBlockEntity.class, new ControllerRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(dev.feldsher.deconstructedstorage.block.DecorationTableBlockEntity.class,
+				new dev.feldsher.deconstructedstorage.client.render.DecorationTableRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ChestBlockEntity.class, new ChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ShulkerBoxBlockEntity.class, new ShulkerBoxRenderer());
 	}
@@ -39,6 +41,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public Object createStorageScreen(StorageContainerMenu container) {
 		return container.getStorageBlockEntity() instanceof LimitedBarrelBlockEntity ? new LimitedBarrelScreen(container) : new StorageScreen(container);
+	}
+
+	@Override
+	public Object createDecorationTableScreen(dev.feldsher.deconstructedstorage.common.gui.DecorationTableMenu container) {
+		return new dev.feldsher.deconstructedstorage.client.gui.DecorationTableScreen(container);
 	}
 
 	@Override
