@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -145,25 +146,29 @@ public class Config {
 		@net.minecraftforge.common.config.Config.Comment("Stack Upgrade Settings")
 		public final StackUpgradeSettings stackUpgrade = new StackUpgradeSettings();
 
-		@net.minecraftforge.common.config.Config.Comment("Maximum number of upgrades of type per storage in format of \"UpgradeRegistryName[or UpgradeGroup]|MaxNumber\"")
-		public String[] maxUpgradesPerStorage = {"stack_upgrades|3", "jukebox_upgrades|1", "furnace_upgrades|1"};
+		@net.minecraftforge.common.config.Config.Comment("Limit of maximum number of upgrades of type per storage in format of \"StorageType|UpgradeRegistryName[or UpgradeGroup]|MaxNumber\"")
+		public String[] maxUpgradesPerStorage = {
+				"chest|stack_upgrades|2", "chest|furnace_upgrades|1", "chest|jukebox_upgrades|1",
+				"barrel|stack_upgrades|2", "barrel|furnace_upgrades|1", "barrel|jukebox_upgrades|1",
+				"shulker_box|stack_upgrades|2", "shulker_box|furnace_upgrades|1", "shulker_box|jukebox_upgrades|1"};
 
 		@net.minecraftforge.common.config.Config.Ignore
 		public final IUpgradeCountLimitConfig maxUpgradesPerStorageConfig = new IUpgradeCountLimitConfig() {
 			@Override
 			public int getMaxUpgradesPerStorage(String storageType, @Nullable ResourceLocation upgradeRegistryName) {
-				return upgradeRegistryName == null ? Integer.MAX_VALUE : getMaxUpgrades().getOrDefault(upgradeRegistryName.getPath(), Integer.MAX_VALUE);
+				return upgradeRegistryName == null ? Integer.MAX_VALUE
+						: getMaxUpgrades().getOrDefault(storageType, Collections.emptyMap()).getOrDefault(upgradeRegistryName.getPath(), Integer.MAX_VALUE);
 			}
 
 			@Override
 			public int getMaxUpgradesInGroupPerStorage(String storageType, UpgradeGroup upgradeGroup) {
-				return getMaxUpgrades().getOrDefault(upgradeGroup.name(), Integer.MAX_VALUE);
+				return getMaxUpgrades().getOrDefault(storageType, Collections.emptyMap()).getOrDefault(upgradeGroup.name(), Integer.MAX_VALUE);
 			}
 		};
 
 		@net.minecraftforge.common.config.Config.Ignore
 		@Nullable
-		private Map<String, Integer> maxUpgrades = null;
+		private Map<String, Map<String, Integer>> maxUpgrades = null;
 		@net.minecraftforge.common.config.Config.Ignore
 		@Nullable
 		private Set<ResourceLocation> shulkerBoxDisallowedItemsSet = null;
@@ -178,15 +183,15 @@ public class Config {
 			return shulkerBoxDisallowedItemsSet.contains(item.getRegistryName());
 		}
 
-		private Map<String, Integer> getMaxUpgrades() {
+		private Map<String, Map<String, Integer>> getMaxUpgrades() {
 			if (maxUpgrades == null) {
 				maxUpgrades = new HashMap<>();
 				for (String mapping : maxUpgradesPerStorage) {
-					String[] upgradeMax = mapping.split("\\|");
-					if (upgradeMax.length < 2 || !upgradeMax[1].matches("\\d+")) {
+					String[] parts = mapping.split("\\|");
+					if (parts.length < 3 || !parts[2].matches("\\d+")) {
 						continue;
 					}
-					maxUpgrades.put(upgradeMax[0], Integer.parseInt(upgradeMax[1]));
+					maxUpgrades.computeIfAbsent(parts[0], k -> new HashMap<>()).put(parts[1], Integer.parseInt(parts[2]));
 				}
 			}
 			return maxUpgrades;
