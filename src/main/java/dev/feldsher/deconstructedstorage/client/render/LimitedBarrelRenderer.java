@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -93,20 +92,38 @@ public class LimitedBarrelRenderer extends TileEntitySpecialRenderer<LimitedBarr
 			if (infinite) {
 				scale *= 2;
 			}
-			String countString = infinite ? INFINITE_COUNT : TextFormatting.BOLD + CountAbbreviator.abbreviate(count, slotCounts.size() == 1 ? 6 : 5);
+			String countString = infinite ? INFINITE_COUNT : CountAbbreviator.abbreviate(count, slotCounts.size() == 1 ? 6 : 5);
 			GlStateManager.pushMatrix();
 			// a quarter of a pixel out from the front, which with a rim around it is a pixel in
 			GlStateManager.translate(frontOffset[0], frontOffset[1] + (infinite ? countDisplayYOffset / 1.8F : countDisplayYOffset), flatTop ? -0.001 : -0.25 / 16D);
 			// as the item, facing out of the front; text is drawn downward
 			GlStateManager.rotate(180, 0, 1, 0);
 			GlStateManager.scale(scale, -scale, scale);
-			font.drawString(countString, -font.getStringWidth(countString) / 2, 0, barrel.getSlotColor(slot));
+			if (infinite) {
+				font.drawString(countString, -font.getStringWidth(countString) / 2, 0, barrel.getSlotColor(slot));
+			} else {
+				drawBold(font, countString, barrel.getSlotColor(slot));
+			}
 			GlStateManager.popMatrix();
 		}
 		GlStateManager.depthMask(true);
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
 		GlStateManager.color(1, 1, 1, 1);
+	}
+
+	/**
+	 * Bold, centered on x 0: each char twice, the second 0.99 to the right. 1.12's bold puts it a whole pixel over, but a
+	 * char is drawn 0.01 short of its width, so up close a seam shows between the two.
+	 */
+	private static void drawBold(FontRenderer font, String text, int color) {
+		float x = -(font.getStringWidth(text) + text.length()) / 2F;
+		for (char c : text.toCharArray()) {
+			String ch = String.valueOf(c);
+			font.drawString(ch, x, 0, color, false);
+			font.drawString(ch, x + 0.99F, 0, color, false);
+			x += font.getCharWidth(c) + 1;
+		}
 	}
 
 	/** A bar by each slot, filled as far as the slot is; see-through while the tool is set to show the hidden ones. */
