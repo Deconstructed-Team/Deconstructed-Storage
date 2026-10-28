@@ -10,6 +10,8 @@ import dev.feldsher.deconstructedcore.upgrades.filter.FilterUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.infinity.InfinityUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.jukebox.JukeboxUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.magnet.MagnetUpgradeItem;
+import dev.feldsher.deconstructedstorage.upgrades.compression.CompressionUpgradeItem;
+import dev.feldsher.deconstructedstorage.upgrades.compression.StorageCompactingUpgradeItem;
 import dev.feldsher.deconstructedstorage.upgrades.hopper.HopperUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.pickup.PickupUpgradeItem;
 import dev.feldsher.deconstructedcore.upgrades.pump.PumpUpgradeItem;
@@ -112,9 +114,9 @@ public class ModItems {
 			Config.SERVER.maxUpgradesPerStorageConfig), "feeding_upgrade");
 	public static final FeedingUpgradeItem ADVANCED_FEEDING_UPGRADE = item(new FeedingUpgradeItem(() -> Config.SERVER.advancedFeedingUpgrade.filterSlots,
 			Config.SERVER.maxUpgradesPerStorageConfig), "advanced_feeding_upgrade");
-	public static final CompactingUpgradeItem COMPACTING_UPGRADE = item(new CompactingUpgradeItem(false, () -> Config.SERVER.compactingUpgrade.filterSlots,
+	public static final CompactingUpgradeItem COMPACTING_UPGRADE = item(new StorageCompactingUpgradeItem(false, () -> Config.SERVER.compactingUpgrade.filterSlots,
 			Config.SERVER.maxUpgradesPerStorageConfig), "compacting_upgrade");
-	public static final CompactingUpgradeItem ADVANCED_COMPACTING_UPGRADE = item(new CompactingUpgradeItem(true, () -> Config.SERVER.advancedCompactingUpgrade.filterSlots,
+	public static final CompactingUpgradeItem ADVANCED_COMPACTING_UPGRADE = item(new StorageCompactingUpgradeItem(true, () -> Config.SERVER.advancedCompactingUpgrade.filterSlots,
 			Config.SERVER.maxUpgradesPerStorageConfig), "advanced_compacting_upgrade");
 	public static final VoidUpgradeItem VOID_UPGRADE = item(new VoidUpgradeItem(() -> Config.SERVER.voidUpgrade.filterSlots,
 			() -> Config.SERVER.voidUpgrade.voidAnythingEnabled, Config.SERVER.maxUpgradesPerStorageConfig), "void_upgrade");
@@ -138,6 +140,7 @@ public class ModItems {
 	public static final InfinityUpgradeItem INFINITY_UPGRADE = item(new InfinityUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig, true), "infinity_upgrade");
 	public static final InfinityUpgradeItem SURVIVAL_INFINITY_UPGRADE = item(new InfinityUpgradeItem(Config.SERVER.maxUpgradesPerStorageConfig, false), "survival_infinity_upgrade");
 
+	public static final CompressionUpgradeItem COMPRESSION_UPGRADE = item(new CompressionUpgradeItem(), "compression_upgrade");
 	public static final HopperUpgradeItem HOPPER_UPGRADE = item(new HopperUpgradeItem(() -> Config.SERVER.hopperUpgrade.inputFilterSlots,
 			() -> Config.SERVER.hopperUpgrade.outputFilterSlots, () -> Config.SERVER.hopperUpgrade.transferSpeedTicks,
 			() -> Config.SERVER.hopperUpgrade.maxTransferStackSize, Config.SERVER.maxUpgradesPerStorageConfig), "hopper_upgrade");
@@ -162,7 +165,7 @@ public class ModItems {
 			SMOKING_UPGRADE, AUTO_SMOKING_UPGRADE, BLASTING_UPGRADE, AUTO_BLASTING_UPGRADE, CRAFTING_UPGRADE, STONECUTTER_UPGRADE,
 			JUKEBOX_UPGRADE, ADVANCED_JUKEBOX_UPGRADE, PUMP_UPGRADE, ADVANCED_PUMP_UPGRADE, XP_PUMP_UPGRADE, INFINITY_UPGRADE, SURVIVAL_INFINITY_UPGRADE,
 			STACK_UPGRADE_TIER_1, STACK_UPGRADE_TIER_1_PLUS, STACK_UPGRADE_TIER_2, STACK_UPGRADE_TIER_3, STACK_UPGRADE_TIER_4, STACK_UPGRADE_TIER_5,
-			STACK_DOWNGRADE_TIER_1, STACK_DOWNGRADE_TIER_2, STACK_DOWNGRADE_TIER_3, STACK_UPGRADE_OMEGA_TIER, HOPPER_UPGRADE, ADVANCED_HOPPER_UPGRADE));
+			STACK_DOWNGRADE_TIER_1, STACK_DOWNGRADE_TIER_2, STACK_DOWNGRADE_TIER_3, STACK_UPGRADE_OMEGA_TIER, COMPRESSION_UPGRADE, HOPPER_UPGRADE, ADVANCED_HOPPER_UPGRADE));
 
 	public static boolean isStorageUpgrade(Item item) {
 		return STORAGE_UPGRADES.contains(item);

@@ -16,6 +16,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import dev.feldsher.deconstructedcore.util.RecipeHelper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.Optional;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -138,6 +145,8 @@ public class Config {
 
 		@net.minecraftforge.common.config.Config.Comment("Advanced Jukebox Upgrade Settings")
 		public final JukeboxUpgradeConfig advancedJukeboxUpgrade = new JukeboxUpgradeConfig(12);
+		@net.minecraftforge.common.config.Config.Comment("Compression Upgrade Settings")
+		public final CompressionUpgradeConfig compressionUpgrade = new CompressionUpgradeConfig();
 		@net.minecraftforge.common.config.Config.Comment("Pump Upgrade Settings")
 		public final PumpUpgradeConfig pumpUpgrade = new PumpUpgradeConfig();
 		@net.minecraftforge.common.config.Config.Comment("Xp Pump Upgrade Settings")
@@ -201,6 +210,7 @@ public class Config {
 			maxUpgrades = null;
 			shulkerBoxDisallowedItemsSet = null;
 			stackUpgrade.config.clearNonStackableItems();
+			compressionUpgrade.clearCache();
 		}
 	}
 
@@ -249,6 +259,44 @@ public class Config {
 			filterSlots = defaultFilterSlots;
 			slotsInRow = defaultSlotsInRow;
 			magnetRange = defaultMagnetRange;
+		}
+	}
+
+	public static class CompressionUpgradeConfig {
+		private static final Pattern DECOMPRESSIBLE_MATCHER = Pattern.compile("([a-z0-9_.-]+:[a-z0-9_/.-]+)=(\\d+)x([a-z0-9_.-]+:[a-z0-9_/.-]+)");
+
+		@net.minecraftforge.common.config.Config.Comment("Defines how many slots at a maximum compression upgrade is able to use")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 3, max = 9)
+		public int maxNumberOfSlots = 5;
+		@net.minecraftforge.common.config.Config.Comment("List of items that can be decompressed by compression upgrade and their results. "
+				+ "Item registry names are expected here in format of \"mod:itemBeingDecompressed=Nxmod:itemDecompressResult\"")
+		public String[] additionalDecompressibleItems = {"minecraft:glowstone=4xminecraft:glowstone_dust", "minecraft:quartz_block=4xminecraft:quartz"};
+
+		@net.minecraftforge.common.config.Config.Ignore
+		@Nullable
+		private Map<Item, RecipeHelper.UncompactingResult> additionalDecompressibleItemsMap = null;
+
+		public Optional<RecipeHelper.UncompactingResult> getDecompressionResult(Item item) {
+			if (additionalDecompressibleItemsMap == null) {
+				additionalDecompressibleItemsMap = new HashMap<>();
+				for (String decompressibleItem : additionalDecompressibleItems) {
+					Matcher matcher = DECOMPRESSIBLE_MATCHER.matcher(decompressibleItem);
+					if (matcher.find()) {
+						Item fromItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(matcher.group(1)));
+						int count = Integer.parseInt(matcher.group(2));
+						Item toItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(matcher.group(3)));
+						if (fromItem != null && toItem != null && fromItem != Items.AIR && toItem != Items.AIR && (count == 4 || count == 9)) {
+							additionalDecompressibleItemsMap.put(fromItem, new RecipeHelper.UncompactingResult(new ItemStack(toItem),
+									count == 4 ? RecipeHelper.CompactingShape.TWO_BY_TWO_UNCRAFTABLE : RecipeHelper.CompactingShape.THREE_BY_THREE_UNCRAFTABLE));
+						}
+					}
+				}
+			}
+			return Optional.ofNullable(additionalDecompressibleItemsMap.get(item));
+		}
+
+		void clearCache() {
+			additionalDecompressibleItemsMap = null;
 		}
 	}
 
