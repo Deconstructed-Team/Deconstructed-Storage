@@ -1,5 +1,6 @@
 package dev.feldsher.deconstructedstorage.network;
 
+import dev.feldsher.deconstructedcore.util.RequestThrottle;
 import dev.feldsher.deconstructedstorage.block.StorageBlockContents;
 import dev.feldsher.deconstructedstorage.item.ShulkerBoxItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
@@ -40,11 +41,13 @@ public class RequestStorageContentsMessage implements IMessage {
 	}
 
 	public static class Handler implements IMessageHandler<RequestStorageContentsMessage, IMessage> {
+		private static final RequestThrottle THROTTLE = new RequestThrottle(1000);
+
 		@Override
 		public IMessage onMessage(RequestStorageContentsMessage message, MessageContext ctx) {
 			EntityPlayerMP player = ctx.getServerHandler().player;
 			player.getServerWorld().addScheduledTask(() -> {
-				if (isAtHand(player, message.storageUuid)) {
+				if (isAtHand(player, message.storageUuid) && THROTTLE.tryAnswer(player, message.storageUuid)) {
 					PacketHandler.INSTANCE.sendTo(new StorageContentsMessage(message.storageUuid,
 							StorageBlockContents.getContents(message.storageUuid).getNbt()), player);
 				}
