@@ -14,9 +14,9 @@ plugins {
 apply from: 'gradle/scripts/mod.gradle'
 
 dependencies {
-    implementation rfg.deobf("com.github.Deconstructed-Team:Deconstructed-Core:${propertyString('core_version')}")
+    implementation rfg.deobf("Deconstructed-Core:deconstructedcore:${propertyString('core_version')}")
     // Only for the compatibility with it (upgrade recipes both ways, the decoration table on backpacks)
-    compileOnly(rfg.deobf("com.github.Deconstructed-Team:Deconstructed-Backpacks:${propertyString('backpacks_version')}")) {
+    compileOnly(rfg.deobf("Deconstructed-Backpacks:deconstructedbackpacks:${propertyString('backpacks_version')}")) {
         transitive = false
     }
     compileOnly rfg.deobf('maven.modrinth:had-enough-items:4.36.1')

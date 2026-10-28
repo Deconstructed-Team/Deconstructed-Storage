@@ -33,17 +33,24 @@ the GPL v3, so they are under it as well.
 
 The jar to install is `build/libs/deconstructedstorage-<version>.jar` (not `-dev` or `-sources`).
 
-Deconstructed Core (and Backpacks, for the compatibility) comes from [JitPack](https://jitpack.io), by the tag in `gradle.properties`. To build against
-a local copy instead, run `./gradlew publishToMavenLocal` in it and pass its version here, as
-`./gradlew build -Pcore_version=1.0.0`.
+Deconstructed Core (and Backpacks, for the compatibility) are taken from their GitHub releases, of the versions in `gradle.properties`. To build
+against a local copy instead, give it a version that isn't released, run `./gradlew publishToMavenLocal`
+in it, and pass that version here, as `./gradlew build -Pcore_version=1.0.1`.
 
-Another mod can be built against this one through JitPack:
+Another mod can be built against this one, from its GitHub releases:
 
 ```groovy
 repositories {
-    maven { url 'https://jitpack.io' }
+    ivy {
+        url = 'https://github.com/Deconstructed-Team/'
+        patternLayout {
+            artifact '[organisation]/releases/download/v[revision]/[module]-[revision](-[classifier]).[ext]'
+        }
+        metadataSources { artifact() }
+        content { includeGroup 'Deconstructed-Storage' }
+    }
 }
 dependencies {
-    implementation rfg.deobf('com.github.Deconstructed-Team:Deconstructed-Storage:v1.0.0')
+    implementation rfg.deobf('Deconstructed-Storage:deconstructedstorage:1.0.0')
 }
 ```
