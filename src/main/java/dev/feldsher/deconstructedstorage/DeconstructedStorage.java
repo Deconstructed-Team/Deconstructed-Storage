@@ -2,6 +2,7 @@ package dev.feldsher.deconstructedstorage;
 
 import dev.feldsher.deconstructedcore.compat.bogosorter.BogoSorterCompat;
 import dev.feldsher.deconstructedstorage.compat.backpacks.BackpacksCompat;
+import dev.feldsher.deconstructedstorage.compat.quark.QuarkCompat;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
 import dev.feldsher.deconstructedstorage.crafting.OreDependentRecipes;
 import dev.feldsher.deconstructedstorage.init.ModUpgradeContainers;
@@ -44,6 +45,9 @@ public class DeconstructedStorage {
 		BogoSorterCompat.registerStorageContainers(StorageContainerMenu.class);
 		if (Loader.isModLoaded(BackpacksCompat.MOD_ID)) {
 			BackpacksCompat.init();
+		}
+		if (Loader.isModLoaded(QuarkCompat.MOD_ID)) {
+			QuarkCompat.init();
 		}
 		proxy.init();
 	}

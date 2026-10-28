@@ -8,6 +8,7 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +21,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import net.minecraft.init.Blocks;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Swaps a placed storage for another tier's, in place, keeping all it holds and how it looks: one of these storages, or
@@ -28,7 +31,23 @@ import net.minecraft.init.Blocks;
  * its inventory grows to the new tier's size.
  */
 public final class TierUpgrader {
+	/** Chests that are vanilla's, or other mods' kept as vanilla's, with the wood each is of: oak for vanilla's. */
+	private static final Map<Block, Function<TileEntity, WoodType>> VANILLA_CHESTS = new HashMap<>();
+
+	static {
+		registerVanillaChest(Blocks.CHEST, te -> WoodType.OAK);
+	}
+
 	private TierUpgrader() {}
+
+	/** Another mod's chest that is vanilla's {@link BlockChest} and {@link TileEntityChest}, made of the wood its block entity says. */
+	public static void registerVanillaChest(Block block, Function<TileEntity, WoodType> getWoodType) {
+		VANILLA_CHESTS.put(block, getWoodType);
+	}
+
+	public static boolean isVanillaChest(Block block) {
+		return VANILLA_CHESTS.containsKey(block);
+	}
 
 	/** How many upgrade items it takes: both halves of a double chest are upgraded, with one each. */
 	public static int getCountRequired(World world, BlockPos pos) {
@@ -36,7 +55,7 @@ public final class TierUpgrader {
 		if (state.getBlock() instanceof ChestBlock && state.getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
 			return 2;
 		}
-		return state.getBlock() instanceof BlockChest && getVanillaChestPartner(world, pos) != null ? 2 : 1;
+		return isVanillaChest(state.getBlock()) && getVanillaChestPartner(world, pos) != null ? 2 : 1;
 	}
 
 	/**
@@ -46,7 +65,7 @@ public final class TierUpgrader {
 	@Nullable
 	public static Block getUpgradedBlock(Block block, @Nullable StorageTier from, StorageTier to) {
 		if (from == null || from == StorageTier.BASIC) {
-			if (block == Blocks.CHEST) {
+			if (isVanillaChest(block)) {
 				return ModBlocks.getInTier(ModBlocks.CHEST, to).orElse(null);
 			}
 			if (block instanceof BlockShulkerBox) {
@@ -139,7 +158,7 @@ public final class TierUpgrader {
 		return to;
 	}
 
-	/** Vanilla's chest to one of these: oak, with its items in the same slots; a double one as both halves. */
+	/** Vanilla's chest to one of these: of its wood, with its items in the same slots; a double one as both halves. */
 	public static boolean upgradeVanillaChest(World world, BlockPos pos, Block newBlock) {
 		BlockPos partner = getVanillaChestPartner(world, pos);
 		ChestBlock.runUpgrading(() -> {
@@ -154,15 +173,25 @@ public final class TierUpgrader {
 		return true;
 	}
 
+	/** The other half: the same block next to it, of the same wood, as other mods' chests join only so. */
 	@Nullable
 	private static BlockPos getVanillaChestPartner(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
+		WoodType woodType = getVanillaChestWoodType(world, pos);
 		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-			if (world.getBlockState(pos.offset(facing)).getBlock() == block) {
-				return pos.offset(facing);
+			BlockPos partner = pos.offset(facing);
+			if (world.getBlockState(partner).getBlock() == block && getVanillaChestWoodType(world, partner) == woodType) {
+				return partner;
 			}
 		}
 		return null;
+	}
+
+	@Nullable
+	private static WoodType getVanillaChestWoodType(World world, BlockPos pos) {
+		Function<TileEntity, WoodType> getWoodType = VANILLA_CHESTS.get(world.getBlockState(pos).getBlock());
+		TileEntity te = world.getTileEntity(pos);
+		return getWoodType == null || te == null ? null : getWoodType.apply(te);
 	}
 
 	private static void swapVanillaChest(World world, BlockPos pos, Block newBlock) {
@@ -172,6 +201,7 @@ public final class TierUpgrader {
 			return;
 		}
 		TileEntityChest chest = (TileEntityChest) te;
+		WoodType woodType = getVanillaChestWoodType(world, pos);
 		NonNullList<ItemStack> items = NonNullList.withSize(chest.getSizeInventory(), ItemStack.EMPTY);
 		for (int slot = 0; slot < items.size(); slot++) {
 			items.set(slot, chest.removeStackFromSlot(slot));
@@ -181,7 +211,7 @@ public final class TierUpgrader {
 		TileEntity newTe = world.getTileEntity(pos);
 		if (newTe instanceof ChestBlockEntity) {
 			ChestBlockEntity be = (ChestBlockEntity) newTe;
-			be.setWoodType(WoodType.OAK);
+			be.setWoodType(woodType == null ? WoodType.OAK : woodType);
 			be.setCustomName(customName);
 			fill(be, items);
 		}

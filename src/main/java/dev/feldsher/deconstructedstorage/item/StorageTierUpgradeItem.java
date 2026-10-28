@@ -5,7 +5,6 @@ import dev.feldsher.deconstructedstorage.block.StorageTier;
 import dev.feldsher.deconstructedstorage.block.TierUpgrader;
 import dev.feldsher.deconstructedstorage.client.gui.StorageTranslationHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,7 +62,7 @@ public class StorageTierUpgradeItem extends Item {
 			return EnumActionResult.FAIL;
 		}
 		boolean upgraded;
-		if (block instanceof BlockChest) {
+		if (TierUpgrader.isVanillaChest(block)) {
 			upgraded = TierUpgrader.upgradeVanillaChest(world, pos, newBlock);
 		} else if (block instanceof BlockShulkerBox) {
 			upgraded = TierUpgrader.upgradeVanillaShulkerBox(world, pos, newBlock);
