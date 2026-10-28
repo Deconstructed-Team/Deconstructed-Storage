@@ -1,7 +1,11 @@
 package dev.feldsher.deconstructedstorage.client.render;
 
 import dev.feldsher.deconstructedstorage.block.BarrelBlock;
+import dev.feldsher.deconstructedstorage.block.BarrelMaterial;
 import dev.feldsher.deconstructedstorage.block.BarrelRenderData;
+import dev.feldsher.deconstructedstorage.block.MaterialBlock;
+import dev.feldsher.deconstructedstorage.block.VerticalFacing;
+import dev.feldsher.deconstructedstorage.common.gui.BlockSide;
 import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlock;
 import dev.feldsher.deconstructedstorage.block.WoodType;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
@@ -25,6 +29,8 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +45,19 @@ public class BarrelBakedModel implements IBakedModel {
 	private final IBakedModel baseModel;
 	private final Block barrel;
 	private final ModelRotation rotation;
+	private final EnumFacing horizontalDirection;
+	private final VerticalFacing verticalFacing;
 	private final boolean flatTop;
 	private final int limitedSlots;
 	private final ItemOverrideList overrides;
 
-	public BarrelBakedModel(IBakedModel baseModel, Block barrel, ModelRotation rotation, boolean flatTop) {
+	public BarrelBakedModel(IBakedModel baseModel, Block barrel, ModelRotation rotation, EnumFacing horizontalDirection, VerticalFacing verticalFacing,
+			boolean flatTop) {
 		this.baseModel = baseModel;
 		this.barrel = barrel;
 		this.rotation = rotation;
+		this.horizontalDirection = horizontalDirection;
+		this.verticalFacing = verticalFacing;
 		this.flatTop = flatTop;
 		limitedSlots = barrel instanceof LimitedBarrelBlock ? ((LimitedBarrelBlock) barrel).getNumberOfInventorySlots() : 0;
 		overrides = new StackOverrides();
@@ -61,7 +72,8 @@ public class BarrelBakedModel implements IBakedModel {
 	protected List<BakedQuad> getQuads(BarrelRenderData data, @Nullable EnumFacing side) {
 		List<BakedQuad> ret = new ArrayList<>();
 		WoodType woodType = data.getWoodType();
-		if (!(data.hasMainColor() && data.hasAccentColor())) {
+		Map<BarrelMaterial, MaterialBlock> materials = data.getMaterials();
+		if (!(data.hasMainColor() && data.hasAccentColor()) && materials.isEmpty()) {
 			WoodType wood = woodType == null ? WoodType.DEFAULT : woodType;
 			ret.addAll(limitedSlots > 0 ? BarrelParts.getLimitedWoodQuads(limitedSlots, wood, flatTop, rotation, side)
 					: BarrelParts.getWoodQuads(wood, data.isOpen(), flatTop, rotation, side));
@@ -74,6 +86,9 @@ public class BarrelBakedModel implements IBakedModel {
 			ret.addAll(limitedSlots > 0 ? BarrelParts.getLimitedTintableMainQuads(limitedSlots, flatTop, rotation, side)
 					: BarrelParts.getTintableMainQuads(data.isOpen(), flatTop, rotation, side));
 		}
+		if (!materials.isEmpty()) {
+			addMaterialQuads(ret, data, woodType == null ? WoodType.DEFAULT : woodType, materials, side);
+		}
 		if (data.showsTier()) {
 			ret.addAll(BarrelParts.getTierQuads(barrel, flatTop, rotation, side));
 		}
@@ -83,6 +98,42 @@ public class BarrelBakedModel implements IBakedModel {
 			ret.addAll(BarrelParts.getLockQuads(rotation, side));
 		}
 		return ret;
+	}
+
+	/**
+	 * Its parts in the blocks' textures: each face takes the blocks' texture of the face it is on the barrel as it would
+	 * be facing north. With materials on only the core or only the trim, those alone are baked anew, over the tints.
+	 */
+	private void addMaterialQuads(List<BakedQuad> ret, BarrelRenderData data, WoodType woodType, Map<BarrelMaterial, MaterialBlock> materials, @Nullable EnumFacing side) {
+		EnumFacing spriteSide = getSpriteSide(side);
+		Map<String, String> materialTextures = new HashMap<>();
+		Set<BarrelMaterial.MaterialModelPart> materialModelParts = EnumSet.noneOf(BarrelMaterial.MaterialModelPart.class);
+		materials.forEach((material, block) -> {
+			materialModelParts.add(material.getMaterialModelPart());
+			String spriteName = MaterialSprites.getSprite(block, spriteSide).getIconName();
+			for (BarrelMaterial child : material.getChildren()) {
+				materialTextures.put(child.getSerializedName(), spriteName);
+			}
+		});
+		boolean split = materialModelParts.contains(BarrelMaterial.MaterialModelPart.CORE) || materialModelParts.contains(BarrelMaterial.MaterialModelPart.TRIM);
+		if (!split) {
+			ret.addAll(BarrelParts.getMaterialQuads(limitedSlots, woodType, flatTop, BarrelParts.DynamicPart.WHOLE, materialTextures, rotation, side));
+			return;
+		}
+		if (!data.hasMainColor() || materialModelParts.contains(BarrelMaterial.MaterialModelPart.CORE)) {
+			ret.addAll(BarrelParts.getMaterialQuads(limitedSlots, woodType, flatTop, BarrelParts.DynamicPart.CORE, materialTextures, rotation, side));
+		}
+		if (!data.hasAccentColor() || materialModelParts.contains(BarrelMaterial.MaterialModelPart.TRIM)) {
+			ret.addAll(BarrelParts.getMaterialQuads(limitedSlots, woodType, flatTop, BarrelParts.DynamicPart.TRIM, materialTextures, rotation, side));
+		}
+	}
+
+	/** The face of a barrel facing north that this face of it is: what of the blocks' textures it takes. */
+	private EnumFacing getSpriteSide(@Nullable EnumFacing side) {
+		if (side == null) {
+			return EnumFacing.NORTH;
+		}
+		return BlockSide.fromDirection(side, horizontalDirection, verticalFacing).toDirection(EnumFacing.NORTH, VerticalFacing.NO);
 	}
 
 	@Override
@@ -130,9 +181,10 @@ public class BarrelBakedModel implements IBakedModel {
 			boolean hasMainColor = StorageBlockItem.getMainColor(stack).isPresent();
 			boolean hasAccentColor = StorageBlockItem.getAccentColor(stack).isPresent();
 			WoodType woodType = WoodStorageBlockItem.getWoodType(stack).orElse(hasMainColor && hasAccentColor ? null : WoodType.DEFAULT);
-			BarrelRenderData data = new BarrelRenderData(woodType, hasMainColor, hasAccentColor, false, StorageBlockItem.getContentsUuid(stack).isPresent(), true, false);
+			BarrelRenderData data = new BarrelRenderData(woodType, hasMainColor, hasAccentColor, false, StorageBlockItem.getContentsUuid(stack).isPresent(), true, false,
+					BarrelBlockItem.getMaterials(stack));
 			Map<BarrelRenderData, IBakedModel> models = BarrelBlockItem.isFlatTop(stack) ? flatTopModels : this.models;
-			return models.computeIfAbsent(data, d -> new BarrelBakedModel(baseModel, barrel, rotation, BarrelBlockItem.isFlatTop(stack)) {
+			return models.computeIfAbsent(data, d -> new BarrelBakedModel(baseModel, barrel, rotation, horizontalDirection, verticalFacing, BarrelBlockItem.isFlatTop(stack)) {
 				@Override
 				public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
 					return getQuads(d, side);

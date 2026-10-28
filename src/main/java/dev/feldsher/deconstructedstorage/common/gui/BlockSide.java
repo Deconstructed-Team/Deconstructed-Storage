@@ -27,6 +27,16 @@ public enum BlockSide {
 		return FRONT;
 	}
 
+	/** Which side of a block facing that way the direction is. */
+	public static BlockSide fromDirection(EnumFacing direction, EnumFacing baseHorizontalDirection, VerticalFacing baseVerticalFacing) {
+		for (BlockSide side : values()) {
+			if (side.toDirection(baseHorizontalDirection, baseVerticalFacing) == direction) {
+				return side;
+			}
+		}
+		return FRONT;
+	}
+
 	public EnumFacing toDirection(EnumFacing baseHorizontalDirection, VerticalFacing baseVerticalFacing) {
 		switch (this) {
 			case TOP:

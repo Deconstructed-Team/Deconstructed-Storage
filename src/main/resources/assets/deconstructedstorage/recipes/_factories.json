@@ -5,6 +5,7 @@
     "shulker_box_from_chest": "dev.feldsher.deconstructedstorage.crafting.ShulkerBoxRecipes$FromChestFactory",
     "shulker_box_from_vanilla": "dev.feldsher.deconstructedstorage.crafting.ShulkerBoxRecipes$FromVanillaFactory",
     "flat_top_barrel_toggle": "dev.feldsher.deconstructedstorage.crafting.FlatTopBarrelToggleRecipe$Factory",
+    "barrel_material": "dev.feldsher.deconstructedstorage.crafting.BarrelMaterialRecipe$Factory",
     "storage_dye": "dev.feldsher.deconstructedstorage.crafting.StorageDyeRecipe$Factory"
   },
   "conditions": {

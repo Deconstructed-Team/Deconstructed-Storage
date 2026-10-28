@@ -204,6 +204,66 @@ public final class BarrelParts {
 		return models;
 	}
 
+	/** What of a barrel made of other blocks is baked with their textures: all of it, or its core or its trim alone. */
+	public enum DynamicPart {
+		WHOLE,
+		CORE,
+		TRIM
+	}
+
+	/**
+	 * A part of a barrel made of other blocks: the textures named for its parts, as "top" or "side_trim", are those
+	 * blocks'; the rest are of its wood. A limited barrel's has the trims between its slots.
+	 */
+	public static List<BakedQuad> getMaterialQuads(int limitedSlots, WoodType woodType, boolean flatTop, DynamicPart part, Map<String, String> materialTextures,
+			ModelRotation rotation, @Nullable EnumFacing side) {
+		String top = limitedSlots > 0 ? BLOCK + "limited_" + woodType.getName() + "_barrel_" + limitedSlots + "_top" : BLOCK + woodType.getName() + "_barrel_top";
+		String prefix = BLOCK + woodType.getName() + "_barrel_";
+		Map<String, String> textures = new java.util.TreeMap<>();
+		textures.put("top", top);
+		textures.put("top_trim", top);
+		textures.put("top_inner_trim", top);
+		textures.put("side", prefix + "side");
+		textures.put("side_trim", prefix + "side");
+		textures.put("bottom", prefix + "bottom");
+		textures.put("bottom_trim", prefix + "bottom");
+		textures.putAll(materialTextures);
+		textures.put("particle", textures.get("top"));
+		String key = "material_" + flatPrefix(flatTop) + limitedSlots + "_" + part.name() + "_" + textures;
+		return getQuads(key, getMaterialModels(limitedSlots, flatTop, part), () -> ImmutableMap.copyOf(textures), rotation, side);
+	}
+
+	private static List<ResourceLocation> getMaterialModels(int limitedSlots, boolean flatTop, DynamicPart part) {
+		List<ResourceLocation> models = new ArrayList<>();
+		String partFolder = "block/barrel_part/";
+		switch (part) {
+			case CORE:
+				if (flatTop && limitedSlots > 1) {
+					models.add(DeconstructedStorage.getRL(partFolder + "flat_core_without_top"));
+					models.add(DeconstructedStorage.getRL(partFolder + "flat_limited_" + limitedSlots + "_core_top"));
+				} else {
+					models.add(DeconstructedStorage.getRL(partFolder + (flatTop ? "flat_core" : "core")));
+				}
+				return models;
+			case TRIM:
+				models.add(DeconstructedStorage.getRL(partFolder + (flatTop ? "flat_trim" : "trim")));
+				addInnerTrims(models, limitedSlots, flatTop);
+				return models;
+			default:
+				models.add(flatTop ? FLAT_BASE : BASE);
+				if (!flatTop) {
+					addInnerTrims(models, limitedSlots, false);
+				}
+				return models;
+		}
+	}
+
+	private static void addInnerTrims(List<ResourceLocation> models, int limitedSlots, boolean flatTop) {
+		for (int trim = 0; trim < limitedSlots - 1; trim++) {
+			models.add(DeconstructedStorage.getRL("block/barrel_part/" + flatPrefix(flatTop) + INNER_TRIMS[trim]));
+		}
+	}
+
 	private static String flatPrefix(boolean flatTop) {
 		return flatTop ? "flat_" : "";
 	}

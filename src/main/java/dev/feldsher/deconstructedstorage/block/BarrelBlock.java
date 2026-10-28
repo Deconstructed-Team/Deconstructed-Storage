@@ -101,6 +101,17 @@ public class BarrelBlock extends WoodStorageBlockBase {
 				BarrelBlockItem.setFlatTop(stack, true);
 			}
 		}
+		if (be instanceof IMaterialHolder) {
+			BarrelBlockItem.setMaterials(stack, ((IMaterialHolder) be).getMaterials());
+		}
+	}
+
+	@Override
+	protected void setPlacedData(ItemStack stack, StorageBlockEntity be) {
+		super.setPlacedData(stack, be);
+		if (be instanceof IMaterialHolder) {
+			((IMaterialHolder) be).setMaterials(BarrelBlockItem.getMaterials(stack));
+		}
 	}
 
 	@Override
@@ -133,6 +144,26 @@ public class BarrelBlock extends WoodStorageBlockBase {
 	@Override
 	protected TextureAtlasSprite getParticleSprite(@Nullable WoodType woodType) {
 		return BarrelParts.getParticleSprite(Minecraft.getMinecraft().getTextureMapBlocks(), woodType);
+	}
+
+	/** Made of other blocks, its bits are of the block on its top or all of it, as 1.21 picks it. */
+	@SideOnly(Side.CLIENT)
+	@Override
+	protected TextureAtlasSprite getParticleSprite(StorageBlockEntity be) {
+		if (be instanceof IMaterialHolder) {
+			java.util.Map<BarrelMaterial, MaterialBlock> materials = ((IMaterialHolder) be).getMaterials();
+			for (BarrelMaterial material : new BarrelMaterial[] {BarrelMaterial.ALL, BarrelMaterial.ALL_BUT_TRIM, BarrelMaterial.TOP_ALL, BarrelMaterial.TOP}) {
+				if (materials.containsKey(material)) {
+					return dev.feldsher.deconstructedstorage.client.render.MaterialSprites.getParticleSprite(materials.get(material));
+				}
+			}
+		}
+		return super.getParticleSprite(be);
+	}
+
+	@Override
+	protected int getParticleColor(StorageBlockEntity be) {
+		return be instanceof IMaterialHolder && !((IMaterialHolder) be).getMaterials().isEmpty() ? -1 : super.getParticleColor(be);
 	}
 
 	@Override

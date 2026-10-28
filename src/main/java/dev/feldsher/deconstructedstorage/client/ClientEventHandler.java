@@ -102,10 +102,11 @@ public class ClientEventHandler {
 			for (EnumFacing facing : EnumFacing.values()) {
 				for (boolean flatTop : new boolean[] {false, true}) {
 					wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "facing=" + facing.getName() + ",flat_top=" + flatTop), barrel,
-							BarrelParts.getRotation(facing), flatTop);
+							BarrelParts.getRotation(facing), getHorizontalDirection(facing), VerticalFacing.fromDirection(facing), flatTop);
 				}
 			}
-			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, ModelRotation.X0_Y0, false);
+			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, ModelRotation.X0_Y0, EnumFacing.NORTH,
+					VerticalFacing.UP, false);
 		}
 		for (LimitedBarrelBlock barrel : ModBlocks.getLimitedBarrels()) {
 			for (EnumFacing facing : EnumFacing.HORIZONTALS) {
@@ -113,18 +114,25 @@ public class ClientEventHandler {
 					for (boolean flatTop : new boolean[] {false, true}) {
 						wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()),
 										"facing=" + facing.getName() + ",flat_top=" + flatTop + ",vertical_facing=" + verticalFacing.getName()), barrel,
-								BarrelParts.getLimitedRotation(facing, verticalFacing), flatTop);
+								BarrelParts.getLimitedRotation(facing, verticalFacing), facing, verticalFacing, flatTop);
 					}
 				}
 			}
-			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, ModelRotation.X0_Y0, false);
+			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, ModelRotation.X0_Y0, EnumFacing.NORTH,
+					VerticalFacing.UP, false);
 		}
 	}
 
-	private static void wrap(ModelBakeEvent event, ModelResourceLocation location, Block barrel, ModelRotation rotation, boolean flatTop) {
+	/** As a barrel facing up or down is turned: its top looks north or south. */
+	private static EnumFacing getHorizontalDirection(EnumFacing facing) {
+		return facing == EnumFacing.UP ? EnumFacing.NORTH : facing == EnumFacing.DOWN ? EnumFacing.SOUTH : facing;
+	}
+
+	private static void wrap(ModelBakeEvent event, ModelResourceLocation location, Block barrel, ModelRotation rotation, EnumFacing horizontalDirection,
+			VerticalFacing verticalFacing, boolean flatTop) {
 		IBakedModel model = event.getModelRegistry().getObject(location);
 		if (model != null && !(model instanceof BarrelBakedModel)) {
-			event.getModelRegistry().putObject(location, new BarrelBakedModel(model, barrel, rotation, flatTop));
+			event.getModelRegistry().putObject(location, new BarrelBakedModel(model, barrel, rotation, horizontalDirection, verticalFacing, flatTop));
 		}
 	}
 

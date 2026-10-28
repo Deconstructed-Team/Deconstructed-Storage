@@ -47,6 +47,20 @@ public class StorageBlockItem extends ItemBlock {
 		onColorsChanged(stack);
 	}
 
+	public static void removeMainColor(ItemStack stack) {
+		NBTTagCompound tag = stack.getTagCompound();
+		if (tag != null) {
+			tag.removeTag(StorageNbt.MAIN_COLOR);
+		}
+	}
+
+	public static void removeAccentColor(ItemStack stack) {
+		NBTTagCompound tag = stack.getTagCompound();
+		if (tag != null) {
+			tag.removeTag(StorageNbt.ACCENT_COLOR);
+		}
+	}
+
 	public static ItemStack setColors(ItemStack stack, int mainColor, int accentColor) {
 		NBTTagCompound tag = StorageNbt.getOrCreateTag(stack);
 		tag.setInteger(StorageNbt.MAIN_COLOR, mainColor);
