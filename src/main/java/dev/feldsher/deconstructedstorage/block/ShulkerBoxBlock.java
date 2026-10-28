@@ -129,7 +129,14 @@ public class ShulkerBoxBlock extends StorageBlockBase {
 			return true;
 		}
 		TileEntity te = world.getTileEntity(pos);
-		if (!(te instanceof ShulkerBoxBlockEntity) || !canOpen(world, pos, state, (ShulkerBoxBlockEntity) te)) {
+		if (!(te instanceof ShulkerBoxBlockEntity)) {
+			return true;
+		}
+		// an upgrade goes in whether there's room to open or not
+		if (facing == getFacing(state) && tryAddSingleUpgrade(player, hand, (ShulkerBoxBlockEntity) te)) {
+			return true;
+		}
+		if (!canOpen(world, pos, state, (ShulkerBoxBlockEntity) te)) {
 			return true;
 		}
 		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);

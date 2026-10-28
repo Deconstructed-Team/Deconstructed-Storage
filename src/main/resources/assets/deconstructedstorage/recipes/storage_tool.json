@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:storage_tool"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " EI",

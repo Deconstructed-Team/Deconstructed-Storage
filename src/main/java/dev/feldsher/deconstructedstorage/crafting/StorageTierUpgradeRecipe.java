@@ -22,26 +22,35 @@ import java.util.Optional;
 
 /**
  * Turns a storage item into the next tier's: the result keeps all the stack had, its wood, colors and name, and for a
- * shulker box what it holds, with the new tier's slot counts, which the box placed grows to.
+ * shulker box or a packed chest what it holds, with the new tier's slot counts, which the storage placed grows to. A
+ * packed double chest goes up by recipes of its own, to twice the slots.
  */
 public final class StorageTierUpgradeRecipe {
 	private StorageTierUpgradeRecipe() {}
 
 	static ItemStack upgrade(ItemStack result, InventoryCrafting inv) {
+		return upgrade(result, inv, 1);
+	}
+
+	static ItemStack upgrade(ItemStack result, InventoryCrafting inv, int sizeMultiplier) {
 		getOriginalStorage(inv).filter(storage -> storage.getTagCompound() != null)
 				.ifPresent(storage -> result.setTagCompound(storage.getTagCompound().copy()));
 		Block block = Block.getBlockFromItem(result.getItem());
 		if (StorageBlockItem.getContentsUuid(result).isPresent() && block instanceof StorageBlockBase) {
 			StorageBlockBase storageBlock = (StorageBlockBase) block;
 			StorageBlockItem.getContentsUuid(result).ifPresent(uuid ->
-					StorageBlockItem.setContents(result, uuid, storageBlock.getNumberOfInventorySlots(), storageBlock.getNumberOfUpgradeSlots()));
+					StorageBlockItem.setContents(result, uuid, storageBlock.getNumberOfInventorySlots() * sizeMultiplier, storageBlock.getNumberOfUpgradeSlots()));
 		}
 		return result;
 	}
 
-	/** A packed double chest isn't one storage of the tier: it goes up a tier only placed, with an upgrade item. */
+	/** A packed double chest isn't one storage of the tier: it has recipes of its own. */
 	static boolean isNotDoubleChest(InventoryCrafting inv) {
 		return getOriginalStorage(inv).map(storage -> !ChestBlockItem.isDoubleChest(storage)).orElse(false);
+	}
+
+	static boolean isDoubleChest(InventoryCrafting inv) {
+		return getOriginalStorage(inv).map(ChestBlockItem::isDoubleChest).orElse(false);
 	}
 
 	private static Optional<ItemStack> getOriginalStorage(InventoryCrafting inv) {
@@ -96,18 +105,70 @@ public final class StorageTierUpgradeRecipe {
 		}
 	}
 
+	/** A packed double chest a tier up, which holds twice the slots of one chest. */
+	public static class DoubleChestShaped extends ShapedOreRecipe {
+		public DoubleChestShaped(@Nullable ResourceLocation group, ItemStack result, CraftingHelper.ShapedPrimer primer) {
+			super(group, result, primer);
+		}
+
+		@Override
+		public boolean isDynamic() {
+			return true;
+		}
+
+		@Override
+		public boolean matches(InventoryCrafting inv, World world) {
+			return super.matches(inv, world) && isDoubleChest(inv);
+		}
+
+		@Override
+		public ItemStack getCraftingResult(InventoryCrafting inv) {
+			return upgrade(super.getCraftingResult(inv), inv, 2);
+		}
+	}
+
+	public static class DoubleChestShapeless extends ShapelessOreRecipe {
+		public DoubleChestShapeless(@Nullable ResourceLocation group, ItemStack result, ShapelessOreRecipe recipe) {
+			super(group, recipe.getIngredients(), result);
+		}
+
+		@Override
+		public boolean isDynamic() {
+			return true;
+		}
+
+		@Override
+		public boolean matches(InventoryCrafting inv, World world) {
+			return super.matches(inv, world) && isDoubleChest(inv);
+		}
+
+		@Override
+		public ItemStack getCraftingResult(InventoryCrafting inv) {
+			return upgrade(super.getCraftingResult(inv), inv, 2);
+		}
+	}
+
+	private static CraftingHelper.ShapedPrimer getPrimer(JsonObject json, ShapedOreRecipe recipe) {
+		CraftingHelper.ShapedPrimer primer = new CraftingHelper.ShapedPrimer();
+		primer.width = recipe.getRecipeWidth();
+		primer.height = recipe.getRecipeHeight();
+		primer.mirrored = JsonUtils.getBoolean(json, "mirrored", true);
+		primer.input = recipe.getIngredients();
+		return primer;
+	}
+
+	@Nullable
+	private static ResourceLocation getGroup(JsonObject json) {
+		String group = JsonUtils.getString(json, "group", "");
+		return group.isEmpty() ? null : new ResourceLocation(group);
+	}
+
 	/** {@code "type": "deconstructedstorage:storage_tier_upgrade"}, the rest as {@code forge:ore_shaped}. */
 	public static class ShapedFactory implements IRecipeFactory {
 		@Override
 		public IRecipe parse(JsonContext context, JsonObject json) {
 			ShapedOreRecipe recipe = ShapedOreRecipe.factory(context, json);
-			CraftingHelper.ShapedPrimer primer = new CraftingHelper.ShapedPrimer();
-			primer.width = recipe.getRecipeWidth();
-			primer.height = recipe.getRecipeHeight();
-			primer.mirrored = JsonUtils.getBoolean(json, "mirrored", true);
-			primer.input = recipe.getIngredients();
-			String group = JsonUtils.getString(json, "group", "");
-			return new Shaped(group.isEmpty() ? null : new ResourceLocation(group), recipe.getRecipeOutput(), primer);
+			return new Shaped(getGroup(json), recipe.getRecipeOutput(), getPrimer(json, recipe));
 		}
 	}
 
@@ -116,8 +177,25 @@ public final class StorageTierUpgradeRecipe {
 		@Override
 		public IRecipe parse(JsonContext context, JsonObject json) {
 			ShapelessOreRecipe recipe = ShapelessOreRecipe.factory(context, json);
-			String group = JsonUtils.getString(json, "group", "");
-			return new Shapeless(group.isEmpty() ? null : new ResourceLocation(group), recipe.getRecipeOutput(), recipe);
+			return new Shapeless(getGroup(json), recipe.getRecipeOutput(), recipe);
+		}
+	}
+
+	/** {@code "type": "deconstructedstorage:double_chest_tier_upgrade"}, the rest as {@code forge:ore_shaped}. */
+	public static class DoubleChestShapedFactory implements IRecipeFactory {
+		@Override
+		public IRecipe parse(JsonContext context, JsonObject json) {
+			ShapedOreRecipe recipe = ShapedOreRecipe.factory(context, json);
+			return new DoubleChestShaped(getGroup(json), recipe.getRecipeOutput(), getPrimer(json, recipe));
+		}
+	}
+
+	/** {@code "type": "deconstructedstorage:double_chest_tier_upgrade_shapeless"}, the rest as {@code forge:ore_shapeless}. */
+	public static class DoubleChestShapelessFactory implements IRecipeFactory {
+		@Override
+		public IRecipe parse(JsonContext context, JsonObject json) {
+			ShapelessOreRecipe recipe = ShapelessOreRecipe.factory(context, json);
+			return new DoubleChestShapeless(getGroup(json), recipe.getRecipeOutput(), recipe);
 		}
 	}
 }

@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:netherite_chest"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:diamond_chest"
+    }
+  ],
+  "type": "deconstructedstorage:double_chest_tier_upgrade_shapeless",
+  "ingredients": [
+    {
+      "item": "deconstructedstorage:diamond_chest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotNetherite"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotNetherite"
+    }
+  ],
+  "result": {
+    "item": "deconstructedstorage:netherite_chest"
+  }
+}

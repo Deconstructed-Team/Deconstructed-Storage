@@ -96,7 +96,9 @@ public class StorageHeiPlugin implements IModPlugin {
 	private static List<IRecipe> getRecipesShownByExamples() {
 		List<IRecipe> recipes = new ArrayList<>();
 		for (IRecipe recipe : ForgeRegistries.RECIPES) {
-			if (recipe instanceof StorageTierUpgradeRecipe.Shaped || recipe instanceof StorageTierUpgradeRecipe.Shapeless || recipe instanceof ShulkerBoxRecipes.FromChest) {
+			if (recipe instanceof StorageTierUpgradeRecipe.Shaped || recipe instanceof StorageTierUpgradeRecipe.Shapeless
+					|| recipe instanceof StorageTierUpgradeRecipe.DoubleChestShaped || recipe instanceof StorageTierUpgradeRecipe.DoubleChestShapeless
+					|| recipe instanceof ShulkerBoxRecipes.FromChest) {
 				recipes.add(recipe);
 			}
 		}

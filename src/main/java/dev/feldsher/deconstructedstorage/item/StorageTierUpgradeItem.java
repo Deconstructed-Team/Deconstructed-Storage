@@ -49,12 +49,16 @@ public class StorageTierUpgradeItem extends Item {
 		if (world.isRemote) {
 			return EnumActionResult.PASS;
 		}
+		return tryUpgradeStorage(player.getHeldItem(hand), world, pos, player);
+	}
+
+	/** The storage there a tier up, for the upgrade items it takes from the stack; also each storage of a controller clicked. */
+	public EnumActionResult tryUpgradeStorage(ItemStack stack, World world, BlockPos pos, EntityPlayer player) {
 		Block block = world.getBlockState(pos).getBlock();
 		Block newBlock = TierUpgrader.getUpgradedBlock(block, from, to);
 		if (newBlock == null || TierUpgrader.isUpgradingBlocked(world, pos)) {
 			return EnumActionResult.PASS;
 		}
-		ItemStack stack = player.getHeldItem(hand);
 		int countRequired = TierUpgrader.getCountRequired(world, pos);
 		if (countRequired > stack.getCount()) {
 			player.sendStatusMessage(new TextComponentTranslation(StorageTranslationHelper.INSTANCE.translGui("status.too_low_tier_upgrade_count"),

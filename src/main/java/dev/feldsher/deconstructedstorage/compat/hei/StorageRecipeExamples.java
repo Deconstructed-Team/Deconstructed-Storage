@@ -5,6 +5,7 @@ import dev.feldsher.deconstructedstorage.crafting.ShulkerBoxRecipes;
 import dev.feldsher.deconstructedstorage.crafting.StorageTierUpgradeRecipe;
 import dev.feldsher.deconstructedstorage.init.ModBlocks;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
+import dev.feldsher.deconstructedstorage.item.ChestBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.item.WoodStorageBlockItem;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,7 +38,9 @@ public final class StorageRecipeExamples {
 		List<IRecipe> examples = new ArrayList<>();
 		for (IRecipe recipe : ForgeRegistries.RECIPES) {
 			if (recipe instanceof StorageTierUpgradeRecipe.Shaped || recipe instanceof StorageTierUpgradeRecipe.Shapeless) {
-				addExamples(examples, recipe);
+				addExamples(examples, recipe, false);
+			} else if (recipe instanceof StorageTierUpgradeRecipe.DoubleChestShaped || recipe instanceof StorageTierUpgradeRecipe.DoubleChestShapeless) {
+				addExamples(examples, recipe, true);
 			}
 		}
 		return examples;
@@ -47,7 +50,7 @@ public final class StorageRecipeExamples {
 		List<IRecipe> examples = new ArrayList<>();
 		for (IRecipe recipe : ForgeRegistries.RECIPES) {
 			if (recipe instanceof ShulkerBoxRecipes.FromChest) {
-				addExamples(examples, recipe);
+				addExamples(examples, recipe, false);
 			}
 		}
 		return examples;
@@ -67,9 +70,12 @@ public final class StorageRecipeExamples {
 		return examples;
 	}
 
-	private static void addExamples(List<IRecipe> examples, IRecipe recipe) {
+	private static void addExamples(List<IRecipe> examples, IRecipe recipe, boolean doubleChests) {
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();
 		for (ItemStack storage : getStorageItems(ingredients)) {
+			if (doubleChests) {
+				ChestBlockItem.setDoubleChest(storage, true);
+			}
 			NonNullList<Ingredient> exampleIngredients = NonNullList.withSize(ingredients.size(), Ingredient.EMPTY);
 			int width = recipe instanceof ShapedOreRecipe ? ((ShapedOreRecipe) recipe).getRecipeWidth() : 3;
 			int height = recipe instanceof ShapedOreRecipe ? ((ShapedOreRecipe) recipe).getRecipeHeight() : 3;

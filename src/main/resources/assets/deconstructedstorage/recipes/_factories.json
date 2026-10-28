@@ -2,6 +2,8 @@
   "recipes": {
     "storage_tier_upgrade": "dev.feldsher.deconstructedstorage.crafting.StorageTierUpgradeRecipe$ShapedFactory",
     "storage_tier_upgrade_shapeless": "dev.feldsher.deconstructedstorage.crafting.StorageTierUpgradeRecipe$ShapelessFactory",
+    "double_chest_tier_upgrade": "dev.feldsher.deconstructedstorage.crafting.StorageTierUpgradeRecipe$DoubleChestShapedFactory",
+    "double_chest_tier_upgrade_shapeless": "dev.feldsher.deconstructedstorage.crafting.StorageTierUpgradeRecipe$DoubleChestShapelessFactory",
     "shulker_box_from_chest": "dev.feldsher.deconstructedstorage.crafting.ShulkerBoxRecipes$FromChestFactory",
     "shulker_box_from_vanilla": "dev.feldsher.deconstructedstorage.crafting.ShulkerBoxRecipes$FromVanillaFactory",
     "flat_top_barrel_toggle": "dev.feldsher.deconstructedstorage.crafting.FlatTopBarrelToggleRecipe$Factory",

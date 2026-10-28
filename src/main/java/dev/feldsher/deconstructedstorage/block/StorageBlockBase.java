@@ -2,9 +2,12 @@ package dev.feldsher.deconstructedstorage.block;
 
 import dev.feldsher.deconstructedstorage.client.render.StorageParticles;
 import dev.feldsher.deconstructedstorage.common.gui.GuiHandler;
+import dev.feldsher.deconstructedstorage.init.ModItems;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageToolItem;
 import dev.feldsher.deconstructedcore.upgrades.IPickupResponseUpgrade;
+import dev.feldsher.deconstructedcore.upgrades.IUpgradeItem;
+import dev.feldsher.deconstructedcore.util.InventoryHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.AxisAlignedBB;
 import java.util.List;
@@ -84,10 +87,50 @@ public abstract class StorageBlockBase extends Block implements IStorageBlock {
 			return true;
 		}
 		StorageBlockEntity be = getStorageBlockEntity(world, pos);
+		if (be != null && facing == getFacing(state) && tryAddSingleUpgrade(player, hand, be)) {
+			return true;
+		}
 		if (be != null && player instanceof EntityPlayerMP) {
 			GuiHandler.openStorage((EntityPlayerMP) player, be.getMainBlockEntity().getPos());
 		}
 		return true;
+	}
+
+	/**
+	 * An upgrade in hand, clicked on the front, goes in as through the storage's screen: one, if the storage takes it
+	 * now. Not one that takes inventory columns: those need the screen to reopen around them.
+	 */
+	public static boolean tryAddSingleUpgrade(EntityPlayer player, EnumHand hand, StorageBlockEntity be) {
+		ItemStack stack = player.getHeldItem(hand);
+		if (!(stack.getItem() instanceof IUpgradeItem) || !ModItems.isStorageUpgrade(stack.getItem())) {
+			return false;
+		}
+		StorageBlockEntity main = be.getMainBlockEntity();
+		if (main instanceof WoodStorageBlockEntity && ((WoodStorageBlockEntity) main).isPacked()) {
+			return false;
+		}
+		IUpgradeItem<?> upgradeItem = (IUpgradeItem<?>) stack.getItem();
+		StorageWrapper wrapper = main.getStorageWrapper();
+		if (upgradeItem.getInventoryColumnsTaken() > 0 || !upgradeItem.canAddUpgradeTo(wrapper, stack, true, false).successful()) {
+			return false;
+		}
+		ItemStack single = stack.copy();
+		single.setCount(1);
+		if (!InventoryHelper.insertIntoInventory(single, wrapper.getUpgradeHandler(), true).isEmpty()) {
+			return false;
+		}
+		InventoryHelper.insertIntoInventory(single, wrapper.getUpgradeHandler(), false);
+		stack.shrink(1);
+		return true;
+	}
+
+	/** Sneaking, as many of the upgrade in hand as the storage takes. */
+	public static boolean tryFillUpgrades(EntityPlayer player, EnumHand hand, StorageBlockEntity be) {
+		boolean added = false;
+		while (!player.getHeldItem(hand).isEmpty() && tryAddSingleUpgrade(player, hand, be)) {
+			added = true;
+		}
+		return added;
 	}
 
 	/** The stack this storage drops as, and is picked as: how it looks, with no contents. */

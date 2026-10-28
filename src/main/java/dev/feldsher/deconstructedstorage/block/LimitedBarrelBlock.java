@@ -212,6 +212,9 @@ public class LimitedBarrelBlock extends BarrelBlock {
 		if (world.isRemote || barrel.isPacked()) {
 			return true;
 		}
+		if (tryAddSingleUpgrade(player, hand, barrel)) {
+			return true;
+		}
 		int slot = getInteractionSlot(state, hitX, hitY, hitZ);
 		ItemStack stackInHand = player.getHeldItem(hand);
 		if (!barrel.depositItem(player, hand, stackInHand, slot)) {

@@ -2,6 +2,7 @@ package dev.feldsher.deconstructedstorage.block;
 
 import dev.feldsher.deconstructedcore.client.gui.utils.TranslationHelper;
 import dev.feldsher.deconstructedstorage.client.gui.StorageTranslationHelper;
+import dev.feldsher.deconstructedstorage.item.StorageTierUpgradeItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -11,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +22,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A storage controller: placed, it takes in the storages around it, joined through each other, as one inventory. A
@@ -84,9 +88,40 @@ public class ControllerBlock extends Block {
 			return true;
 		}
 		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof ControllerBlockEntity) {
+		if (te instanceof ControllerBlockEntity && !applyToStorages((ControllerBlockEntity) te, player, hand, false)) {
 			((ControllerBlockEntity) te).depositPlayerItems(player, hand);
 		}
 		return true;
+	}
+
+	/**
+	 * An upgrade in hand goes into each storage of the network, one into each, or sneaking as many as each takes; a tier
+	 * upgrade item takes each a tier up. A double chest counts once.
+	 */
+	public static boolean applyToStorages(ControllerBlockEntity controller, EntityPlayer player, EnumHand hand, boolean fill) {
+		ItemStack stack = player.getHeldItem(hand);
+		if (stack.isEmpty()) {
+			return false;
+		}
+		World world = controller.getWorld();
+		boolean applied = false;
+		Set<BlockPos> mainPositions = new HashSet<>();
+		for (BlockPos storagePos : controller.getStoragePositions()) {
+			TileEntity te = world.getTileEntity(storagePos);
+			if (!(te instanceof StorageBlockEntity) || !mainPositions.add(((StorageBlockEntity) te).getMainBlockEntity().getPos())) {
+				continue;
+			}
+			StorageBlockEntity be = (StorageBlockEntity) te;
+			if (fill ? StorageBlockBase.tryFillUpgrades(player, hand, be) : StorageBlockBase.tryAddSingleUpgrade(player, hand, be)) {
+				applied = true;
+			} else if (stack.getItem() instanceof StorageTierUpgradeItem
+					&& ((StorageTierUpgradeItem) stack.getItem()).tryUpgradeStorage(stack, world, storagePos, player) == EnumActionResult.SUCCESS) {
+				applied = true;
+			}
+			if (stack.isEmpty()) {
+				break;
+			}
+		}
+		return applied;
 	}
 }

@@ -1,0 +1,34 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:iron_chest"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:chest"
+    }
+  ],
+  "type": "deconstructedstorage:double_chest_tier_upgrade",
+  "pattern": [
+    "III",
+    "ISI",
+    "IBI"
+  ],
+  "key": {
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "S": {
+      "item": "deconstructedstorage:chest"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:iron_chest"
+  }
+}
