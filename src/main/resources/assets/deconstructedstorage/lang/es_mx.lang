@@ -215,6 +215,6 @@ gui.deconstructedstorage.buttons.upgrade_switch_disabled=NO
 gui.deconstructedstorage.settings.buttons.context_storage=Almacén
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip=Opciones de este almacén
 gui.deconstructedstorage.settings.buttons.context_storage.tooltip_detail=Heredado del jugador o anulado para este almacén
-keybind.deconstructedstorage.category=Sophisticated Storage
+keybind.deconstructedstorage.category=Deconstructed Storage
 keybind.deconstructedstorage.sort=Ordenar almacén
 gui.deconstructedstorage.status.too_many_item_entity_drops=No se puede romper el %s ya que causaría la caída de demasiadas entidades de ítem (%s)\nConsidera usar %s o romperlo mientras estás agachado para omitir esta verificación
