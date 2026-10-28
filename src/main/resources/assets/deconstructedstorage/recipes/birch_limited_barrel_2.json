@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:limited_barrel_2"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "SRS",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:planks",
+      "data": 2
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    },
+    "S": {
+      "item": "minecraft:wooden_slab",
+      "data": 2
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:limited_barrel_2",
+    "nbt": {
+      "wood_type": "birch"
+    }
+  }
+}

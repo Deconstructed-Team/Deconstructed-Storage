@@ -106,6 +106,11 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 			public String getDisplayName() {
 				return StorageBlockEntity.this.getStorageDisplayName();
 			}
+
+			@Override
+			protected boolean showsCountsAndFillLevels() {
+				return StorageBlockEntity.this.showsCountsAndFillLevels();
+			}
 		};
 	}
 
@@ -136,6 +141,11 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 
 	protected int getNumberOfDisplayItems() {
 		return 1;
+	}
+
+	/** Whether its render info has every slot's count and fill ratio, for its front to show. */
+	protected boolean showsCountsAndFillLevels() {
+		return false;
 	}
 
 	@SuppressWarnings("unused") // stack used in overrides
@@ -366,7 +376,27 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 		}
 		locked = !locked;
 		lockedItemHandler = null;
+		if (memorizesItemsWhenLocked()) {
+			MemorySettingsCategory memorySettings = storageWrapper.getSettingsHandler().getTypeCategory(MemorySettingsCategory.class);
+			if (locked) {
+				memorySettings.selectSlots(0, storageWrapper.getInventoryHandler().getSlots());
+			} else {
+				memorySettings.unselectAllSlots();
+			}
+			storageWrapper.getInventoryHandler().onSlotFiltersChanged();
+			renderInfoDirty = true;
+		}
 		onToggled();
+	}
+
+	/** Locked, its slots remember what they hold, as a limited barrel's do. */
+	public boolean memorizesItemsWhenLocked() {
+		return false;
+	}
+
+	/** Locked, whether an empty slot takes in what another slot holds; a limited barrel's slots each keep to their own item. */
+	public boolean allowsEmptySlotsMatchingItemInsertsWhenLocked() {
+		return true;
 	}
 
 	public boolean shouldShowLock() {
@@ -497,7 +527,7 @@ public abstract class StorageBlockEntity extends TileEntity implements ITickable
 				if (main.lockedItemHandler == null) {
 					StorageWrapper mainWrapper = main.getStorageWrapper();
 					main.lockedItemHandler = new LockedItemHandler(mainWrapper::getInventoryForInputOutput, mainWrapper::getInventoryHandler,
-							() -> mainWrapper.getSettingsHandler().getTypeCategory(MemorySettingsCategory.class));
+							() -> mainWrapper.getSettingsHandler().getTypeCategory(MemorySettingsCategory.class), main.allowsEmptySlotsMatchingItemInsertsWhenLocked());
 				}
 				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(main.lockedItemHandler);
 			}

@@ -2,6 +2,8 @@ package dev.feldsher.deconstructedstorage.item;
 
 import dev.feldsher.deconstructedcore.client.gui.utils.TranslationHelper;
 import dev.feldsher.deconstructedcore.util.StorageNbt;
+import dev.feldsher.deconstructedstorage.block.ICountDisplay;
+import dev.feldsher.deconstructedstorage.block.IFillLevelDisplay;
 import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.client.gui.StorageTranslationHelper;
 import net.minecraft.client.util.ITooltipFlag;
@@ -27,16 +29,26 @@ import java.util.function.Consumer;
 /**
  * Used on a storage, toggles what its mode says: the lock, or whether the lock, the tier or the upgrades show. Sneak
  * and scroll with it in hand changes the mode. In the offhand as a storage is placed, in the lock mode, it locks it.
- * Linking to a controller and the count and fill level displays come with the storages that have them.
+ * The count and fill level displays are limited barrels'; linking to a controller comes with the controller.
  */
 public class StorageToolItem extends Item {
 	private static final String MODE_TAG = "mode";
 
 	public enum Mode {
 		LOCK(StorageBlockEntity::toggleLock, "toggling_lock"),
+		COUNT_DISPLAY(be -> {
+			if (be instanceof ICountDisplay) {
+				((ICountDisplay) be).toggleCountVisibility();
+			}
+		}, "toggling_count_display"),
 		LOCK_DISPLAY(StorageBlockEntity::toggleLockVisibility, "toggling_lock_display"),
 		TIER_DISPLAY(StorageBlockEntity::toggleTierVisibility, "toggling_tier_display"),
-		UPGRADES_DISPLAY(StorageBlockEntity::toggleUpgradesVisibility, "toggling_upgrades_display");
+		UPGRADES_DISPLAY(StorageBlockEntity::toggleUpgradesVisibility, "toggling_upgrades_display"),
+		FILL_LEVEL_DISPLAY(be -> {
+			if (be instanceof IFillLevelDisplay) {
+				((IFillLevelDisplay) be).toggleFillLevelVisibility();
+			}
+		}, "toggling_fill_level_display");
 
 		private final Consumer<StorageBlockEntity> toggle;
 		private final String overlayKey;

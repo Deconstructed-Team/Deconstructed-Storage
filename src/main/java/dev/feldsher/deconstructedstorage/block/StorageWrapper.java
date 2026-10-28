@@ -22,7 +22,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 
+import dev.feldsher.deconstructedcore.upgrades.IUpgradeWrapper;
+
 import javax.annotation.Nullable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -49,6 +54,7 @@ public abstract class StorageWrapper implements IStorageWrapper {
 	private static final String SETTINGS_HANDLER = "settings";
 
 	private final Runnable saveHandler;
+	private final Map<Class<? extends IUpgradeWrapper>, Consumer<?>> upgradeDefaultsHandlers = new LinkedHashMap<>();
 	private Runnable upgradeCachesInvalidatedHandler = () -> {
 	};
 
@@ -130,12 +136,18 @@ public abstract class StorageWrapper implements IStorageWrapper {
 		for (int slot = 0; slot < getUpgradeHandler().getSlots(); slot++) {
 			upgradeItems.add(ItemHandlerHelper.copyStackWithSize(getUpgradeHandler().getStackInSlot(slot), 1));
 		}
-		NBTTagCompound newRenderInfoTag = getUpgradeHandler().buildRenderInfo(itemDisplay.buildItemDisplayRenderInfo()).withUpgradeItems(upgradeItems).serialize();
+		NBTTagCompound newRenderInfoTag = getUpgradeHandler().buildRenderInfo(itemDisplay.buildItemDisplayRenderInfo(showsCountsAndFillLevels())).withUpgradeItems(upgradeItems)
+				.serialize();
 		if (!newRenderInfoTag.equals(renderInfoTag)) {
 			renderInfoTag = newRenderInfoTag;
 			renderInfo = renderInfoTag.isEmpty() ? RenderInfo.EMPTY : RenderInfo.deserialize(renderInfoTag);
 			save();
 		}
+	}
+
+	/** Whether the render info has every slot's count and fill ratio, as a limited barrel's front shows them. */
+	protected boolean showsCountsAndFillLevels() {
+		return false;
 	}
 
 	protected void save() {
@@ -224,13 +236,27 @@ public abstract class StorageWrapper implements IStorageWrapper {
 	@Override
 	public UpgradeHandler getUpgradeHandler() {
 		StorageContents contents = getContents();
-		return contents.getShared(UPGRADE_HANDLER, () -> new UpgradeHandler(getSavedSize(contents, UpgradeHandler.UPGRADE_INVENTORY_TAG, getNumberOfUpgradeSlots()),
-				this, contents.getNbt(), contents::markDirty, this::onUpgradesChanged) {
-			@Override
-			public boolean isItemValid(int slot, ItemStack stack) {
-				return super.isItemValid(slot, stack) && (stack.isEmpty() || ModItems.isStorageUpgrade(stack.getItem()));
-			}
+		return contents.getShared(UPGRADE_HANDLER, () -> {
+			UpgradeHandler upgradeHandler = new UpgradeHandler(getSavedSize(contents, UpgradeHandler.UPGRADE_INVENTORY_TAG, getNumberOfUpgradeSlots()),
+					this, contents.getNbt(), contents::markDirty, this::onUpgradesChanged) {
+				@Override
+				public boolean isItemValid(int slot, ItemStack stack) {
+					return super.isItemValid(slot, stack) && (stack.isEmpty() || ModItems.isStorageUpgrade(stack.getItem()));
+				}
+			};
+			upgradeDefaultsHandlers.forEach((upgradeClass, defaultsHandler) -> registerUpgradeDefaultsHandler(upgradeHandler, upgradeClass, defaultsHandler));
+			return upgradeHandler;
 		});
+	}
+
+	/** What the storage's upgrades of that kind are set to as they go in, as a limited barrel's void upgrades voiding all overflow. */
+	public <T extends IUpgradeWrapper> void registerUpgradeDefaultsHandler(Class<T> upgradeClass, Consumer<T> defaultsHandler) {
+		upgradeDefaultsHandlers.put(upgradeClass, defaultsHandler);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T extends IUpgradeWrapper> void registerUpgradeDefaultsHandler(UpgradeHandler upgradeHandler, Class<T> upgradeClass, Consumer<?> defaultsHandler) {
+		upgradeHandler.registerUpgradeDefaultsHandler(upgradeClass, (Consumer<T>) defaultsHandler);
 	}
 
 	@Override

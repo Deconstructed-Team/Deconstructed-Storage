@@ -6,6 +6,8 @@ import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.BarrelBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ChestBlock;
 import dev.feldsher.deconstructedstorage.block.ChestBlockEntity;
+import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlock;
+import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlockEntity;
 import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlock;
 import dev.feldsher.deconstructedstorage.block.ShulkerBoxBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageTier;
@@ -44,17 +46,76 @@ public class ModBlocks {
 	public static final ShulkerBoxBlock DIAMOND_SHULKER_BOX = block(new ShulkerBoxBlock(() -> Config.SERVER.diamondShulkerBox.inventorySlotCount, () -> Config.SERVER.diamondShulkerBox.upgradeSlotCount, false), "diamond_shulker_box");
 	public static final ShulkerBoxBlock NETHERITE_SHULKER_BOX = block(new ShulkerBoxBlock(() -> Config.SERVER.netheriteShulkerBox.inventorySlotCount, () -> Config.SERVER.netheriteShulkerBox.upgradeSlotCount, false), "netherite_shulker_box");
 
+	public static final LimitedBarrelBlock LIMITED_BARREL_1 = block(new LimitedBarrelBlock(1, () -> Config.SERVER.limitedBarrel1.baseSlotLimitMultiplier,
+			() -> Config.SERVER.limitedBarrel1.upgradeSlotCount, true), "limited_barrel_1");
+	public static final LimitedBarrelBlock LIMITED_COPPER_BARREL_1 = block(new LimitedBarrelBlock(1, () -> Config.SERVER.copperLimitedBarrel1.baseSlotLimitMultiplier,
+			() -> Config.SERVER.copperLimitedBarrel1.upgradeSlotCount, false), "limited_copper_barrel_1");
+	public static final LimitedBarrelBlock LIMITED_IRON_BARREL_1 = block(new LimitedBarrelBlock(1, () -> Config.SERVER.ironLimitedBarrel1.baseSlotLimitMultiplier,
+			() -> Config.SERVER.ironLimitedBarrel1.upgradeSlotCount, false), "limited_iron_barrel_1");
+	public static final LimitedBarrelBlock LIMITED_GOLD_BARREL_1 = block(new LimitedBarrelBlock(1, () -> Config.SERVER.goldLimitedBarrel1.baseSlotLimitMultiplier,
+			() -> Config.SERVER.goldLimitedBarrel1.upgradeSlotCount, false), "limited_gold_barrel_1");
+	public static final LimitedBarrelBlock LIMITED_DIAMOND_BARREL_1 = block(new LimitedBarrelBlock(1, () -> Config.SERVER.diamondLimitedBarrel1.baseSlotLimitMultiplier,
+			() -> Config.SERVER.diamondLimitedBarrel1.upgradeSlotCount, false), "limited_diamond_barrel_1");
+	public static final LimitedBarrelBlock LIMITED_NETHERITE_BARREL_1 = block(new LimitedBarrelBlock(1, () -> Config.SERVER.netheriteLimitedBarrel1.baseSlotLimitMultiplier,
+			() -> Config.SERVER.netheriteLimitedBarrel1.upgradeSlotCount, false), "limited_netherite_barrel_1");
+
+	public static final LimitedBarrelBlock LIMITED_BARREL_2 = block(new LimitedBarrelBlock(2, () -> Config.SERVER.limitedBarrel2.baseSlotLimitMultiplier,
+			() -> Config.SERVER.limitedBarrel2.upgradeSlotCount, true), "limited_barrel_2");
+	public static final LimitedBarrelBlock LIMITED_COPPER_BARREL_2 = block(new LimitedBarrelBlock(2, () -> Config.SERVER.copperLimitedBarrel2.baseSlotLimitMultiplier,
+			() -> Config.SERVER.copperLimitedBarrel2.upgradeSlotCount, false), "limited_copper_barrel_2");
+	public static final LimitedBarrelBlock LIMITED_IRON_BARREL_2 = block(new LimitedBarrelBlock(2, () -> Config.SERVER.ironLimitedBarrel2.baseSlotLimitMultiplier,
+			() -> Config.SERVER.ironLimitedBarrel2.upgradeSlotCount, false), "limited_iron_barrel_2");
+	public static final LimitedBarrelBlock LIMITED_GOLD_BARREL_2 = block(new LimitedBarrelBlock(2, () -> Config.SERVER.goldLimitedBarrel2.baseSlotLimitMultiplier,
+			() -> Config.SERVER.goldLimitedBarrel2.upgradeSlotCount, false), "limited_gold_barrel_2");
+	public static final LimitedBarrelBlock LIMITED_DIAMOND_BARREL_2 = block(new LimitedBarrelBlock(2, () -> Config.SERVER.diamondLimitedBarrel2.baseSlotLimitMultiplier,
+			() -> Config.SERVER.diamondLimitedBarrel2.upgradeSlotCount, false), "limited_diamond_barrel_2");
+	public static final LimitedBarrelBlock LIMITED_NETHERITE_BARREL_2 = block(new LimitedBarrelBlock(2, () -> Config.SERVER.netheriteLimitedBarrel2.baseSlotLimitMultiplier,
+			() -> Config.SERVER.netheriteLimitedBarrel2.upgradeSlotCount, false), "limited_netherite_barrel_2");
+
+	public static final LimitedBarrelBlock LIMITED_BARREL_3 = block(new LimitedBarrelBlock(3, () -> Config.SERVER.limitedBarrel3.baseSlotLimitMultiplier,
+			() -> Config.SERVER.limitedBarrel3.upgradeSlotCount, true), "limited_barrel_3");
+	public static final LimitedBarrelBlock LIMITED_COPPER_BARREL_3 = block(new LimitedBarrelBlock(3, () -> Config.SERVER.copperLimitedBarrel3.baseSlotLimitMultiplier,
+			() -> Config.SERVER.copperLimitedBarrel3.upgradeSlotCount, false), "limited_copper_barrel_3");
+	public static final LimitedBarrelBlock LIMITED_IRON_BARREL_3 = block(new LimitedBarrelBlock(3, () -> Config.SERVER.ironLimitedBarrel3.baseSlotLimitMultiplier,
+			() -> Config.SERVER.ironLimitedBarrel3.upgradeSlotCount, false), "limited_iron_barrel_3");
+	public static final LimitedBarrelBlock LIMITED_GOLD_BARREL_3 = block(new LimitedBarrelBlock(3, () -> Config.SERVER.goldLimitedBarrel3.baseSlotLimitMultiplier,
+			() -> Config.SERVER.goldLimitedBarrel3.upgradeSlotCount, false), "limited_gold_barrel_3");
+	public static final LimitedBarrelBlock LIMITED_DIAMOND_BARREL_3 = block(new LimitedBarrelBlock(3, () -> Config.SERVER.diamondLimitedBarrel3.baseSlotLimitMultiplier,
+			() -> Config.SERVER.diamondLimitedBarrel3.upgradeSlotCount, false), "limited_diamond_barrel_3");
+	public static final LimitedBarrelBlock LIMITED_NETHERITE_BARREL_3 = block(new LimitedBarrelBlock(3, () -> Config.SERVER.netheriteLimitedBarrel3.baseSlotLimitMultiplier,
+			() -> Config.SERVER.netheriteLimitedBarrel3.upgradeSlotCount, false), "limited_netherite_barrel_3");
+
+	public static final LimitedBarrelBlock LIMITED_BARREL_4 = block(new LimitedBarrelBlock(4, () -> Config.SERVER.limitedBarrel4.baseSlotLimitMultiplier,
+			() -> Config.SERVER.limitedBarrel4.upgradeSlotCount, true), "limited_barrel_4");
+	public static final LimitedBarrelBlock LIMITED_COPPER_BARREL_4 = block(new LimitedBarrelBlock(4, () -> Config.SERVER.copperLimitedBarrel4.baseSlotLimitMultiplier,
+			() -> Config.SERVER.copperLimitedBarrel4.upgradeSlotCount, false), "limited_copper_barrel_4");
+	public static final LimitedBarrelBlock LIMITED_IRON_BARREL_4 = block(new LimitedBarrelBlock(4, () -> Config.SERVER.ironLimitedBarrel4.baseSlotLimitMultiplier,
+			() -> Config.SERVER.ironLimitedBarrel4.upgradeSlotCount, false), "limited_iron_barrel_4");
+	public static final LimitedBarrelBlock LIMITED_GOLD_BARREL_4 = block(new LimitedBarrelBlock(4, () -> Config.SERVER.goldLimitedBarrel4.baseSlotLimitMultiplier,
+			() -> Config.SERVER.goldLimitedBarrel4.upgradeSlotCount, false), "limited_gold_barrel_4");
+	public static final LimitedBarrelBlock LIMITED_DIAMOND_BARREL_4 = block(new LimitedBarrelBlock(4, () -> Config.SERVER.diamondLimitedBarrel4.baseSlotLimitMultiplier,
+			() -> Config.SERVER.diamondLimitedBarrel4.upgradeSlotCount, false), "limited_diamond_barrel_4");
+	public static final LimitedBarrelBlock LIMITED_NETHERITE_BARREL_4 = block(new LimitedBarrelBlock(4, () -> Config.SERVER.netheriteLimitedBarrel4.baseSlotLimitMultiplier,
+			() -> Config.SERVER.netheriteLimitedBarrel4.upgradeSlotCount, false), "limited_netherite_barrel_4");
+
 	static {
 		// as 1.21's netherite storages, 1200: 1.12 keeps three times what it's given
 		NETHERITE_BARREL.setResistance(400);
 		NETHERITE_CHEST.setResistance(400);
 		NETHERITE_SHULKER_BOX.setResistance(400);
+		for (LimitedBarrelBlock barrel : new LimitedBarrelBlock[] {LIMITED_NETHERITE_BARREL_1, LIMITED_NETHERITE_BARREL_2, LIMITED_NETHERITE_BARREL_3, LIMITED_NETHERITE_BARREL_4}) {
+			barrel.setResistance(400);
+		}
 	}
 
 	private static final Block[][] TIERED = {
 			{BARREL, COPPER_BARREL, IRON_BARREL, GOLD_BARREL, DIAMOND_BARREL, NETHERITE_BARREL},
 			{CHEST, COPPER_CHEST, IRON_CHEST, GOLD_CHEST, DIAMOND_CHEST, NETHERITE_CHEST},
-			{SHULKER_BOX, COPPER_SHULKER_BOX, IRON_SHULKER_BOX, GOLD_SHULKER_BOX, DIAMOND_SHULKER_BOX, NETHERITE_SHULKER_BOX}
+			{SHULKER_BOX, COPPER_SHULKER_BOX, IRON_SHULKER_BOX, GOLD_SHULKER_BOX, DIAMOND_SHULKER_BOX, NETHERITE_SHULKER_BOX},
+			{LIMITED_BARREL_1, LIMITED_COPPER_BARREL_1, LIMITED_IRON_BARREL_1, LIMITED_GOLD_BARREL_1, LIMITED_DIAMOND_BARREL_1, LIMITED_NETHERITE_BARREL_1},
+			{LIMITED_BARREL_2, LIMITED_COPPER_BARREL_2, LIMITED_IRON_BARREL_2, LIMITED_GOLD_BARREL_2, LIMITED_DIAMOND_BARREL_2, LIMITED_NETHERITE_BARREL_2},
+			{LIMITED_BARREL_3, LIMITED_COPPER_BARREL_3, LIMITED_IRON_BARREL_3, LIMITED_GOLD_BARREL_3, LIMITED_DIAMOND_BARREL_3, LIMITED_NETHERITE_BARREL_3},
+			{LIMITED_BARREL_4, LIMITED_COPPER_BARREL_4, LIMITED_IRON_BARREL_4, LIMITED_GOLD_BARREL_4, LIMITED_DIAMOND_BARREL_4, LIMITED_NETHERITE_BARREL_4}
 	};
 
 	/** The storage's tier, when it's one of these storages. */
@@ -103,6 +164,16 @@ public class ModBlocks {
 		return ret;
 	}
 
+	/** The limited barrels of one to four slots, of the tiers the config enables; none with barrels off. */
+	public static List<LimitedBarrelBlock> getLimitedBarrels() {
+		List<LimitedBarrelBlock> ret = new ArrayList<>();
+		ret.addAll(getEnabledTiers(Config.SERVER.barrelsEnabled, LIMITED_BARREL_1, LIMITED_COPPER_BARREL_1, LIMITED_IRON_BARREL_1, LIMITED_GOLD_BARREL_1, LIMITED_DIAMOND_BARREL_1, LIMITED_NETHERITE_BARREL_1));
+		ret.addAll(getEnabledTiers(Config.SERVER.barrelsEnabled, LIMITED_BARREL_2, LIMITED_COPPER_BARREL_2, LIMITED_IRON_BARREL_2, LIMITED_GOLD_BARREL_2, LIMITED_DIAMOND_BARREL_2, LIMITED_NETHERITE_BARREL_2));
+		ret.addAll(getEnabledTiers(Config.SERVER.barrelsEnabled, LIMITED_BARREL_3, LIMITED_COPPER_BARREL_3, LIMITED_IRON_BARREL_3, LIMITED_GOLD_BARREL_3, LIMITED_DIAMOND_BARREL_3, LIMITED_NETHERITE_BARREL_3));
+		ret.addAll(getEnabledTiers(Config.SERVER.barrelsEnabled, LIMITED_BARREL_4, LIMITED_COPPER_BARREL_4, LIMITED_IRON_BARREL_4, LIMITED_GOLD_BARREL_4, LIMITED_DIAMOND_BARREL_4, LIMITED_NETHERITE_BARREL_4));
+		return ret;
+	}
+
 	/** The chest tiers the config enables; none with chests off. */
 	public static List<ChestBlock> getChests() {
 		return getEnabledTiers(Config.SERVER.chestsEnabled, CHEST, COPPER_CHEST, IRON_CHEST, GOLD_CHEST, DIAMOND_CHEST, NETHERITE_CHEST);
@@ -115,6 +186,7 @@ public class ModBlocks {
 
 	public static List<Block> getAllBlocks() {
 		List<Block> blocks = new ArrayList<>(getBarrels());
+		blocks.addAll(getLimitedBarrels());
 		blocks.addAll(getChests());
 		blocks.addAll(getShulkerBoxes());
 		return blocks;
@@ -131,6 +203,7 @@ public class ModBlocks {
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		getAllBlocks().forEach(event.getRegistry()::register);
 		GameRegistry.registerTileEntity(BarrelBlockEntity.class, DeconstructedStorage.getRL("barrel"));
+		GameRegistry.registerTileEntity(LimitedBarrelBlockEntity.class, DeconstructedStorage.getRL("limited_barrel"));
 		GameRegistry.registerTileEntity(ChestBlockEntity.class, DeconstructedStorage.getRL("chest"));
 		GameRegistry.registerTileEntity(ShulkerBoxBlockEntity.class, DeconstructedStorage.getRL("shulker_box"));
 	}

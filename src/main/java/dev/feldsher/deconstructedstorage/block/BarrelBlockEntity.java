@@ -43,6 +43,6 @@ public class BarrelBlockEntity extends WoodStorageBlockEntity {
 			return EnumFacing.NORTH;
 		}
 		IBlockState state = world.getBlockState(pos);
-		return state.getBlock() instanceof BarrelBlock ? state.getValue(BarrelBlock.FACING) : EnumFacing.NORTH;
+		return state.getBlock() instanceof StorageBlockBase ? ((StorageBlockBase) state.getBlock()).getFacing(state) : EnumFacing.NORTH;
 	}
 }

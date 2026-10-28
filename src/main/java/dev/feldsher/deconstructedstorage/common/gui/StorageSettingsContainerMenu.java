@@ -15,6 +15,10 @@ public class StorageSettingsContainerMenu extends SettingsContainerMenu<StorageW
 		this.storageBlockEntity = storageBlockEntity;
 	}
 
+	public StorageBlockEntity getStorageBlockEntity() {
+		return storageBlockEntity;
+	}
+
 	public BlockPos getPos() {
 		return storageBlockEntity.getPos();
 	}

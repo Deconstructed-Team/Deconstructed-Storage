@@ -2,6 +2,7 @@ package dev.feldsher.deconstructedstorage.client.render;
 
 import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.BarrelRenderData;
+import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlock;
 import dev.feldsher.deconstructedstorage.block.WoodType;
 import dev.feldsher.deconstructedstorage.item.BarrelBlockItem;
 import dev.feldsher.deconstructedstorage.item.StorageBlockItem;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -30,20 +32,23 @@ import java.util.Map;
 /**
  * A barrel facing one way, put together from {@link BarrelParts} by its render data: its wood, closed or open, unless
  * it's tinted all over; the tinted core and trim for the colors it has; and the tier's metal over all. As an item, the
- * same from what its stack says, facing up. A flat top is a plain cube, with no rim around the lid.
+ * same from what its stack says, facing up. A flat top is a plain cube, with no rim around the lid. A limited barrel's
+ * top is marked out for its slots, and doesn't open.
  */
 public class BarrelBakedModel implements IBakedModel {
 	private final IBakedModel baseModel;
 	private final Block barrel;
-	private final EnumFacing facing;
+	private final ModelRotation rotation;
 	private final boolean flatTop;
+	private final int limitedSlots;
 	private final ItemOverrideList overrides;
 
-	public BarrelBakedModel(IBakedModel baseModel, Block barrel, EnumFacing facing, boolean flatTop) {
+	public BarrelBakedModel(IBakedModel baseModel, Block barrel, ModelRotation rotation, boolean flatTop) {
 		this.baseModel = baseModel;
 		this.barrel = barrel;
-		this.facing = facing;
+		this.rotation = rotation;
 		this.flatTop = flatTop;
+		limitedSlots = barrel instanceof LimitedBarrelBlock ? ((LimitedBarrelBlock) barrel).getNumberOfInventorySlots() : 0;
 		overrides = new StackOverrides();
 	}
 
@@ -57,21 +62,25 @@ public class BarrelBakedModel implements IBakedModel {
 		List<BakedQuad> ret = new ArrayList<>();
 		WoodType woodType = data.getWoodType();
 		if (!(data.hasMainColor() && data.hasAccentColor())) {
-			ret.addAll(BarrelParts.getWoodQuads(woodType == null ? WoodType.DEFAULT : woodType, data.isOpen(), flatTop, facing, side));
+			WoodType wood = woodType == null ? WoodType.DEFAULT : woodType;
+			ret.addAll(limitedSlots > 0 ? BarrelParts.getLimitedWoodQuads(limitedSlots, wood, flatTop, rotation, side)
+					: BarrelParts.getWoodQuads(wood, data.isOpen(), flatTop, rotation, side));
 		}
 		if (data.hasAccentColor()) {
-			ret.addAll(BarrelParts.getTintableAccentQuads(flatTop, facing, side));
+			ret.addAll(limitedSlots > 0 ? BarrelParts.getLimitedTintableAccentQuads(limitedSlots, flatTop, rotation, side)
+					: BarrelParts.getTintableAccentQuads(flatTop, rotation, side));
 		}
 		if (data.hasMainColor()) {
-			ret.addAll(BarrelParts.getTintableMainQuads(data.isOpen(), flatTop, facing, side));
+			ret.addAll(limitedSlots > 0 ? BarrelParts.getLimitedTintableMainQuads(limitedSlots, flatTop, rotation, side)
+					: BarrelParts.getTintableMainQuads(data.isOpen(), flatTop, rotation, side));
 		}
 		if (data.showsTier()) {
-			ret.addAll(BarrelParts.getTierQuads(barrel, flatTop, facing, side));
+			ret.addAll(BarrelParts.getTierQuads(barrel, flatTop, rotation, side));
 		}
 		if (data.isPacked()) {
-			ret.addAll(BarrelParts.getPackedQuads(flatTop, facing, side));
+			ret.addAll(limitedSlots > 0 ? BarrelParts.getLimitedPackedQuads(limitedSlots, flatTop, rotation, side) : BarrelParts.getPackedQuads(flatTop, rotation, side));
 		} else if (data.showsLock()) {
-			ret.addAll(BarrelParts.getLockQuads(facing, side));
+			ret.addAll(BarrelParts.getLockQuads(rotation, side));
 		}
 		return ret;
 	}
@@ -123,7 +132,7 @@ public class BarrelBakedModel implements IBakedModel {
 			WoodType woodType = WoodStorageBlockItem.getWoodType(stack).orElse(hasMainColor && hasAccentColor ? null : WoodType.DEFAULT);
 			BarrelRenderData data = new BarrelRenderData(woodType, hasMainColor, hasAccentColor, false, StorageBlockItem.getContentsUuid(stack).isPresent(), true, false);
 			Map<BarrelRenderData, IBakedModel> models = BarrelBlockItem.isFlatTop(stack) ? flatTopModels : this.models;
-			return models.computeIfAbsent(data, d -> new BarrelBakedModel(baseModel, barrel, facing, BarrelBlockItem.isFlatTop(stack)) {
+			return models.computeIfAbsent(data, d -> new BarrelBakedModel(baseModel, barrel, rotation, BarrelBlockItem.isFlatTop(stack)) {
 				@Override
 				public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
 					return getQuads(d, side);

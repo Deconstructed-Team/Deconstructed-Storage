@@ -1,0 +1,34 @@
+{
+    "textures": {
+        "particle": "deconstructedstorage:block/limited_barrel_1_top_tintable_main",
+        "top": "deconstructedstorage:block/limited_barrel_1_top_tintable_main",
+        "side": "deconstructedstorage:block/barrel_side_tintable_main",
+        "bottom": "deconstructedstorage:block/barrel_bottom_tintable_main",
+        "handle": "deconstructedstorage:block/barrel_handle",
+        "metal_bands": "deconstructedstorage:block/barrel_metal_bands"
+    },
+    "elements": [
+        {
+            "from": [0, 0, 0],
+            "to": [16, 15, 16],
+            "faces": {
+                "north": {"uv": [0, 1, 16, 16], "texture": "#side", "tintindex": 1000, "cullface": "north"},
+                "east": {"uv": [0, 1, 16, 16], "texture": "#side", "tintindex": 1000, "cullface": "east"},
+                "south": {"uv": [0, 1, 16, 16], "texture": "#side", "tintindex": 1000, "cullface": "south"},
+                "west": {"uv": [0, 1, 16, 16], "texture": "#side", "tintindex": 1000, "cullface": "west"},
+                "up": {"uv": [0, 0, 16, 16], "texture": "#top", "tintindex": 1000, "cullface": "up"},
+                "down": {"uv": [0, 0, 16, 16], "texture": "#bottom", "tintindex": 1000, "cullface": "down"}
+            }
+        },
+        {
+            "from": [0, 0, 0],
+            "to": [16, 15, 16],
+            "faces": {
+                "north": {"uv": [0, 1, 16, 16], "texture": "#metal_bands", "cullface": "north"},
+                "east": {"uv": [0, 1, 16, 16], "texture": "#metal_bands", "cullface": "east"},
+                "south": {"uv": [0, 1, 16, 16], "texture": "#metal_bands", "cullface": "south"},
+                "west": {"uv": [0, 1, 16, 16], "texture": "#metal_bands", "cullface": "west"}
+            }
+        }
+    ]
+}

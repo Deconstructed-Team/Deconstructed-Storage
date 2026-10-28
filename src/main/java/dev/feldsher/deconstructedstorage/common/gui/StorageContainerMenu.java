@@ -1,6 +1,7 @@
 package dev.feldsher.deconstructedstorage.common.gui;
 
 import dev.feldsher.deconstructedcore.common.gui.StorageContainerMenuBase;
+import dev.feldsher.deconstructedcore.settings.memory.MemorySettingsCategory;
 import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageWrapper;
 import dev.feldsher.deconstructedstorage.block.WoodStorageBlockEntity;
@@ -38,6 +39,21 @@ public class StorageContainerMenu extends StorageContainerMenuBase<StorageWrappe
 		TileEntity te = player.world.getTileEntity(pos);
 		return te == storageBlockEntity && !te.isInvalid() && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D
 				&& !(te instanceof WoodStorageBlockEntity && ((WoodStorageBlockEntity) te).isPacked());
+	}
+
+	/** Locked, a storage whose slots remember what they hold, as a limited barrel, remembers what's put in through here too. */
+	@Override
+	public void detectAndSendChanges() {
+		if (!player.world.isRemote && storageBlockEntity.isLocked() && storageBlockEntity.memorizesItemsWhenLocked()) {
+			MemorySettingsCategory memorySettings = getStorageWrapper().getSettingsHandler().getTypeCategory(MemorySettingsCategory.class);
+			for (int slot = 0; slot < getNumberOfStorageInventorySlots(); slot++) {
+				if (!memorySettings.isSlotSelected(slot) && !getSlot(slot).getStack().isEmpty()) {
+					memorySettings.selectSlot(slot);
+					getStorageWrapper().getInventoryHandler().onSlotFilterChanged(slot);
+				}
+			}
+		}
+		super.detectAndSendChanges();
 	}
 
 	@Override

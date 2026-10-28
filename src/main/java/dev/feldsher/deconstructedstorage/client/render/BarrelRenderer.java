@@ -21,7 +21,8 @@ public class BarrelRenderer extends TileEntitySpecialRenderer<BarrelBlockEntity>
 		RenderInfo renderInfo = barrel.getStorageWrapper().getRenderInfo();
 		boolean holdsItemThatShowsUpgrades = HeldItemDisplays.holdsItemThatShowsUpgrades();
 		boolean showsUpgrades = barrel.shouldShowUpgrades() || holdsItemThatShowsUpgrades;
-		if (renderInfo.getItemDisplayRenderInfo().getDisplayItems().isEmpty() && !showsUpgrades) {
+		RenderInfo.ItemDisplayRenderInfo itemDisplay = renderInfo.getItemDisplayRenderInfo();
+		if (itemDisplay.getDisplayItems().isEmpty() && itemDisplay.getInaccessibleSlots().isEmpty() && !showsUpgrades) {
 			return;
 		}
 		IBlockState state = barrel.getWorld().getBlockState(barrel.getPos());
@@ -36,6 +37,7 @@ public class BarrelRenderer extends TileEntitySpecialRenderer<BarrelBlockEntity>
 		GlStateManager.translate(-0.5, -0.5, -(0.5 - (flatTop ? 0 : 1 / 16D)));
 		StorageFrontRenderer.setFrontLight(barrel.getWorld(), barrel.getPos(), facing);
 		StorageFrontRenderer.renderDisplayItems(renderInfo, 0.5, 4);
+		StorageFrontRenderer.renderInaccessibleSlots(itemDisplay.getInaccessibleSlots(), Math.min(itemDisplay.getDisplayItems().size(), 4), 0.5F);
 		if (showsUpgrades) {
 			StorageFrontRenderer.renderUpgradeItems(renderInfo.getUpgradeItems(), 0, 0, flatTop ? 0 : -1 / 16F, holdsItemThatShowsUpgrades,
 					HeldItemDisplays.showsDisabledUpgrades(barrel));

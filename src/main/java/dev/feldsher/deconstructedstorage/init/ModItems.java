@@ -176,6 +176,9 @@ public class ModItems {
 		for (BarrelBlock barrel : ModBlocks.getBarrels()) {
 			items.add(itemBlock(new BarrelBlockItem(barrel)));
 		}
+		for (BarrelBlock barrel : ModBlocks.getLimitedBarrels()) {
+			items.add(itemBlock(new BarrelBlockItem(barrel)));
+		}
 		for (ChestBlock chest : ModBlocks.getChests()) {
 			items.add(itemBlock(new ChestBlockItem(chest)));
 		}

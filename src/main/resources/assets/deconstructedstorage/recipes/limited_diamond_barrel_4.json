@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:limited_diamond_barrel_4"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:limited_gold_barrel_4"
+    }
+  ],
+  "type": "deconstructedstorage:storage_tier_upgrade",
+  "pattern": [
+    "DDD",
+    "DSD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "S": {
+      "item": "deconstructedstorage:limited_gold_barrel_4"
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:limited_diamond_barrel_4"
+  }
+}

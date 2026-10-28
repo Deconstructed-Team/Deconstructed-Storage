@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:limited_netherite_barrel_2"
+    },
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:limited_diamond_barrel_2"
+    }
+  ],
+  "type": "deconstructedstorage:storage_tier_upgrade_shapeless",
+  "ingredients": [
+    {
+      "item": "deconstructedstorage:limited_diamond_barrel_2"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotNetherite"
+    }
+  ],
+  "result": {
+    "item": "deconstructedstorage:limited_netherite_barrel_2"
+  }
+}

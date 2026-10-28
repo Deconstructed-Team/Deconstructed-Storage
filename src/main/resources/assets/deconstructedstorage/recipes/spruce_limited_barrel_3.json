@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "deconstructedstorage:item_enabled",
+      "item": "deconstructedstorage:limited_barrel_3"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PSP",
+    "PRP",
+    "SPS"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:planks",
+      "data": 1
+    },
+    "R": {
+      "item": "minecraft:redstone_torch"
+    },
+    "S": {
+      "item": "minecraft:wooden_slab",
+      "data": 1
+    }
+  },
+  "result": {
+    "item": "deconstructedstorage:limited_barrel_3",
+    "nbt": {
+      "wood_type": "spruce"
+    }
+  }
+}

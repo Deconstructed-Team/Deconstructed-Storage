@@ -1,6 +1,7 @@
 package dev.feldsher.deconstructedstorage.block;
 
 import dev.feldsher.deconstructedcore.inventory.InventoryHandler;
+import dev.feldsher.deconstructedcore.upgrades.stack.StackUpgradeItem;
 import dev.feldsher.deconstructedstorage.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -121,6 +122,8 @@ public final class TierUpgrader {
 		int upgradeSlots = wrapper.getUpgradeHandler().getSlots();
 		wrapper.changeSize(Math.max(0, storageBlock.getNumberOfInventorySlots() * sizeMultiplier - inventorySlots),
 				Math.max(0, storageBlock.getNumberOfUpgradeSlots() - upgradeSlots));
+		// a limited barrel a tier up holds more in each slot
+		wrapper.getInventoryHandler().setBaseSlotLimit(StackUpgradeItem.getInventorySlotLimit(wrapper));
 		be.refreshTickableUpgrades();
 		be.notifyBlockUpdate();
 	}

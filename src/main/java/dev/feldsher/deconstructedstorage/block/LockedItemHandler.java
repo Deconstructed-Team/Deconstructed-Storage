@@ -11,17 +11,21 @@ import java.util.function.Supplier;
 
 /**
  * A locked storage as pipes see it: it takes in only items it already holds, or that its memorized slots are set for.
- * The rest it hands out and reports as its inventory does.
+ * One whose empty slots don't take what other slots hold, as a limited barrel, fills empty slots only by what they
+ * remember. The rest it hands out and reports as its inventory does.
  */
 class LockedItemHandler implements IItemHandler {
 	private final Supplier<IItemHandler> inputOutput;
 	private final Supplier<InventoryHandler> inventory;
 	private final Supplier<MemorySettingsCategory> memorySettings;
+	private final boolean emptySlotsTakeMatchingItems;
 
-	LockedItemHandler(Supplier<IItemHandler> inputOutput, Supplier<InventoryHandler> inventory, Supplier<MemorySettingsCategory> memorySettings) {
+	LockedItemHandler(Supplier<IItemHandler> inputOutput, Supplier<InventoryHandler> inventory, Supplier<MemorySettingsCategory> memorySettings,
+			boolean emptySlotsTakeMatchingItems) {
 		this.inputOutput = inputOutput;
 		this.inventory = inventory;
 		this.memorySettings = memorySettings;
+		this.emptySlotsTakeMatchingItems = emptySlotsTakeMatchingItems;
 	}
 
 	@Override
@@ -38,10 +42,19 @@ class LockedItemHandler implements IItemHandler {
 	@Nonnull
 	@Override
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-		if (stack.isEmpty() || !isAllowed(stack)) {
+		if (stack.isEmpty() || !isAllowed(stack) || !emptySlotsTakeMatchingItems && !isAllowedInSlot(slot, stack)) {
 			return stack;
 		}
 		return inputOutput.get().insertItem(slot, stack, simulate);
+	}
+
+	private boolean isAllowedInSlot(int slot, ItemStack stack) {
+		InventoryHandler handler = inventory.get();
+		if (slot >= handler.getSlots() || !handler.getStackInSlot(slot).isEmpty()) {
+			return true;
+		}
+		MemorySettingsCategory memory = memorySettings.get();
+		return memory.isSlotSelected(slot) && memory.matchesFilter(slot, stack);
 	}
 
 	private boolean isAllowed(ItemStack stack) {

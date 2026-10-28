@@ -19,9 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
+import java.nio.FloatBuffer;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -64,6 +66,23 @@ public final class StorageFrontRenderer {
 		}
 	}
 
+	/**
+	 * From the block's center, turned so that its front faces north with its top up, for a front whose top looks
+	 * another way than a barrel's would, as a limited barrel's facing up or down.
+	 */
+	public static void rotateToFront(EnumFacing front, EnumFacing up) {
+		// left of one looking at it: the front crossed with its top
+		float leftX = front.getYOffset() * up.getZOffset() - front.getZOffset() * up.getYOffset();
+		float leftY = front.getZOffset() * up.getXOffset() - front.getXOffset() * up.getZOffset();
+		float leftZ = front.getXOffset() * up.getYOffset() - front.getYOffset() * up.getXOffset();
+		FloatBuffer matrix = BufferUtils.createFloatBuffer(16);
+		// columns: where x, y and z of the north facing front go
+		matrix.put(new float[] {leftX, leftY, leftZ, 0, up.getXOffset(), up.getYOffset(), up.getZOffset(), 0,
+				-front.getXOffset(), -front.getYOffset(), -front.getZOffset(), 0, 0, 0, 0, 1});
+		matrix.flip();
+		GlStateManager.multMatrix(matrix);
+	}
+
 	/** Light as of the block in front, which the front shows to: the storage's own is that of a solid block, dark. */
 	public static void setFrontLight(World world, BlockPos pos, EnumFacing facing) {
 		int light = world.getCombinedLight(pos.offset(facing), 0);
@@ -83,7 +102,7 @@ public final class StorageFrontRenderer {
 		}
 	}
 
-	private static void renderItem(ItemStack stack, int rotation, int index, int count, float yCenter) {
+	public static void renderItem(ItemStack stack, int rotation, int index, int count, float yCenter) {
 		if (stack.isEmpty()) {
 			return;
 		}
@@ -106,7 +125,7 @@ public final class StorageFrontRenderer {
 	}
 
 	/** Where on the front the item goes, as 1.21 lays out one to four items. */
-	private static float[] getFrontOffset(int index, int count, float yCenter) {
+	public static float[] getFrontOffset(int index, int count, float yCenter) {
 		float half = yCenter / 2;
 		switch (count) {
 			case 1:
@@ -117,6 +136,23 @@ public final class StorageFrontRenderer {
 				return new float[] {index == 0 ? 0.5F : 0.75F - (index - 1) * 0.5F, index == 0 ? yCenter + half : half};
 			default:
 				return new float[] {index == 0 || index == 2 ? 0.75F : 0.25F, index == 0 || index == 1 ? yCenter + half : half};
+		}
+	}
+
+	/** An X where a slot that can't be used would show its item, as compression leaves some. */
+	public static void renderInaccessibleSlots(List<Integer> inaccessibleSlots, int count, float yCenter) {
+		if (inaccessibleSlots.isEmpty()) {
+			return;
+		}
+		Minecraft minecraft = Minecraft.getMinecraft();
+		minecraft.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		TextureAtlasSprite sprite = minecraft.getTextureMapBlocks().getAtlasSprite(StorageInventorySlot.INACCESSIBLE_SLOT_BACKGROUND);
+		float halfSize = (count == 1 ? BIG_2D_ITEM_SCALE : SMALL_2D_ITEM_SCALE) / 2;
+		for (int index = 0; index < count; index++) {
+			if (inaccessibleSlots.contains(index)) {
+				float[] offset = getFrontOffset(index, count, yCenter);
+				renderQuad(sprite, offset[0] - halfSize, offset[1] - halfSize, offset[0] + halfSize, offset[1] + halfSize, -0.001F);
+			}
 		}
 	}
 
@@ -175,7 +211,7 @@ public final class StorageFrontRenderer {
 		GlStateManager.disableBlend();
 	}
 
-	private static void renderQuad(TextureAtlasSprite sprite, float x1, float y1, float x2, float y2, float z) {
+	static void renderQuad(TextureAtlasSprite sprite, float x1, float y1, float x2, float y2, float z) {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);

@@ -4,6 +4,8 @@ import dev.feldsher.deconstructedstorage.DeconstructedStorage;
 import dev.feldsher.deconstructedstorage.block.BarrelBlock;
 import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.block.StorageWrapper;
+import dev.feldsher.deconstructedstorage.block.LimitedBarrelBlock;
+import dev.feldsher.deconstructedstorage.block.VerticalFacing;
 import dev.feldsher.deconstructedstorage.client.render.BarrelBakedModel;
 import dev.feldsher.deconstructedstorage.client.render.BarrelParts;
 import dev.feldsher.deconstructedstorage.client.render.ChestItemRenderer;
@@ -20,6 +22,7 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -95,17 +98,30 @@ public class ClientEventHandler {
 		for (BarrelBlock barrel : ModBlocks.getBarrels()) {
 			for (EnumFacing facing : EnumFacing.values()) {
 				for (boolean flatTop : new boolean[] {false, true}) {
-					wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "facing=" + facing.getName() + ",flat_top=" + flatTop), barrel, facing, flatTop);
+					wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "facing=" + facing.getName() + ",flat_top=" + flatTop), barrel,
+							BarrelParts.getRotation(facing), flatTop);
 				}
 			}
-			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, EnumFacing.UP, false);
+			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, ModelRotation.X0_Y0, false);
+		}
+		for (LimitedBarrelBlock barrel : ModBlocks.getLimitedBarrels()) {
+			for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+				for (VerticalFacing verticalFacing : VerticalFacing.values()) {
+					for (boolean flatTop : new boolean[] {false, true}) {
+						wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()),
+										"facing=" + facing.getName() + ",flat_top=" + flatTop + ",vertical_facing=" + verticalFacing.getName()), barrel,
+								BarrelParts.getLimitedRotation(facing, verticalFacing), flatTop);
+					}
+				}
+			}
+			wrap(event, new ModelResourceLocation(Objects.requireNonNull(barrel.getRegistryName()), "inventory"), barrel, ModelRotation.X0_Y0, false);
 		}
 	}
 
-	private static void wrap(ModelBakeEvent event, ModelResourceLocation location, Block barrel, EnumFacing facing, boolean flatTop) {
+	private static void wrap(ModelBakeEvent event, ModelResourceLocation location, Block barrel, ModelRotation rotation, boolean flatTop) {
 		IBakedModel model = event.getModelRegistry().getObject(location);
 		if (model != null && !(model instanceof BarrelBakedModel)) {
-			event.getModelRegistry().putObject(location, new BarrelBakedModel(model, barrel, facing, flatTop));
+			event.getModelRegistry().putObject(location, new BarrelBakedModel(model, barrel, rotation, flatTop));
 		}
 	}
 

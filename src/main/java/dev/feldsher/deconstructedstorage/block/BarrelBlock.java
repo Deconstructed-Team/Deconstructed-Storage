@@ -44,7 +44,11 @@ public class BarrelBlock extends WoodStorageBlockBase {
 	public BarrelBlock(IntSupplier numberOfInventorySlotsSupplier, IntSupplier numberOfUpgradeSlotsSupplier, boolean basicTier) {
 		super(numberOfInventorySlotsSupplier, numberOfUpgradeSlotsSupplier);
 		this.basicTier = basicTier;
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(FLAT_TOP, false));
+		setDefaultState(createDefaultState());
+	}
+
+	protected IBlockState createDefaultState() {
+		return blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(FLAT_TOP, false);
 	}
 
 	@Override

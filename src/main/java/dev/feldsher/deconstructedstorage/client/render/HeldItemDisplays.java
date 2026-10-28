@@ -2,7 +2,9 @@ package dev.feldsher.deconstructedstorage.client.render;
 
 import dev.feldsher.deconstructedstorage.block.StorageBlockEntity;
 import dev.feldsher.deconstructedstorage.init.ModItems;
+import dev.feldsher.deconstructedstorage.item.StorageTierUpgradeItem;
 import dev.feldsher.deconstructedstorage.item.StorageToolItem;
+import dev.feldsher.deconstructedcore.upgrades.stack.StackUpgradeItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,6 +24,17 @@ public final class HeldItemDisplays {
 	public static boolean showsDisabledUpgrades(StorageBlockEntity storage) {
 		return !storage.shouldShowUpgrades() && holds(stack -> stack.getItem() instanceof StorageToolItem
 				&& StorageToolItem.getMode(stack) == StorageToolItem.Mode.UPGRADES_DISPLAY);
+	}
+
+	/** The tool, a tier upgrade or a stack upgrade: fill levels show, on a limited barrel that hides them too. */
+	public static boolean holdsItemThatShowsFillLevels() {
+		return holds(stack -> stack.getItem() instanceof StorageToolItem || stack.getItem() instanceof StorageTierUpgradeItem
+				|| stack.getItem() instanceof StackUpgradeItem && ModItems.isStorageUpgrade(stack.getItem()));
+	}
+
+	/** The tool set to toggle fill levels: hidden ones show see-through. */
+	public static boolean holdsToolInFillLevelDisplayMode() {
+		return holds(stack -> stack.getItem() instanceof StorageToolItem && StorageToolItem.getMode(stack) == StorageToolItem.Mode.FILL_LEVEL_DISPLAY);
 	}
 
 	private static boolean holds(Predicate<ItemStack> matcher) {

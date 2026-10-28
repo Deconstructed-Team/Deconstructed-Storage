@@ -97,6 +97,57 @@ public class Config {
 		@net.minecraftforge.common.config.Config.Comment("Netherite Shulker Box Settings")
 		public final StorageConfig netheriteShulkerBox = new StorageConfig(132, 5);
 
+		@net.minecraftforge.common.config.Config.Comment("Limited Barrel I Settings")
+		public final LimitedBarrelConfig limitedBarrel1 = new LimitedBarrelConfig(32, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Copper Barrel I Settings")
+		public final LimitedBarrelConfig copperLimitedBarrel1 = new LimitedBarrelConfig(53, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Iron Barrel I Settings")
+		public final LimitedBarrelConfig ironLimitedBarrel1 = new LimitedBarrelConfig(64, 2);
+		@net.minecraftforge.common.config.Config.Comment("Limited Gold Barrel I Settings")
+		public final LimitedBarrelConfig goldLimitedBarrel1 = new LimitedBarrelConfig(96, 3);
+		@net.minecraftforge.common.config.Config.Comment("Limited Diamond Barrel I Settings")
+		public final LimitedBarrelConfig diamondLimitedBarrel1 = new LimitedBarrelConfig(128, 4);
+		@net.minecraftforge.common.config.Config.Comment("Limited Netherite Barrel I Settings")
+		public final LimitedBarrelConfig netheriteLimitedBarrel1 = new LimitedBarrelConfig(160, 5);
+
+		@net.minecraftforge.common.config.Config.Comment("Limited Barrel II Settings")
+		public final LimitedBarrelConfig limitedBarrel2 = new LimitedBarrelConfig(16, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Copper Barrel II Settings")
+		public final LimitedBarrelConfig copperLimitedBarrel2 = new LimitedBarrelConfig(27, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Iron Barrel II Settings")
+		public final LimitedBarrelConfig ironLimitedBarrel2 = new LimitedBarrelConfig(32, 2);
+		@net.minecraftforge.common.config.Config.Comment("Limited Gold Barrel II Settings")
+		public final LimitedBarrelConfig goldLimitedBarrel2 = new LimitedBarrelConfig(48, 3);
+		@net.minecraftforge.common.config.Config.Comment("Limited Diamond Barrel II Settings")
+		public final LimitedBarrelConfig diamondLimitedBarrel2 = new LimitedBarrelConfig(64, 4);
+		@net.minecraftforge.common.config.Config.Comment("Limited Netherite Barrel II Settings")
+		public final LimitedBarrelConfig netheriteLimitedBarrel2 = new LimitedBarrelConfig(80, 5);
+
+		@net.minecraftforge.common.config.Config.Comment("Limited Barrel III Settings")
+		public final LimitedBarrelConfig limitedBarrel3 = new LimitedBarrelConfig(10, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Copper Barrel III Settings")
+		public final LimitedBarrelConfig copperLimitedBarrel3 = new LimitedBarrelConfig(17, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Iron Barrel III Settings")
+		public final LimitedBarrelConfig ironLimitedBarrel3 = new LimitedBarrelConfig(20, 2);
+		@net.minecraftforge.common.config.Config.Comment("Limited Gold Barrel III Settings")
+		public final LimitedBarrelConfig goldLimitedBarrel3 = new LimitedBarrelConfig(30, 3);
+		@net.minecraftforge.common.config.Config.Comment("Limited Diamond Barrel III Settings")
+		public final LimitedBarrelConfig diamondLimitedBarrel3 = new LimitedBarrelConfig(40, 4);
+		@net.minecraftforge.common.config.Config.Comment("Limited Netherite Barrel III Settings")
+		public final LimitedBarrelConfig netheriteLimitedBarrel3 = new LimitedBarrelConfig(50, 5);
+
+		@net.minecraftforge.common.config.Config.Comment("Limited Barrel IV Settings")
+		public final LimitedBarrelConfig limitedBarrel4 = new LimitedBarrelConfig(8, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Copper Barrel IV Settings")
+		public final LimitedBarrelConfig copperLimitedBarrel4 = new LimitedBarrelConfig(13, 1);
+		@net.minecraftforge.common.config.Config.Comment("Limited Iron Barrel IV Settings")
+		public final LimitedBarrelConfig ironLimitedBarrel4 = new LimitedBarrelConfig(16, 2);
+		@net.minecraftforge.common.config.Config.Comment("Limited Gold Barrel IV Settings")
+		public final LimitedBarrelConfig goldLimitedBarrel4 = new LimitedBarrelConfig(24, 3);
+		@net.minecraftforge.common.config.Config.Comment("Limited Diamond Barrel IV Settings")
+		public final LimitedBarrelConfig diamondLimitedBarrel4 = new LimitedBarrelConfig(32, 4);
+		@net.minecraftforge.common.config.Config.Comment("Limited Netherite Barrel IV Settings")
+		public final LimitedBarrelConfig netheriteLimitedBarrel4 = new LimitedBarrelConfig(40, 5);
 		@net.minecraftforge.common.config.Config.Comment("List of items that are not allowed to be put in shulker boxes - e.g. \"minecraft:writable_book\". Shulker boxes themselves never are.")
 		public String[] shulkerBoxDisallowedItems = new String[0];
 
@@ -159,7 +210,8 @@ public class Config {
 		public String[] maxUpgradesPerStorage = {
 				"chest|stack_upgrades|2", "chest|furnace_upgrades|1", "chest|jukebox_upgrades|1",
 				"barrel|stack_upgrades|2", "barrel|furnace_upgrades|1", "barrel|jukebox_upgrades|1",
-				"shulker_box|stack_upgrades|2", "shulker_box|furnace_upgrades|1", "shulker_box|jukebox_upgrades|1"};
+				"shulker_box|stack_upgrades|2", "shulker_box|furnace_upgrades|1", "shulker_box|jukebox_upgrades|1",
+				"limited_barrel|furnace_upgrades|1", "limited_barrel|jukebox_upgrades|1"};
 
 		@net.minecraftforge.common.config.Config.Ignore
 		public final IUpgradeCountLimitConfig maxUpgradesPerStorageConfig = new IUpgradeCountLimitConfig() {
@@ -224,6 +276,20 @@ public class Config {
 
 		StorageConfig(int inventorySlotCountDefault, int upgradeSlotCountDefault) {
 			inventorySlotCount = inventorySlotCountDefault;
+			upgradeSlotCount = upgradeSlotCountDefault;
+		}
+	}
+
+	public static class LimitedBarrelConfig {
+		@net.minecraftforge.common.config.Config.Comment("Multiplier that's used to calculate base slot limit")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 8192)
+		public int baseSlotLimitMultiplier;
+		@net.minecraftforge.common.config.Config.Comment("Number of upgrade slots in the storage")
+		@net.minecraftforge.common.config.Config.RangeInt(min = 0, max = 10)
+		public int upgradeSlotCount;
+
+		LimitedBarrelConfig(int baseSlotLimitMultiplierDefault, int upgradeSlotCountDefault) {
+			baseSlotLimitMultiplier = baseSlotLimitMultiplierDefault;
 			upgradeSlotCount = upgradeSlotCountDefault;
 		}
 	}
