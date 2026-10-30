@@ -34,8 +34,8 @@ the GPL v3, so they are under it as well.
 The jar to install is `build/libs/deconstructedstorage-<version>.jar` (not `-dev` or `-sources`).
 
 Deconstructed Core (and Backpacks, for the compatibility) are taken from their GitHub releases, of the versions in `gradle.properties`. To build
-against a local copy instead, give it a version that isn't released, run `./gradlew publishToMavenLocal`
-in it, and pass that version here, as `./gradlew build -Pcore_version=1.0.1`.
+against a local copy instead, run `./gradlew publishToMavenLocal -Pmod_version=1.0.1` in it (any version that
+isn't released), and pass that version here, as `./gradlew build -Pcore_version=1.0.1`.
 
 Another mod can be built against this one, from its GitHub releases:
 
